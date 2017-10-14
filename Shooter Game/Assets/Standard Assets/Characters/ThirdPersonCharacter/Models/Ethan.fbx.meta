@@ -1,9 +1,9 @@
 fileFormatVersion: 2
 guid: b235179bd2a63d1468dd430670338c55
-timeCreated: 1477489902
-licenseType: Pro
+timeCreated: 1507953126
+licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: char_cyberKid_Badge
     100002: char_ethan_body
@@ -367,6 +367,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -377,6 +379,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -384,7 +387,10 @@ ModelImporter:
     globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 0
@@ -400,6 +406,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -1043,7 +1050,7 @@ ModelImporter:
     - name: EthanLeftHandIndex3
       parentName: EthanLeftHandIndex2
       position: {x: -0.012793984, y: 0.016905012, z: 0.011081521}
-      rotation: {x: -0.02921515, y: 0.08614237, z: -0.2737419, w: 0.9574922}
+      rotation: {x: -0.029215151, y: 0.086142376, z: -0.27374193, w: 0.95749223}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanLeftHandIndex4
       parentName: EthanLeftHandIndex3
@@ -1063,7 +1070,7 @@ ModelImporter:
     - name: EthanLeftHandMiddle3
       parentName: EthanLeftHandMiddle2
       position: {x: -0.017910194, y: 0.014384004, z: 0.013012275}
-      rotation: {x: -0.040044915, y: 0.008001845, z: -0.18298166, w: 0.9822679}
+      rotation: {x: -0.04004491, y: 0.008001844, z: -0.18298164, w: 0.9822678}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanLeftHandMiddle4
       parentName: EthanLeftHandMiddle3
@@ -1113,7 +1120,7 @@ ModelImporter:
     - name: EthanLeftHandThumb1
       parentName: EthanLeftHand
       position: {x: -0.004633863, y: 0.028035661, z: 0.048953336}
-      rotation: {x: 0.66034335, y: -0.2809301, z: -0.23108189, w: 0.6569825}
+      rotation: {x: 0.6603434, y: -0.28093013, z: -0.2310819, w: 0.65698254}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanLeftHandThumb2
       parentName: EthanLeftHandThumb1
@@ -1163,7 +1170,7 @@ ModelImporter:
     - name: EthanRightHandIndex3
       parentName: EthanRightHandIndex2
       position: {x: -0.012793941, y: 0.01690497, z: -0.01108144}
-      rotation: {x: 0.029214451, y: -0.08614219, z: -0.27374247, w: 0.9574922}
+      rotation: {x: 0.029214447, y: -0.08614218, z: -0.27374244, w: 0.95749205}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanRightHandIndex4
       parentName: EthanRightHandIndex3
@@ -1193,17 +1200,17 @@ ModelImporter:
     - name: EthanRightHandPinky1
       parentName: EthanRightHand
       position: {x: -0.006750106, y: 0.09838347, z: 0.005122984}
-      rotation: {x: 0.14634132, y: -0.0853054, z: -0.3388892, w: 0.92545193}
+      rotation: {x: 0.14634134, y: -0.08530541, z: -0.33888924, w: 0.925452}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanRightHandPinky2
       parentName: EthanRightHandPinky1
       position: {x: -0.010876534, y: 0.00954607, z: -0.009400739}
-      rotation: {x: 0.035175707, y: -0.014915071, z: -0.15348981, w: 0.98741126}
+      rotation: {x: 0.03517571, y: -0.014915072, z: -0.15348983, w: 0.9874113}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanRightHandPinky3
       parentName: EthanRightHandPinky2
       position: {x: -0.015650306, y: 0.004325165, z: -0.010911368}
-      rotation: {x: 0.04428908, y: -0.00024435105, z: -0.18078858, w: 0.9825242}
+      rotation: {x: 0.044289082, y: -0.00024435107, z: -0.18078859, w: 0.9825243}
       scale: {x: 1, y: 1, z: 1}
     - name: EthanRightHandPinky4
       parentName: EthanRightHandPinky3
