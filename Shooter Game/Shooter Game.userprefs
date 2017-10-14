@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="Assembly-CSharp-firstpass.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Standard Assets/Scripts/banditAttack.cs">
+    <Files>
+      <File FileName="Assets/Standard Assets/Scripts/chase.cs" Line="8" Column="38" />
+      <File FileName="Assets/Standard Assets/Scripts/banditHealth.cs" Line="66" Column="55" />
+      <File FileName="Assets/Standard Assets/Scripts/banditAttack.cs" Line="13" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
