@@ -1,10 +1,8 @@
-﻿<Properties StartupItem="Assembly-CSharp-firstpass.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Standard Assets/Scripts/banditAttack.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyMove.cs">
     <Files>
-      <File FileName="Assets/Standard Assets/Scripts/chase.cs" Line="8" Column="38" />
-      <File FileName="Assets/Standard Assets/Scripts/banditHealth.cs" Line="66" Column="55" />
-      <File FileName="Assets/Standard Assets/Scripts/banditAttack.cs" Line="13" Column="19" />
+      <File FileName="Assets\Scripts\EnemyMove.cs" Line="16" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
