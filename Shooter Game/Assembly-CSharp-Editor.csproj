@@ -51,17 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\FGC\Volund-Morph3D\Shared\Editor\VolundMultiStandardShaderGUI.cs" />
-     <None Include="Assets\FGC\Volund-Morph3D\Shared\Volund_StandardCharacterSpecularSurface.shader" />
-     <None Include="Assets\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_ShadowSample.cginc" />
-     <None Include="Assets\FGC\Volund-Morph3D\Shared\UnityStandardSurface.cginc" />
-     <None Include="Assets\FGC\Readme.txt" />
-     <None Include="Assets\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_DepthOnly.shader" />
-     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
-     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
-     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
-     <None Include="Assets\FGC\Volund-Morph3D\Shared\UnityPBSLighting.cginc" />
+     <Compile Include="Assets\Models\FGC\Volund-Morph3D\Shared\Editor\VolundMultiStandardShaderGUI.cs" />
+     <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\Volund_StandardCharacterSpecularSurface.shader" />
+     <None Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_ShadowSample.cginc" />
+     <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\UnityStandardSurface.cginc" />
+     <None Include="Assets\Models\FGC\Readme.txt" />
+     <None Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_DepthOnly.shader" />
+     <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\UnityPBSLighting.cginc" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -124,12 +120,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{AE14ABA7-DB50-FD26-01F7-6189EEF4BE72}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{F5E0EBC1-6100-BB8F-43B8-A378E64B9F4B}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-CSharp-Editor-firstpass.csproj">
-      <Project>{3757201C-2D35-045A-7B0D-8089B703FE97}</Project>      <Name>Assembly-CSharp-Editor-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{AE14ABA7-DB50-FD26-01F7-6189EEF4BE72}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
