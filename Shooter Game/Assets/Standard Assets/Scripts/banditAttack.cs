@@ -23,7 +23,7 @@ public class banditAttack : MonoBehaviour {
 	void Start () 
 	{
 
-		player = GameObject.FindGameObjectWithTag ("ThirdPersonController");
+		player = GameObject.FindGameObjectWithTag ("Player");
 		//playerHealth = player.GetComponent <PlayerHealth> ();
 		banditHealth1 = GetComponent<banditHealth>();
 		anim = GetComponent <Animator> ();
