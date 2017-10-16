@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
 	public int startHealth = 100;
 	public int currentHealth;
-	//public Slider healthSlider;  No slider yet
-	//public Image damageImage;  No image yet
+	public Slider healthSlider;
+	public Image damageImage;
 	//public AudioClip death;  No audio clips yet
-	public float flashSpeed = 5f;
-	public Color flashColour = new Color(153f, 0, 204f);
+	public float flashSpeed = 2f;
+	public Color flashColour = new Color(153, 0, 204);
 
 	Animator anim;
 	//AudioSource playerAudio;  No audio clips yet
@@ -23,6 +24,7 @@ public class PlayerHealth : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		anim = GetComponent<Animator> ();
+
 		//playerAudio = GetComponent<AudioSource> ();  No audio clips yet
 		playerMove = GetComponent<PlayerMove> ();
 		playerShooting = GetComponent<PlayerShooting> ();
@@ -32,9 +34,9 @@ public class PlayerHealth : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (damaged) {
-			//damageImage.color = flashColour; No image yet
-		} else {
-			//damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime); No image yet
+			damageImage.color = flashColour;
+		}else{
+			damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
 		}
 		damaged = false;
 	}
@@ -43,7 +45,7 @@ public class PlayerHealth : MonoBehaviour {
 	{
 		damaged = true;
 		currentHealth -= amount;
-		//healthSlider.value = currentHealth;  No slider yet
+		healthSlider.value = currentHealth;
 		//playerAudio.Play();  No audio clips yet
 
 		if(currentHealth <= 0 && !isDead)

@@ -2,7 +2,7 @@
 
 public class PlayerShooting : MonoBehaviour
 {
-    public int damagePerShot = 25;
+    public int damagePerShot = 20;
     public float coolDown = 0.15f;
     public float range = 100f;
 
@@ -29,13 +29,11 @@ public class PlayerShooting : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-		if(Input.GetButton ("Fire1") && timer >= coolDown && Time.timeScale != 0)
-        {
+		if(Input.GetButton ("Fire1") && timer >= coolDown && Time.timeScale != 0){
             Shoot ();
         }
 
-        if(timer >= coolDown * effectsDisplayTime)
-        {
+		if(timer >= coolDown * effectsDisplayTime){
             DisableEffects ();
         }
     }
@@ -44,14 +42,12 @@ public class PlayerShooting : MonoBehaviour
     public void DisableEffects ()
     {
         gunLine.enabled = false;
-  
     }
 
 
     void Shoot ()
     {
         timer = 0f;
-
         //gunAudio.Play ();  No audio clips yet
 
 		gunLine.enabled = true;
@@ -60,22 +56,13 @@ public class PlayerShooting : MonoBehaviour
         shootRay.origin = gunEnd.transform.position;
 		shootRay.direction = transform.forward;
 
-        if(Physics.Raycast (shootRay, out shootHitInfo, range, shootableMask))
-        {
-            
+		if(Physics.Raycast (shootRay, out shootHitInfo, range, shootableMask)){
             EnemyHealth enemyHealth = shootHitInfo.collider.GetComponent <EnemyHealth> ();
 			if (enemyHealth != null) {
-				Debug.Log ("Not null enemy health");
 				enemyHealth.TakeDamage (damagePerShot, shootHitInfo.point);
-			} else {
-				Debug.Log ("Null enemy health");
 			}
-            
-
             gunLine.SetPosition (1, shootHitInfo.point);
-        }
-        else
-        {
+		}else{
             gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
         }
     }
