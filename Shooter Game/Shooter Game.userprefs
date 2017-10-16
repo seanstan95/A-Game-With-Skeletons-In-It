@@ -1,8 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyMove.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Managers\GameOverManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\EnemyMove.cs" Line="16" Column="8" />
+      <File FileName="Assets\Scripts\Player\PlayerHealth.cs" Line="13" Column="29" />
+      <File FileName="Assets\Scripts\Player\PlayerShooting.cs" Line="5" Column="34" />
+      <File FileName="Assets\Scripts\Enemy\EnemyAttack.cs" Line="7" Column="37" />
+      <File FileName="Assets\Scripts\Enemy\EnemyHealth.cs" Line="34" Column="25" />
+      <File FileName="Assets\Scripts\Managers\GameOverManager.cs" Line="26" Column="42" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
