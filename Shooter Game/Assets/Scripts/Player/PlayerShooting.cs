@@ -6,21 +6,22 @@ public class PlayerShooting : MonoBehaviour
     public float coolDown = 0.15f;
     public float range = 100f;
 
-
     float timer;
     Ray shootRay = new Ray();
     RaycastHit shootHitInfo;
+	GameObject gunEnd;
     int shootableMask;
     LineRenderer gunLine;
-    AudioSource gunAudio;
+    //AudioSource gunAudio;  No audio clips yet
     float effectsDisplayTime = 0.2f;
 
 
     void Awake ()
     {
+		gunEnd = GameObject.FindWithTag ("GunEnd");
         shootableMask = LayerMask.GetMask ("Shootable");
         gunLine = GetComponent <LineRenderer> ();
-        gunAudio = GetComponent<AudioSource> ();
+        //gunAudio = GetComponent<AudioSource> ();  No audio clips yet
     }
 
 
@@ -51,25 +52,25 @@ public class PlayerShooting : MonoBehaviour
     {
         timer = 0f;
 
-        gunAudio.Play ();
+        //gunAudio.Play ();  No audio clips yet
 
-      
+		gunLine.enabled = true;
+		gunLine.SetPosition(0, gunEnd.transform.position);
 
-        gunLine.enabled = true;
-        gunLine.SetPosition (0, this.transform.position);
-
-        shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
+        shootRay.origin = gunEnd.transform.position;
+		shootRay.direction = transform.forward;
 
         if(Physics.Raycast (shootRay, out shootHitInfo, range, shootableMask))
         {
-            /*
+            
             EnemyHealth enemyHealth = shootHitInfo.collider.GetComponent <EnemyHealth> ();
-            if(enemyHealth != null)
-            {
-                enemyHealth.TakeDamage (damagePerShot, shootHitInfo.point);
-            }
-            */
+			if (enemyHealth != null) {
+				Debug.Log ("Not null enemy health");
+				enemyHealth.TakeDamage (damagePerShot, shootHitInfo.point);
+			} else {
+				Debug.Log ("Null enemy health");
+			}
+            
 
             gunLine.SetPosition (1, shootHitInfo.point);
         }

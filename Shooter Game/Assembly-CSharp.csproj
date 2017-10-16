@@ -60,10 +60,12 @@
      <Compile Include="Assets\Models\FGC\Scripts\FGC_addItem.cs" />
      <Compile Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow.cs" />
      <Compile Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadowSun.cs" />
-     <Compile Include="Assets\Scripts\CameraController.cs" />
-     <Compile Include="Assets\Scripts\EnemyMove.cs" />
-     <Compile Include="Assets\Scripts\PlayerMove.cs" />
-     <Compile Include="Assets\Scripts\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyHealth.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMove.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerMove.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerShooting.cs" />
      <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\Volund_StandardCharacterSpecularSurface.shader" />
      <None Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_ShadowSample.cginc" />
      <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\UnityStandardSurface.cginc" />
@@ -91,10 +93,6 @@
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{AE14ABA7-DB50-FD26-01F7-6189EEF4BE72}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
