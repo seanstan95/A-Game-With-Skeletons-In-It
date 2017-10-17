@@ -23,4 +23,10 @@ public class EnemyManager : MonoBehaviour {
 		int spawnPointIndex = Random.Range (0, spawnPoints.Length);
 		Instantiate (skeleton, spawnPoints [spawnPointIndex].position, spawnPoints [spawnPointIndex].rotation);
 	}
+
+	public void DecreaseTimer(){
+		if (spawnTime >= 0) {
+			spawnTime -= .1f;
+		}
+	}
 }

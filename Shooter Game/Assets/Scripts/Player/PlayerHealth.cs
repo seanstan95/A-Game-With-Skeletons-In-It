@@ -9,29 +9,24 @@ public class PlayerHealth : MonoBehaviour {
 	public int currentHealth;
 	public Slider healthSlider;
 	public Image damageImage;
-	//public AudioClip death;  No audio clips yet
 	public float flashSpeed = 2f;
 	public Color flashColour = new Color(153, 0, 204);
 
 	Animator anim;
-	//AudioSource playerAudio;  No audio clips yet
 	PlayerMove playerMove;
 	PlayerShooting playerShooting;
 	bool isDead;
 	bool damaged;
 
 
-	// Use this for initialization
 	void Awake () {
 		anim = GetComponent<Animator> ();
 
-		//playerAudio = GetComponent<AudioSource> ();  No audio clips yet
 		playerMove = GetComponent<PlayerMove> ();
 		playerShooting = GetComponent<PlayerShooting> ();
 		currentHealth = startHealth;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (damaged) {
 			damageImage.color = flashColour;
