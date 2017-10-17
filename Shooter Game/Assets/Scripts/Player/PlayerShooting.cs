@@ -12,7 +12,6 @@ public class PlayerShooting : MonoBehaviour
 	GameObject gunEnd;
     int shootableMask;
     LineRenderer gunLine;
-    //AudioSource gunAudio;  No audio clips yet
     float effectsDisplayTime = 0.2f;
 
 
@@ -21,7 +20,6 @@ public class PlayerShooting : MonoBehaviour
 		gunEnd = GameObject.FindWithTag ("GunEnd");
         shootableMask = LayerMask.GetMask ("Shootable");
         gunLine = GetComponent <LineRenderer> ();
-        //gunAudio = GetComponent<AudioSource> ();  No audio clips yet
     }
 
 

@@ -7,14 +7,10 @@ public class EnemyHealth : MonoBehaviour {
 	public int startHealth;
 	public int currentHealth;
 	public int scoreValue = 10;
-	//public AudioClip dead;  No audio clips yet
+	Animator anim;
 
-	//AudioSource enemyAudio;  No audio clips yet
-	//bool isDead;  Bandit doesn't have a dead animation
-
-	// Use this for initialization
 	void Start () {
-		//enemyAudio = GetComponent<AudioSource> ();  No audio clips yet
+		anim = GetComponent<Animator> ();
 		currentHealth = startHealth;
 	}
 	
@@ -22,8 +18,8 @@ public class EnemyHealth : MonoBehaviour {
 	{
 		if (currentHealth <= 0)
 			return;
-		
-		//enemyAudio.Play ();  No audio clips yet
+
+		anim.SetTrigger ("Hit");
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 			Death ();
@@ -31,6 +27,6 @@ public class EnemyHealth : MonoBehaviour {
 
 	void Death()
 	{
-		Destroy (gameObject, 0);
+		anim.SetBool ("Dead", true);
 	}
 }
