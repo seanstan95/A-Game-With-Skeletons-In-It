@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour {
 
-	public int startHealth;
-	public int currentHealth;
-	public int scoreValue = 10;
+	public int startHealth = 100, currentHealth, scoreValue = 10;
+
 	Animator anim;
+	EnemyManager manager;
+	float deathTimer = 4f, destroyTimer;
+	GameObject enemyManager;
 
 	void Start () {
+		enemyManager = GameObject.FindGameObjectWithTag ("Manager");
+		manager = enemyManager.GetComponent<EnemyManager> ();
 		anim = GetComponent<Animator> ();
 		currentHealth = startHealth;
+	}
+
+	void Update(){
+		if (currentHealth <= 0) {
+			destroyTimer += Time.deltaTime;
+		}
+		if (destroyTimer >= deathTimer) {
+			Destroy (gameObject);
+		}
 	}
 	
 	public void TakeDamage(int amount, Vector3 hitpoint)
@@ -27,6 +40,8 @@ public class EnemyHealth : MonoBehaviour {
 
 	void Death()
 	{
-		anim.SetBool ("Dead", true);
+		anim.SetBool ("Walking", false);
+		anim.SetTrigger ("Dead");
+		manager.DecreaseTimer();
 	}
 }

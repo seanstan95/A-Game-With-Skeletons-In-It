@@ -7,52 +7,49 @@ public class EnemyAttack : MonoBehaviour {
 	public float timeBetweenAttacks = 2f;
 	public int attackDamage = 10;
 
+	Animator anim;
+	bool playerInRange;
+	EnemyHealth enemyHealth;
+	float timer;
 	GameObject player;
 	PlayerHealth playerHealth;
-	EnemyHealth enemyHealth;
-	bool playerInRange;
-	float timer;
 
-	// Use this for initialization
 	void Start () 
 	{
+		anim = GetComponent<Animator> ();
+		enemyHealth = GetComponent<EnemyHealth>();
 		player = GameObject.FindGameObjectWithTag ("Player");
 		playerHealth = player.GetComponent <PlayerHealth> ();
-		enemyHealth = GetComponent<EnemyHealth>();
 	}
 
 
 	void OnTriggerEnter (Collider other)
 	{
-		if(other.gameObject == player){
+		if (other.gameObject == player) {
 			playerInRange = true;
 		}
 	}
 
 	void OnTriggerExit(Collider other)
 	{
-		if(other.gameObject == player){
+		if(other.gameObject == player)
 			playerInRange = false;
-		}
 	}
-
-	// Update is called once per frame
+		
 	void Update ()
 	{
 		timer += Time.deltaTime;
 
-		if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0){
-			BanditAttack();
-		}
+		if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
+			Attack();
 	}
 
-	void BanditAttack()
+	void Attack()
 	{
-		timer = 0f;
-
-		if(playerHealth.currentHealth > 0){
+		if (playerHealth.currentHealth > 0) {
 			playerHealth.TakeDamage (attackDamage);
 		}
+		timer = 0f;
 	}
 
 }

@@ -74,7 +74,6 @@
      <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\UnityStandardSurface.cginc" />
      <None Include="Assets\Models\FGC\Readme.txt" />
      <None Include="Assets\Models\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow_DepthOnly.shader" />
-     <None Include="Assets\Models\Skeleton_Swordsman\Animations\skeleton_swordsman_animation_list.txt" />
      <None Include="Assets\Models\FGC\Volund-Morph3D\Shared\UnityPBSLighting.cginc" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

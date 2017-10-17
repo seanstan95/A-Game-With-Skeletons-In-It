@@ -9,6 +9,8 @@ public class EnemyMove : MonoBehaviour {
 	UnityEngine.AI.NavMeshAgent nav;
 	Animator anim;
 	float timeDead;
+	float timer;
+	float standAnim = 2;
 
 	void Awake()
 	{
@@ -21,7 +23,13 @@ public class EnemyMove : MonoBehaviour {
 
 	void Update()
 	{
+		timer += Time.deltaTime;
+		if (timer < standAnim) {
+			return;
+		}
+			
 		if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0) {
+			anim.SetBool ("Walking", true);
 			nav.SetDestination (player.position);
 		} else {
 			nav.enabled = false;
