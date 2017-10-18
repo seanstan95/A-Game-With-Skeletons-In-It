@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ 	* Controls all aspects regarding an enemy's ability to attack the player
+ 	* playerInRange bool is set when a player is in range of the enemy
+ 	* Calls the TakeDamage function of PlayerHealth if in range and the player is able to take damage
+*/
+
 public class EnemyAttack : MonoBehaviour {
 
-	public float timeBetweenAttacks = 2f;
+	public float timeBetweenAttacks = 1f;
 	public int attackDamage = 10;
 
-	Animator anim;
 	bool playerInRange;
 	EnemyHealth enemyHealth;
-	float timer;
+	float attackTimer;
 	GameObject player;
 	PlayerHealth playerHealth;
 
 	void Start () 
 	{
-		anim = GetComponent<Animator> ();
 		enemyHealth = GetComponent<EnemyHealth>();
 		player = GameObject.FindGameObjectWithTag ("Player");
 		playerHealth = player.GetComponent <PlayerHealth> ();
@@ -25,9 +29,8 @@ public class EnemyAttack : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.gameObject == player) {
+		if (other.gameObject == player)
 			playerInRange = true;
-		}
 	}
 
 	void OnTriggerExit(Collider other)
@@ -38,18 +41,12 @@ public class EnemyAttack : MonoBehaviour {
 		
 	void Update ()
 	{
-		timer += Time.deltaTime;
+		attackTimer += Time.deltaTime;
 
-		if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
-			Attack();
-	}
-
-	void Attack()
-	{
-		if (playerHealth.currentHealth > 0) {
-			playerHealth.TakeDamage (attackDamage);
+		if (attackTimer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0) {
+			if (playerHealth.currentHealth > 0)
+				playerHealth.TakeDamage (attackDamage);
+			attackTimer = 0f;
 		}
-		timer = 0f;
 	}
-
 }
