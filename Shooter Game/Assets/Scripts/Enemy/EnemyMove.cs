@@ -2,45 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ 	* Controls all aspects regarding an enemy's ability to move
+ 	* Timer first delays movement until standing-up animation is finished
+ 	* Nav Mesh Agent sets the destination to be the player unless either the player or enemy is dead
+*/
+
 public class EnemyMove : MonoBehaviour {
-	Transform player;
-	PlayerHealth playerHealth;
-	EnemyHealth enemyHealth;
-	UnityEngine.AI.NavMeshAgent nav;
+
 	Animator anim;
-	float timeDead;
-	float timer;
-	float standAnim = 2;
+	EnemyHealth enemyHealth;
+	float animTimer, standTime = 2f;
+	GameObject player;
+	PlayerHealth playerHealth;
+	UnityEngine.AI.NavMeshAgent navAgent;
 
 	void Awake()
 	{
 		anim = GetComponent<Animator> ();
-		player = GameObject.FindGameObjectWithTag ("Player").transform;
-		playerHealth = player.GetComponent<PlayerHealth> ();
 		enemyHealth = GetComponent<EnemyHealth> ();
-		nav = GetComponent <UnityEngine.AI.NavMeshAgent> ();
+		player = GameObject.FindGameObjectWithTag ("Player");
+		playerHealth = player.GetComponent<PlayerHealth> ();
+		navAgent = GetComponent <UnityEngine.AI.NavMeshAgent> ();
 	}
 
 	void Update()
 	{
-		timer += Time.deltaTime;
-		if (timer < standAnim) {
+		animTimer += Time.deltaTime;
+		if (animTimer < standTime) 
 			return;
-		}
 			
 		if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0) {
 			anim.SetBool ("Walking", true);
-			nav.SetDestination (player.position);
+			navAgent.SetDestination (player.transform.position);
 		} else {
-			nav.enabled = false;
-		}
-
-		bool isDead = anim.GetBool ("Dead");
-		if (isDead) {
-			timeDead += Time.deltaTime;
-		}
-		if (timeDead > 20) {
-			Destroy (gameObject);
+			navAgent.enabled = false;
 		}
 	}
 }

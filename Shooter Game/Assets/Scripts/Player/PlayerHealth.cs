@@ -3,36 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ 	* Controls all aspects regarding the player's health
+ 	* Starts with 100 health and decreases by the value of amount
+ 	* If health hits 0 or lower, Game Over trigger is activated
+*/
+
 public class PlayerHealth : MonoBehaviour {
 
-	public int startHealth = 100;
-	public int currentHealth;
-	public Slider healthSlider;
-	public Image damageImage;
-	public float flashSpeed = 2f;
 	public Color flashColour = new Color(153, 0, 204);
+	public float flashSpeed = 2f;
+	public Image damageImage;
+	public int startHealth = 100, currentHealth;
+	public Slider healthSlider;
 
-	Animator anim;
-	PlayerMove playerMove;
-	PlayerShooting playerShooting;
-	bool isDead;
 	bool damaged;
-
+	PlayerAttack playerAttack;
+	PlayerMove playerMove;
 
 	void Awake () {
-		anim = GetComponent<Animator> ();
-
 		playerMove = GetComponent<PlayerMove> ();
-		playerShooting = GetComponent<PlayerShooting> ();
+		playerAttack = GetComponent<PlayerAttack> ();
 		currentHealth = startHealth;
 	}
 
 	void Update () {
-		if (damaged) {
+		if (damaged)
 			damageImage.color = flashColour;
-		}else{
+		else
 			damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-		}
+		
 		damaged = false;
 	}
 
@@ -41,23 +41,10 @@ public class PlayerHealth : MonoBehaviour {
 		damaged = true;
 		currentHealth -= amount;
 		healthSlider.value = currentHealth;
-		//playerAudio.Play();  No audio clips yet
 
-		if(currentHealth <= 0 && !isDead)
-		{
-			Death();
+		if(currentHealth <= 0){
+			playerMove.enabled = false;
+			playerAttack.enabled = false;
 		}
-	}
-
-	void Death()
-	{
-		isDead = true;
-
-		anim.SetTrigger ("Dead");
-		//playerAudio.clip = deathClip;  No audio clips yet
-		//playerAudio.Play();  No audio clips yet
-
-		playerMove.enabled = false;
-		playerShooting.enabled = false;
 	}
 }

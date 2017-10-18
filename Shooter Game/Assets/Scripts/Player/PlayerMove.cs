@@ -2,25 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ 	* Controls all aspects regarding the player's movement
+ 	* Moves with the value of speed, and turns based on mouse position on a floor mask
+*/
+
 public class PlayerMove : MonoBehaviour {
 	public float speed = 6f;
-	Vector3 movement;
+
 	Animator anim;
-	Rigidbody playerRigidbody;
 	int floorMask;
-	float camRayLength = 100f;
+	float camRayLength = 100f, h, v;
+	RaycastHit floorhit;
+	Rigidbody playerRigidbody;
+	Vector3 movement;
 
 	void Awake()
 	{
-		floorMask = LayerMask.GetMask ("Floor");
 		anim = GetComponent<Animator>();
+		floorMask = LayerMask.GetMask ("Floor");
 		playerRigidbody = GetComponent<Rigidbody> ();
 	}
 
 	void FixedUpdate()
 	{
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
+		h = Input.GetAxisRaw ("Horizontal");
+		v = Input.GetAxisRaw ("Vertical");
 
 		Move (h, v);
 		Turning ();
@@ -38,12 +45,9 @@ public class PlayerMove : MonoBehaviour {
 	{
 		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-		RaycastHit floorhit;
-
 		if (Physics.Raycast (camRay, out floorhit, camRayLength, floorMask)) {
 			Vector3 playerToMouse = floorhit.point - transform.position;
 			playerToMouse.y = 0f;
-
 			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
 			playerRigidbody.MoveRotation (newRotation);
 		}
