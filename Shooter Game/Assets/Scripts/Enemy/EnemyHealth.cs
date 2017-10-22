@@ -11,11 +11,14 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour {
 
 	public int startHealth = 100, currentHealth, scoreValue = 10;
+    public float sinkSpeed = 2.5f;
+    bool sinking = false;
 
 	Animator anim;
 	EnemyManager manager;
 	GameObject enemy;
-	float deathTimer = 4f, destroyTimer;
+	float sinkTimer = 3f, deathTimer = 4f, destroyTimer;
+
 
 	void Start () {
 		currentHealth = startHealth;
@@ -25,12 +28,32 @@ public class EnemyHealth : MonoBehaviour {
 	}
 
 	void Update(){
-		if (currentHealth <= 0)
-			destroyTimer += Time.deltaTime;
+        if (currentHealth <= 0)
+        {
+            destroyTimer += Time.deltaTime;
+            GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            
+            
+        }
 
-		if (destroyTimer >= deathTimer)
-			Destroy (gameObject);
-	}
+        if (sinking)
+        {
+            transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
+        }
+
+        if (destroyTimer >= sinkTimer)
+        {
+            sinking = true;
+            //Destroy(gameObject);
+        }
+
+        if (destroyTimer >= deathTimer)
+        {
+            //sinking = true;
+            Destroy(gameObject);
+        }
+    }
 	
 	public void TakeDamage(int amount)
 	{
