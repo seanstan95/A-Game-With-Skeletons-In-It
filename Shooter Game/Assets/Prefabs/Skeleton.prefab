@@ -2066,6 +2066,8 @@ MonoBehaviour:
   startHealth: 100
   currentHealth: 0
   scoreValue: 10
+  sinkSpeed: 2.5
+  tempItem: {fileID: 1531654959643300, guid: aa28691a8bfcdfe4b8e8189d5ae1eae4, type: 2}
 --- !u!114 &114179865698336408
 MonoBehaviour:
   m_ObjectHideFlags: 1

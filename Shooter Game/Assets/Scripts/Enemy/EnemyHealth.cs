@@ -12,7 +12,9 @@ public class EnemyHealth : MonoBehaviour {
 
 	public int startHealth = 100, currentHealth, scoreValue = 10;
     public float sinkSpeed = 2.5f;
+    public GameObject tempItem;
     bool sinking = false;
+    bool spawnedDrop = false;
 
 	Animator anim;
 	EnemyManager manager;
@@ -25,7 +27,8 @@ public class EnemyHealth : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		enemy = GameObject.FindGameObjectWithTag ("Manager");
 		manager = enemy.GetComponent<EnemyManager>();
-	}
+        
+    }
 
 	void Update(){
         if (currentHealth <= 0)
@@ -33,6 +36,10 @@ public class EnemyHealth : MonoBehaviour {
             destroyTimer += Time.deltaTime;
             GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = true;
+            if(spawnedDrop == false)
+            {
+                Instantiate(tempItem, transform.position, transform.rotation);
+            }
             
             
         }
