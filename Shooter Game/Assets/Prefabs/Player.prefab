@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 54019719626739246}
   - component: {fileID: 136353349305606610}
   - component: {fileID: 120313529357312932}
-  - component: {fileID: 114998189741606292}
+  - component: {fileID: 114957733910418310}
   - component: {fileID: 114027201584294198}
   - component: {fileID: 114712106254104288}
   m_Layer: 0
@@ -2413,13 +2413,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22187e89bbfddce418de89427c1d419b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flashColour: {r: 1, g: 0, b: 0, a: 1}
+  flashSpeed: 5
+  damageImage: {fileID: 0}
   startHealth: 100
   currentHealth: 0
   healthSlider: {fileID: 0}
-  damageImage: {fileID: 0}
-  flashSpeed: 5
-  flashColour: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &114998189741606292
+--- !u!114 &114957733910418310
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2427,12 +2427,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1617703836391310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27c63be2a8918c741863160b9d9da122, type: 3}
+  m_Script: {fileID: 11500000, guid: ffd3d2c6080c63842acae17b43d4049d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerShot: 25
   coolDown: 0.15
   range: 100
+  gunEnd: {fileID: 0}
+  damagePerShot: 20
 --- !u!120 &120313529357312932
 LineRenderer:
   m_ObjectHideFlags: 1
