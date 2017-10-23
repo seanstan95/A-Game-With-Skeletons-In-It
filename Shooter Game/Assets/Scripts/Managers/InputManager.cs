@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour {
 
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape))
-			Application.Quit ();
+			SceneManager.LoadScene ("MainMenu");
 		if (Input.GetKeyDown (KeyCode.Space))
 			Debug.Log ("Insert Pause Menu Here");//pause menu
 	}
