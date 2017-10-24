@@ -30,7 +30,7 @@ public class PlayerAttack : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-		if(Input.GetButton ("Fire1") && timer >= coolDown && Time.timeScale != 0)
+		if(Input.GetButtonDown ("Fire1") && timer >= coolDown && Time.timeScale != 0)
             Shoot ();
 
 		if(timer >= coolDown * effectsDisplayTime)
