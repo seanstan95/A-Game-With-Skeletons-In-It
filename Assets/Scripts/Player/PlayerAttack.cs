@@ -8,12 +8,12 @@
 
 public class PlayerAttack : MonoBehaviour
 {
-	public float coolDown = 1f, range = 100f;
+	public float coolDown = .5f;
 	public GameObject gunEnd;
 	public int damagePerShot = 20;
 
 	int shootableMask;
-	float timer, effectsDisplayTime = 0.1f;
+	float range = 100f, timer, effectsDisplayTime = 0.1f;
 	LineRenderer gunLine;
     Ray shootRay = new Ray();
 	RaycastHit shootHitInfo;
@@ -30,7 +30,7 @@ public class PlayerAttack : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-		if(Input.GetButton ("Fire1") && timer >= coolDown)
+		if(Input.GetButton ("Fire1") && timer > coolDown)
             Shoot ();
 
 		if(timer >= coolDown * effectsDisplayTime)
