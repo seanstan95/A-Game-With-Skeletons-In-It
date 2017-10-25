@@ -12,8 +12,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	public int startHealth = 100, currentHealth, scoreValue = 10;
     public float sinkSpeed = 2.5f;
-    public GameObject tempItem;
-	int timesEntered = 0;
+    public GameObject powerUpItem;
 
 	Animator anim;
 	bool sinking, drop;
@@ -32,7 +31,7 @@ public class EnemyHealth : MonoBehaviour {
 		if (currentHealth <= 0){
 			destroyTimer += Time.deltaTime;
 			if (!drop) {
-				Instantiate (tempItem, transform.position, transform.rotation);
+				Instantiate (powerUpItem, transform.position, transform.rotation);
 				drop = true;
 			}
         }
@@ -47,8 +46,6 @@ public class EnemyHealth : MonoBehaviour {
 	
 	public void TakeDamage(int amount)
 	{
-		timesEntered = timesEntered + 1;
-		Debug.Log ("Times entering takeDamage: " + timesEntered);
 		currentHealth -= amount;
 
 		if (currentHealth <= 0) {

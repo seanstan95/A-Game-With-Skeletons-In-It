@@ -13,6 +13,8 @@ public class PlayerMove : MonoBehaviour {
 	Animator anim;
 	int floorMask;
 	float camRayLength = 100f, h, v;
+	GameObject power;
+	PowerupManager powerupManager;
 	RaycastHit floorhit;
 	Rigidbody playerRigidbody;
 	Vector3 movement;
@@ -22,6 +24,8 @@ public class PlayerMove : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		floorMask = LayerMask.GetMask ("Floor");
 		playerRigidbody = GetComponent<Rigidbody> ();
+		power = GameObject.FindGameObjectWithTag ("PowerUpManager");
+		powerupManager = power.GetComponent<PowerupManager> ();
 	}
 
 	void FixedUpdate()
@@ -57,5 +61,13 @@ public class PlayerMove : MonoBehaviour {
 	{
 		bool walking = h != 0f || v != 0f;
 		anim.SetBool ("IsWalking", walking);
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag ("Powerup")) {
+			powerupManager.FireRatePowerup ();
+			Destroy (other.gameObject);
+		}
 	}
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1873,12 +1873,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1245150584}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 483.5, y: 211.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.18217824, y: -1.0014755, z: -10.589132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1283323868}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1250221870
 GameObject:
@@ -1962,6 +1962,36 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1250221870}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1283323867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1283323868}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1283323868
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1283323867}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.18217824, y: 1.0014755, z: 10.589132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1245150586}
+  - {fileID: 1320802220}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1312594845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,6 +2074,46 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1312594845}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1320802219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1320802220}
+  - component: {fileID: 1320802221}
+  m_Layer: 0
+  m_Name: PowerupManager
+  m_TagString: PowerUpManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1320802220
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1320802219}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.18217824, y: -1.0014755, z: -10.589132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1283323868}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1320802221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1320802219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afbe81085868b0144b75db6731f52a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1373836674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,26 +2361,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114712106254104288, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
         type: 2}
-      propertyPath: healthSlider
-      value: 
-      objectReference: {fileID: 1648847170}
-    - target: {fileID: 114712106254104288, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-        type: 2}
       propertyPath: damageImage
       value: 
       objectReference: {fileID: 441852080}
-    - target: {fileID: 120313529357312932, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
+    - target: {fileID: 114712106254104288, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
         type: 2}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.16495132
-      objectReference: {fileID: 0}
-    - target: {fileID: 114957733910418310, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-        type: 2}
-      propertyPath: gunEnd
+      propertyPath: healthSlider
       value: 
-      objectReference: {fileID: 1977285059}
-    m_RemovedComponents:
-    - {fileID: 114998189741606292, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
+      objectReference: {fileID: 1648847170}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1647189741
@@ -2631,11 +2690,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1977285059 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1531958255012282, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-    type: 2}
-  m_PrefabInternal: {fileID: 1499799277}
 --- !u!1001 &2124052604
 Prefab:
   m_ObjectHideFlags: 0
