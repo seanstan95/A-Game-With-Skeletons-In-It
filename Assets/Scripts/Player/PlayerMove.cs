@@ -11,9 +11,9 @@ public class PlayerMove : MonoBehaviour {
 	public float speed = 6f;
 
 	Animator anim;
-	int floorMask;
 	float camRayLength = 100f, h, v;
 	GameObject power;
+	int floorMask;
 	PowerupManager powerupManager;
 	RaycastHit floorhit;
 	Rigidbody playerRigidbody;
@@ -65,8 +65,9 @@ public class PlayerMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.CompareTag ("Powerup")) {
-			powerupManager.FireRatePowerup ();
+		Debug.Log (powerupManager.currentPowerup);
+		if (other.gameObject.CompareTag ("Powerup") && powerupManager.currentPowerup == "None") {
+			powerupManager.FireRatePowerup (true);
 			Destroy (other.gameObject);
 		}
 	}

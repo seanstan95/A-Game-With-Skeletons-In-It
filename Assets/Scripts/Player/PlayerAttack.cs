@@ -8,12 +8,12 @@
 
 public class PlayerAttack : MonoBehaviour
 {
-	public float coolDown = .5f;
+	public float coolDown;
 	public GameObject gunEnd;
-	public int damagePerShot = 20;
+	public int damagePerShot;
 
 	int shootableMask;
-	float range = 100f, timer, effectsDisplayTime = 0.1f;
+	float range, timer, effectsDisplayTime;
 	LineRenderer gunLine;
     Ray shootRay = new Ray();
 	RaycastHit shootHitInfo;
@@ -21,6 +21,10 @@ public class PlayerAttack : MonoBehaviour
 
     void Awake ()
     {
+		coolDown = .5f;
+		damagePerShot = 20;
+		effectsDisplayTime = 0.1f;
+		range = 100f;
         shootableMask = LayerMask.GetMask ("Shootable");
         gunLine = GetComponent <LineRenderer> ();
     }

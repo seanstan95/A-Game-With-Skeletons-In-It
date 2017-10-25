@@ -8,6 +8,8 @@ TagManager:
   - Manager
   - Powerup
   - PowerUpManager
+  - HUD
+  - PText
   layers:
   - Default
   - TransparentFX
