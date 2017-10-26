@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/*
- 	* Manages the triggers for the Game Over screen
- 	* Simply calls the GameOver trigger of the animator when the player dies
-*/
-
 public class GameOverManager : MonoBehaviour {
 
-	public PlayerHealth playerHealth;
+	PlayerHealth playerHealth;
 
-	Animator anim;
-
-	void Awake()
+	void Start()
 	{
-		anim = GetComponent<Animator> ();
+		playerHealth = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
 	}
 
 	void Update()
 	{
+		//Simply triggers the GameOver animation when the player dies.
 		if (playerHealth.currentHealth <= 0)
-			anim.SetTrigger ("GameOver");
+			GetComponent<Animator>().SetTrigger ("GameOver");
 	}
 }

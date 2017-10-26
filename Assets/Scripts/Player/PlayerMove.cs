@@ -2,67 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- 	* Controls all aspects regarding the player's movement
- 	* Moves with the value of speed, and turns based on mouse position on a floor mask
-*/
-
 public class PlayerMove : MonoBehaviour {
-	public float speed = 6f;
 
-	Animator anim;
-	float camRayLength = 100f, h, v;
+	float camRayLength = 100f, horizontal, speed = 6f, vertical;
 	int floorMask;
 	PowerupManager powerupManager;
 	RaycastHit floorhit;
-	Rigidbody playerRigidbody;
 	Vector3 movement;
 
-	void Awake()
+	void Start()
 	{
-		anim = GetComponent<Animator>();
 		floorMask = LayerMask.GetMask ("Floor");
-		playerRigidbody = GetComponent<Rigidbody> ();
 		powerupManager = GameObject.FindGameObjectWithTag ("PText").GetComponent<PowerupManager>();
 	}
 
 	void FixedUpdate()
 	{
-		h = Input.GetAxisRaw ("Horizontal");
-		v = Input.GetAxisRaw ("Vertical");
+		//This script runs through FixedUpdate instead of Update because FixedUpdate runs as often as needed with the physics engine, whereas Update is always per-frame.
+		//First, grab the values applied to the horizontal and vertical axis. If nothing, it returns 0.
+		horizontal = Input.GetAxisRaw ("Horizontal");
+		vertical = Input.GetAxisRaw ("Vertical");
 
-		Move (h, v);
+		//Run through a few tasks: determine movement of the player, determine any rotation of the player, and animate accordingly.
+		Move (horizontal, vertical);
 		Turning ();
-		Animate (h, v);
+		Animate (horizontal, vertical);
 	}
 
-	void Move(float h, float v)
+	void Move(float horizontal, float vertical)
 	{
-		movement.Set (h, 0f, v);
+		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
+		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
+		movement.Set (horizontal, 0f, vertical);
 		movement = movement.normalized * speed * Time.deltaTime;
-		playerRigidbody.MovePosition (transform.position + movement);
+		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
 	}
 
 	void Turning()
 	{
+		//Honestly not too sure how most of this actually works, came from a tutorial.
 		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 
 		if (Physics.Raycast (camRay, out floorhit, camRayLength, floorMask)) {
 			Vector3 playerToMouse = floorhit.point - transform.position;
 			playerToMouse.y = 0f;
 			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
-			playerRigidbody.MoveRotation (newRotation);
+			GetComponent<Rigidbody>().MoveRotation (newRotation);
 		}
 	}
 
-	void Animate(float h, float v)
+	void Animate(float horizontal, float vertical)
 	{
-		bool walking = h != 0f || v != 0f;
-		anim.SetBool ("IsWalking", walking);
+		//Bool check if horizontal or vertical are 0 - if not, set the walking animation to be true.
+		bool walking = horizontal != 0f || vertical != 0f;
+		GetComponent<Animator>().SetBool ("IsWalking", walking);
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
+		//First of all, none of the below matters unless there is no active powerup, so check for that first.
+		//Next, check if the object in question is a powerup - if so, activate it using the tag name as reference. Destroy it immediately after.
 		if (powerupManager.currentPowerup == "None") {
 			switch (other.gameObject.tag) {
 			case "FireRate":

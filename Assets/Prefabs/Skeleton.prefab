@@ -2063,12 +2063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b14aed291917b4cb2849fe9fe13aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 100
   currentHealth: 0
-  scoreValue: 10
-  sinkSpeed: 2.5
-  powerUpItem: {fileID: 1279902760168382, guid: dd19cfc13eb4eb249a253a720255462b,
-    type: 2}
+  powerUp: {fileID: 1531654959643300, guid: aa28691a8bfcdfe4b8e8189d5ae1eae4, type: 2}
 --- !u!114 &114179865698336408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2080,7 +2076,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5c869a56449b04c910d0d25473e19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenAttacks: 1
   attackDamage: 10
 --- !u!114 &114588523135781442
 MonoBehaviour:

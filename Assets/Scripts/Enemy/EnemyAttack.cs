@@ -2,52 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- 	* Controls all aspects regarding an enemy's ability to attack the player
- 	* playerInRange bool is set when a player is in range of the enemy
- 	* Calls the TakeDamage function of PlayerHealth if in range and the player is able to take damage
-*/
-
 public class EnemyAttack : MonoBehaviour {
 
-	public float timeBetweenAttacks;
 	public int attackDamage;
 
 	bool playerInRange;
-	EnemyHealth enemyHealth;
-	float attackTimer;
-	GameObject player;
+	float attackTimer, timeBetweenAttacks = 1f;
 	PlayerHealth playerHealth;
 
 	void Start () 
 	{
+		//General presets. Attack damage is -10 because ChangeHealth can be positive (for health powerup adding health) or negative (for taking damage or decreasing health)
 		attackDamage = -10;
-		timeBetweenAttacks = 1f;
-		enemyHealth = GetComponent<EnemyHealth>();
-		player = GameObject.FindGameObjectWithTag ("Player");
-		playerHealth = player.GetComponent <PlayerHealth> ();
+		playerHealth = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
 	}
 
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.gameObject == player)
+		//Checks if an object has entered the collider attached to this enemy. If it is the player, we know the player is in range of being attacked.
+		if (other.gameObject == playerHealth.gameObject)
 			playerInRange = true;
 	}
 
 	void OnTriggerExit(Collider other)
 	{
-		if(other.gameObject == player)
+		//Checks if an object has exited the collider attached to this enemy. If it is the player, we know the player is out of range of being attacked.
+		if(other.gameObject == playerHealth.gameObject)
 			playerInRange = false;
 	}
 		
 	void Update ()
 	{
+		//Using Time.deltaTime ensures 1 second is counted properly regardless of framerate.
 		attackTimer += Time.deltaTime;
 
-		if (attackTimer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0) {
-			if (playerHealth.currentHealth > 0)
-				playerHealth.ChangeHealth (attackDamage);
+		//attackTimer controls how fast the enemy can attack, playerInRange ensures the player is close enough, and the player must be alive.
+		if (attackTimer >= timeBetweenAttacks && playerInRange && playerHealth.currentHealth > 0) {
+			playerHealth.ChangeHealth (attackDamage);
 			attackTimer = 0f;
 		}
 	}
