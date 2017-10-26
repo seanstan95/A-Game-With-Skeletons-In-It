@@ -1,52 +1,50 @@
 ﻿using UnityEngine;
 
-/*
- 	* Controls all aspects regarding the player's ability to attack enemies
- 	* If the player is holding down the fire button and the cooldown has been reached, shoot the gun
- 	* Whenever the bullet collides with an enemy, deals damage via the TakeDamage function of that enemy's health script
-*/
-
 public class PlayerAttack : MonoBehaviour
 {
 	public float coolDown;
 	public GameObject gunEnd;
 	public int damagePerShot;
 
-	int shootableMask;
 	float range, timer, effectsDisplayTime;
-	LineRenderer gunLine;
+	int shootableMask;
+	LineRenderer line;
     Ray shootRay = new Ray();
 	RaycastHit shootHitInfo;
 
-
     void Awake ()
     {
+		//General presets.
 		coolDown = .5f;
 		damagePerShot = 20;
-		effectsDisplayTime = 0.1f;
+		effectsDisplayTime = .1f;
 		range = 100f;
         shootableMask = LayerMask.GetMask ("Shootable");
-        gunLine = GetComponent <LineRenderer> ();
+        line = GetComponent <LineRenderer> ();
     }
 
 
     void Update ()
     {
+		//Timer is always running to maintain cooldown rate, and is reset to 0 every time the player shoots.
         timer += Time.deltaTime;
 
-		if(Input.GetButton ("Fire1") && timer > coolDown)
+		//Fire1 is by default set to either left click, or left control. When either is pressed and the cooldown has been reached, continue with shooting a line.
+		if(Input.GetButton ("Fire1") && timer >= coolDown)
             Shoot ();
 
+		//Disable the gun line when the cooldown (multiplied by the time set for how long to display the line) has been reached.
 		if(timer >= coolDown * effectsDisplayTime)
-			gunLine.enabled = false;
+			line.enabled = false;
     }
 
     void Shoot ()
     {
+		//Honestly not too sure how most of this actually works, came from a tutorial.
         timer = 0f;
 
-		gunLine.enabled = true;
-		gunLine.SetPosition(0, gunEnd.transform.position);
+		line.enabled = true;
+		line.SetPosition(0, gunEnd.transform.position);
 
         shootRay.origin = gunEnd.transform.position;
 		shootRay.direction = transform.forward;
@@ -55,9 +53,9 @@ public class PlayerAttack : MonoBehaviour
 			EnemyHealth enemyHealth = shootHitInfo.collider.GetComponent <EnemyHealth> ();
 			if (enemyHealth != null)
 				enemyHealth.TakeDamage (damagePerShot);
-			gunLine.SetPosition (1, shootHitInfo.point);
+			line.SetPosition (1, shootHitInfo.point);
 		} else {
-			gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
+			line.SetPosition (1, shootRay.origin + shootRay.direction * range);
 		}
     }
 }
