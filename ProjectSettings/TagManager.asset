@@ -10,6 +10,9 @@ TagManager:
   - PowerUpManager
   - HUD
   - PText
+  - Damage
+  - FireRate
+  - Health
   layers:
   - Default
   - TransparentFX

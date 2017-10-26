@@ -22,10 +22,9 @@ GameObject:
   - component: {fileID: 33560864075033098}
   - component: {fileID: 65547204206843560}
   - component: {fileID: 23785384404015820}
-  - component: {fileID: 114437712206019230}
   m_Layer: 0
   m_Name: FireRatePowerup
-  m_TagString: Powerup
+  m_TagString: FireRate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,14 +93,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114437712206019230
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1531654959643300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afbe81085868b0144b75db6731f52a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

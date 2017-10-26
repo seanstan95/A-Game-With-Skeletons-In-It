@@ -32,14 +32,16 @@ public class PlayerHealth : MonoBehaviour {
 			damageImage.color = flashColour;
 		else
 			damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-		
 		damaged = false;
 	}
 
-	public void TakeDamage(int amount)
+	public void ChangeHealth(int amount)
 	{
-		damaged = true;
-		currentHealth -= amount;
+		Debug.Log ("Damage amount: " + amount);
+		if (amount < 0)
+			damaged = true;
+			
+		currentHealth += amount;
 		healthSlider.value = currentHealth;
 
 		if(currentHealth <= 0){

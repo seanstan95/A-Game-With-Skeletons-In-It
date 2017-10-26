@@ -2067,7 +2067,7 @@ MonoBehaviour:
   currentHealth: 0
   scoreValue: 10
   sinkSpeed: 2.5
-  powerUpItem: {fileID: 1531654959643300, guid: aa28691a8bfcdfe4b8e8189d5ae1eae4,
+  powerUpItem: {fileID: 1279902760168382, guid: dd19cfc13eb4eb249a253a720255462b,
     type: 2}
 --- !u!114 &114179865698336408
 MonoBehaviour:
