@@ -9,54 +9,81 @@ public class PowerupManager : MonoBehaviour {
 
 	Color textColor;
 	float timer, endTimer = 5f;
-	GameObject player, textObj;
 	PlayerAttack attack;
+	PlayerHealth health;
 	Text text;
 
 	void Start()
 	{
 		currentPowerup = "None";
-		player = GameObject.FindGameObjectWithTag ("Player");
-		textObj = GameObject.FindGameObjectWithTag ("PText");
-		text = textObj.GetComponent<Text> ();
+		attack = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerAttack>();
+		health = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
+		text = GetComponent<Text> ();
 		textColor = text.color;
-		attack = player.GetComponent<PlayerAttack> ();
 	}
 
 	void Update()
 	{
-		if (currentPowerup == "FireRate") {
+		if (currentPowerup != "None")
 			timer += Time.deltaTime;
-			if (timer >= endTimer)
-				FireRatePowerup(false);
+
+		if (timer >= endTimer) {
+			timer = 0f;
+			switch (currentPowerup) {
+			case "FireRate":
+			case "Damage":
+			case "Health":
+				Powerup (false, currentPowerup);
+				break;
+			}
 		}
 	}
 
 	void UpdateText()
 	{
-		//function is easily expandable using similar lines of code whenever we add a new powerup - just add to the if-else chain - if it gets lare enough a switch might be more readable
-		if (currentPowerup == "FireRate") {
+		switch (currentPowerup) {
+		case "FireRate":
+		case "Damage":
+		case "Health":
 			text.text = "Current Powerup: " + currentPowerup;
 			textColor.a = 1f;
 			text.color = textColor;
-		} else if (currentPowerup == "None") {
-			textColor.a = 0;
+			break;
+		case "None":
+			textColor.a = 0f;
 			text.color = textColor;
+			break;
 		}
 	}
 
-	public void FireRatePowerup(bool start)
+	public void Powerup(bool start, string name)
 	{
-		//each powerup function should follow this format where both activation and deactivation occur in the same function as dictated by the bool
-		//true when being activated from PlayerMove and false when being called from Update() in this script
 		if (start) {
-			currentPowerup = "FireRate";
-			attack.coolDown = .10f;
+			Debug.Log ("Name: " + name);
+			switch (name) {
+			case "FireRate":
+				attack.coolDown = .10f;
+				break;
+			case "Damage":
+				attack.damagePerShot = 40;
+				break;
+			case "Health":
+				health.ChangeHealth (10);
+				timer = 4f;
+				break;
+			}
+			currentPowerup = name;
 			UpdateText ();
 		} else {
+			switch (name) {
+			case "FireRate":
+				attack.coolDown = .5f;
+				break;
+			case "Damage":
+				attack.damagePerShot = 20;
+				break;
+			}
 			currentPowerup = "None";
-			attack.coolDown = .5f;
-			timer = 0f;
 			UpdateText ();
 		}
 	}

@@ -12,7 +12,6 @@ public class PlayerMove : MonoBehaviour {
 
 	Animator anim;
 	float camRayLength = 100f, h, v;
-	GameObject power;
 	int floorMask;
 	PowerupManager powerupManager;
 	RaycastHit floorhit;
@@ -24,8 +23,7 @@ public class PlayerMove : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		floorMask = LayerMask.GetMask ("Floor");
 		playerRigidbody = GetComponent<Rigidbody> ();
-		power = GameObject.FindGameObjectWithTag ("PowerUpManager");
-		powerupManager = power.GetComponent<PowerupManager> ();
+		powerupManager = GameObject.FindGameObjectWithTag ("PText").GetComponent<PowerupManager>();
 	}
 
 	void FixedUpdate()
@@ -65,10 +63,15 @@ public class PlayerMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log (powerupManager.currentPowerup);
-		if (other.gameObject.CompareTag ("Powerup") && powerupManager.currentPowerup == "None") {
-			powerupManager.FireRatePowerup (true);
-			Destroy (other.gameObject);
+		if (powerupManager.currentPowerup == "None") {
+			switch (other.gameObject.tag) {
+			case "FireRate":
+			case "Damage":
+			case "Health":
+				powerupManager.Powerup (true, other.gameObject.tag);
+				Destroy (other.gameObject);
+				break;
+			}
 		}
 	}
 }
