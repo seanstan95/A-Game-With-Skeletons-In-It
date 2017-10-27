@@ -7,7 +7,6 @@ public class PlayerHealth : MonoBehaviour {
 
 	public Image damageImage;
 	public int currentHealth;
-	public Slider healthSlider;
 
 	bool damaged;
 	float flashSpeed = 2f;
@@ -37,7 +36,8 @@ public class PlayerHealth : MonoBehaviour {
 		currentHealth += amount;
 		if (currentHealth > 100)
 			currentHealth = 100;
-		healthSlider.value = currentHealth;
+		
+		GameObject.FindGameObjectWithTag ("HText").GetComponent<Text> ().text = "Health: " + currentHealth + "/100";
 
 		//On death, disable the PlayerMove and PlayerAttack scripts.
 		if(currentHealth <= 0){

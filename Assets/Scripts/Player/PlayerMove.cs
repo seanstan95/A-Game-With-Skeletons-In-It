@@ -6,14 +6,14 @@ public class PlayerMove : MonoBehaviour {
 
 	float camRayLength = 100f, horizontal, speed = 6f, vertical;
 	int floorMask;
-	PowerupManager powerupManager;
+	UIManager uiManager;
 	RaycastHit floorhit;
 	Vector3 movement;
 
 	void Start()
 	{
 		floorMask = LayerMask.GetMask ("Floor");
-		powerupManager = GameObject.FindGameObjectWithTag ("PText").GetComponent<PowerupManager>();
+		uiManager = GameObject.FindGameObjectWithTag ("UIManager").GetComponent<UIManager>();
 	}
 
 	void FixedUpdate()
@@ -62,12 +62,12 @@ public class PlayerMove : MonoBehaviour {
 	{
 		//First of all, none of the below matters unless there is no active powerup, so check for that first.
 		//Next, check if the object in question is a powerup - if so, activate it using the tag name as reference. Destroy it immediately after.
-		if (powerupManager.currentPowerup == "None") {
+		if (uiManager.currentPowerup == "None") {
 			switch (other.gameObject.tag) {
 			case "FireRate":
 			case "Damage":
 			case "Health":
-				powerupManager.Powerup (true, other.gameObject.tag);
+				uiManager.Powerup (true, other.gameObject.tag);
 				Destroy (other.gameObject);
 				break;
 			}
