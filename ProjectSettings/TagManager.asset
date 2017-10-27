@@ -5,14 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - GunEnd
-  - Manager
-  - Powerup
-  - PowerUpManager
-  - HUD
-  - PText
   - Damage
   - FireRate
   - Health
+  - FText
+  - DText
+  - HText
+  - UIManager
   layers:
   - Default
   - TransparentFX

@@ -23,7 +23,6 @@ public class EnemyHealth : MonoBehaviour {
 			destroyTimer += Time.deltaTime;
 			if (!drop) {
 				powerupIndex = Random.Range (0, powerups.Length);
-				Debug.Log (powerupIndex);
 				if (powerupIndex == 0 || powerupIndex == 1 || powerupIndex == 2)
 					Instantiate (powerups[powerupIndex], transform.position, transform.rotation);
 				drop = true;
@@ -49,11 +48,11 @@ public class EnemyHealth : MonoBehaviour {
 		//First, walking stops and the death trigger animation is set. 
 		//Then, disable the nav mesh agent so the enemy no longer follows the player. Set kinematic to be true, and disable the collider.
 		if (currentHealth <= 0) {
+			GetComponent<CapsuleCollider> ().enabled = false;
 			GetComponent<Animator>().SetBool ("Walking", false);
 			GetComponent<Animator>().SetTrigger ("Dead");	
 			GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
 			GetComponent<Rigidbody>().isKinematic = true;
-			GetComponent<CapsuleCollider> ().enabled = false;
 		}
 	}
 }

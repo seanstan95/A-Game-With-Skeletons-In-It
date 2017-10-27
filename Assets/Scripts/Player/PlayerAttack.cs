@@ -2,7 +2,7 @@
 
 public class PlayerAttack : MonoBehaviour
 {
-	public float coolDown;
+	public float fireRate;
 	public GameObject gunEnd;
 	public int damagePerShot;
 
@@ -14,8 +14,10 @@ public class PlayerAttack : MonoBehaviour
 
     void Awake ()
     {
-		//General presets.
-		coolDown = .5f;
+		//General presets. Changed coolDown to fireRate to avoid confusion with terminology. Effective cooldown is simply 1/fireRate.
+		//Example: Fire rate of 2 per second means there is a 0.5 second wait in between each shot. 1/2 = 0.5.
+		//Similarly, when the Fire rate is increased to 10 per second with the powerup, the ratio holds (1/10 = .1 seconds between each shot).
+		fireRate = 2f;
 		damagePerShot = 20;
 		effectsDisplayTime = .1f;
 		range = 100f;
@@ -30,11 +32,11 @@ public class PlayerAttack : MonoBehaviour
         timer += Time.deltaTime;
 
 		//Fire1 is by default set to either left click, or left control. When either is pressed and the cooldown has been reached, continue with shooting a line.
-		if(Input.GetButton ("Fire1") && timer >= coolDown)
+		if(Input.GetButton ("Fire1") && timer >= (1/fireRate))
             Shoot ();
 
 		//Disable the gun line when the cooldown (multiplied by the time set for how long to display the line) has been reached.
-		if(timer >= coolDown * effectsDisplayTime)
+		if(timer >= (1/fireRate) * effectsDisplayTime)
 			line.enabled = false;
     }
 
