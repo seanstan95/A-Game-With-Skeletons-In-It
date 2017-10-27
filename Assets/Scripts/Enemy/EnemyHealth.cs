@@ -5,10 +5,11 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour {
 
 	public int currentHealth;
-    public GameObject powerUp;
+	public GameObject[] powerups;
 
 	bool sinking, drop;
 	float destroyTimer, sinkSpeed = 2.5f;
+	int powerupIndex;
 
 	void Start () {
 		//General presets.
@@ -16,11 +17,15 @@ public class EnemyHealth : MonoBehaviour {
     }
 
 	void Update(){
-		//If the enemy is dead, start counting how long it's been. Also, if the enemy has not dropped an item yet, Instantiate one.
+		//If the enemy is dead, start counting how long it's been.
+		//If the enemy hasn't dropped anything yet, randomly select a powerup to drop. Currently set to a 50/50 chance to drop nothing, or one of the 3 powerups.
 		if (currentHealth <= 0){
 			destroyTimer += Time.deltaTime;
 			if (!drop) {
-				Instantiate (powerUp, transform.position, transform.rotation);
+				powerupIndex = Random.Range (0, powerups.Length);
+				Debug.Log (powerupIndex);
+				if (powerupIndex == 0 || powerupIndex == 1 || powerupIndex == 2)
+					Instantiate (powerups[powerupIndex], transform.position, transform.rotation);
 				drop = true;
 			}
         }

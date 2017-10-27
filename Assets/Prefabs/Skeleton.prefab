@@ -2064,7 +2064,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
-  powerUp: {fileID: 1531654959643300, guid: aa28691a8bfcdfe4b8e8189d5ae1eae4, type: 2}
+  powerups:
+  - {fileID: 1531654959643300, guid: aa28691a8bfcdfe4b8e8189d5ae1eae4, type: 2}
+  - {fileID: 1238064286272268, guid: df2b37b4652777c4ea7c769e6e9d67a0, type: 2}
+  - {fileID: 1279902760168382, guid: dd19cfc13eb4eb249a253a720255462b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114179865698336408
 MonoBehaviour:
   m_ObjectHideFlags: 1
