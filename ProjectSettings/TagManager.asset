@@ -11,7 +11,8 @@ TagManager:
   - FText
   - DText
   - HText
-  - UIManager
+  - HUD
+  - StatHUD
   layers:
   - Default
   - TransparentFX

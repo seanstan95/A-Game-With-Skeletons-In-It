@@ -10,13 +10,16 @@ public class UIManager : MonoBehaviour {
 	float timer, endTimer = 5f;
 	PlayerAttack attack;
 	PlayerHealth health;
-	Text text;
+	Text fText, dText, hText;
 
 	void Start()
 	{
 		currentPowerup = "None";
 		attack = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerAttack>();
 		health = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
+		fText = GameObject.FindGameObjectWithTag ("FText").GetComponent<Text>();
+		dText = GameObject.FindGameObjectWithTag ("DText").GetComponent<Text> ();
+		hText = GameObject.FindGameObjectWithTag("HText").GetComponent<Text>();
 	}
 
 	void Update()
@@ -45,15 +48,15 @@ public class UIManager : MonoBehaviour {
 		//Each powerup activation will trigger the associated text to turn yellow so it's noticed that it's active.
 		switch (currentPowerup) {
 		case "FireRate":
-			text.text = "Fire Rate: " + attack.fireRate + "/s";
-			text.color = Color.yellow;
+			fText.text = "Fire Rate: " + attack.fireRate + "/s";
+			fText.color = Color.yellow;
 			break;
 		case "Damage":
-			text.text = "Damage: " + attack.damagePerShot;
-			text.color = Color.yellow;
+			dText.text = "Damage: " + attack.damagePerShot;
+			dText.color = Color.yellow;
 			break;
 		case "Health":
-			text.text = "Health: " + health.currentHealth + "/100";
+			hText.text = "Health: " + health.currentHealth + "/100";
 			break;
 		}
 	}
@@ -67,17 +70,14 @@ public class UIManager : MonoBehaviour {
 			case "FireRate":
 				//FireRate powerup decreases the cooldown of the player's gun from .5 to .1 (thus increasing their fire rate).
 				attack.fireRate = 10f;
-				text = GameObject.FindGameObjectWithTag ("FText").GetComponent<Text>();
 				break;
 			case "Damage":
 				//Damage powerup increases the player's attack power from 20 to 40.
-				text = GameObject.FindGameObjectWithTag("DText").GetComponent<Text>();
 				attack.damagePerShot = 40;
 				break;
 			case "Health":
 				//Health powerup recovers the player's health by 10.
 				//Timer is set to 4.75 here because there doesn't need to be a 5 second wait after picking up a health powerup. This gives a .25 second wait instead.
-				text = GameObject.FindGameObjectWithTag("HText").GetComponent<Text>();
 				health.ChangeHealth (10);
 				timer = 4.75f;
 				break;
@@ -89,13 +89,13 @@ public class UIManager : MonoBehaviour {
 			switch (currentPowerup) {
 			case "FireRate":
 				attack.fireRate = 2f;
-				text.color = Color.black;
-				text.text = "Fire Rate: " + attack.fireRate + "/s";
+				fText.color = Color.black;
+				fText.text = "Fire Rate: " + attack.fireRate + "/s";
 				break;
 			case "Damage":
 				attack.damagePerShot = 20;
-				text.color = Color.black;
-				text.text = "Damage: " + attack.damagePerShot;
+				dText.color = Color.black;
+				dText.text = "Damage: " + attack.damagePerShot;
 				break;
 			}
 			//Health powerup doesn't need a case because there is nothing to deactivate as a result of it being picked up.
