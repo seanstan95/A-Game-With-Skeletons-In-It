@@ -10,9 +10,11 @@ public class PlayerHealth : MonoBehaviour {
 
 	bool damaged;
 	float flashSpeed = 2f;
+	Text hText;
 
 	void Start () {
 		currentHealth = 100;
+		hText = GameObject.FindGameObjectWithTag ("HText").GetComponent<Text> ();
 	}
 
 	void Update () {
@@ -37,7 +39,7 @@ public class PlayerHealth : MonoBehaviour {
 		if (currentHealth > 100)
 			currentHealth = 100;
 		
-		GameObject.FindGameObjectWithTag ("HText").GetComponent<Text> ().text = "Health: " + currentHealth + "/100";
+		hText.text = "Health: " + currentHealth + "/100";
 
 		//On death, disable the PlayerMove and PlayerAttack scripts.
 		if(currentHealth <= 0){

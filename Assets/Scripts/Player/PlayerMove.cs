@@ -13,7 +13,7 @@ public class PlayerMove : MonoBehaviour {
 	void Start()
 	{
 		floorMask = LayerMask.GetMask ("Floor");
-		uiManager = GameObject.FindGameObjectWithTag ("UIManager").GetComponent<UIManager>();
+		uiManager = GameObject.FindGameObjectWithTag ("HUD").GetComponent<UIManager>();
 	}
 
 	void FixedUpdate()
