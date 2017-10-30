@@ -14,3 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DebugRoom.unity
     guid: 5e64d4ef9f08ca14ebc85c274b1d9cf8
+  - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: e43c7909a47b46f47ac943a0d5fad44c

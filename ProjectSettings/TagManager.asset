@@ -13,6 +13,7 @@ TagManager:
   - HText
   - HUD
   - StatHUD
+  - Pause
   layers:
   - Default
   - TransparentFX
