@@ -6,7 +6,7 @@ public class EnemyAttack : MonoBehaviour {
 
 	public int attackDamage;
 
-	bool playerInRange;
+	public bool playerInRange;
 	float attackTimer, timeBetweenAttacks = 1f;
 	PlayerHealth playerHealth;
 
@@ -18,18 +18,22 @@ public class EnemyAttack : MonoBehaviour {
 	}
 
 
-	void OnTriggerEnter (Collider other)
+	void OnCollisionEnter (Collision other)
 	{
 		//Checks if an object has entered the collider attached to this enemy. If it is the player, we know the player is in range of being attacked.
-		if (other.gameObject == playerHealth.gameObject)
+		if (other.gameObject == playerHealth.gameObject) {
 			playerInRange = true;
+			GetComponent<UnityEngine.AI.NavMeshAgent> ().enabled = false;
+		}
 	}
 
-	void OnTriggerExit(Collider other)
+	void OnCollisionExit(Collision other)
 	{
 		//Checks if an object has exited the collider attached to this enemy. If it is the player, we know the player is out of range of being attacked.
-		if(other.gameObject == playerHealth.gameObject)
+		if (other.gameObject == playerHealth.gameObject) {
 			playerInRange = false;
+			GetComponent<UnityEngine.AI.NavMeshAgent> ().enabled = true;
+		}
 	}
 		
 	void Update ()

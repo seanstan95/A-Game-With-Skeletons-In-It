@@ -6,10 +6,12 @@ using UnityEngine.AI;
 public class EnemyMove : MonoBehaviour {
 
 	float animTimer, standTime = 2f;
+	EnemyAttack attack;
 	PlayerHealth playerHealth;
 
 	void Start()
 	{
+		attack = GetComponent<EnemyAttack> ();
 		playerHealth = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth>();
 	}
 
@@ -24,7 +26,8 @@ public class EnemyMove : MonoBehaviour {
 		//Nav Mesh Agent should only work when both the enemy and player are alive.
 		if (GetComponent<EnemyHealth>().currentHealth > 0 && playerHealth.currentHealth > 0) {
 			GetComponent<Animator>().SetBool ("Walking", true);
-			GetComponent<NavMeshAgent>().SetDestination (playerHealth.gameObject.transform.position);
+			if(!attack.playerInRange)
+				GetComponent<NavMeshAgent>().SetDestination (playerHealth.gameObject.transform.position);
 		}
 	}
 }
