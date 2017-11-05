@@ -15,7 +15,8 @@ public class InputManager : MonoBehaviour {
 		pauseMenu.SetActive (false);
 	}
 		
-	void Update () {
+	void Update () 
+	{
 		//Pressing escape will return to the main menu.
 		if (Input.GetKeyDown (KeyCode.Escape))
 			SceneManager.LoadScene ("MainMenu");

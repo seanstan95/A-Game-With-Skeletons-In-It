@@ -25,8 +25,9 @@ public class EnemyMove : MonoBehaviour {
 			
 		//Nav Mesh Agent should only work when both the enemy and player are alive.
 		if (GetComponent<EnemyHealth>().currentHealth > 0 && playerHealth.currentHealth > 0) {
-			GetComponent<Animator>().SetBool ("Walking", true);
-			if(!attack.playerInRange)
+			if(PowerupManager.currentPowerup != "Freeze")
+				GetComponent<Animator>().SetTrigger ("Walking");
+			if(!attack.playerInRange && GetComponent<NavMeshAgent>().isStopped == false)
 				GetComponent<NavMeshAgent>().SetDestination (playerHealth.gameObject.transform.position);
 		}
 	}

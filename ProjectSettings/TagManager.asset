@@ -14,6 +14,13 @@ TagManager:
   - HUD
   - StatHUD
   - Pause
+  - Box
+  - Freeze
+  - Other
+  - Skeleton
+  - Spawner
+  - Speed
+  - Slow
   layers:
   - Default
   - TransparentFX
