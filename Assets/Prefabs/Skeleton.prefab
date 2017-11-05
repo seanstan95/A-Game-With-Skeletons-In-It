@@ -2065,12 +2065,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 0
   powerups:
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
 --- !u!114 &114179865698336408
 MonoBehaviour:
   m_ObjectHideFlags: 1

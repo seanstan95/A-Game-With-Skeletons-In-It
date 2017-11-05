@@ -2913,16 +2913,6 @@ Prefab:
       propertyPath: damageImage
       value: 
       objectReference: {fileID: 406467463}
-    - target: {fileID: 136353349305606610, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-        type: 2}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 136353349305606610, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-        type: 2}
-      propertyPath: m_Radius
-      value: 0.95
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
   m_IsPrefabParent: 0

@@ -24,8 +24,8 @@ public class EnemyHealth : MonoBehaviour {
 		if (currentHealth <= 0){
 			destroyTimer += Time.deltaTime;
 			if (!drop) {
-				//powerupIndex = Random.Range (0, powerups.Length);
-				Instantiate (powerups[powerupIndex], transform.position, transform.rotation);
+				powerupIndex = Random.Range (0, powerups.Length);
+				Instantiate (powerups[powerupIndex], transform.position, powerups[powerupIndex].transform.rotation);
 				drop = true;
 			}
 		}
