@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyAttack : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class EnemyAttack : MonoBehaviour {
 		//Checks if an object has entered the collider attached to this enemy. If it is the player, we know the player is in range of being attacked.
 		if (other.gameObject == playerHealth.gameObject) {
 			playerInRange = true;
-			GetComponent<UnityEngine.AI.NavMeshAgent> ().enabled = false;
+			GetComponent<NavMeshAgent> ().isStopped = true;
 		}
 	}
 
@@ -32,7 +33,8 @@ public class EnemyAttack : MonoBehaviour {
 		//Checks if an object has exited the collider attached to this enemy. If it is the player, we know the player is out of range of being attacked.
 		if (other.gameObject == playerHealth.gameObject) {
 			playerInRange = false;
-			GetComponent<UnityEngine.AI.NavMeshAgent> ().enabled = true;
+			if(PowerupManager.currentPowerup != "Freeze")
+				GetComponent<NavMeshAgent> ().isStopped = false;
 		}
 	}
 		

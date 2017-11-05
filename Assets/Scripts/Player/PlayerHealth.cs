@@ -12,12 +12,14 @@ public class PlayerHealth : MonoBehaviour {
 	float flashSpeed = 2f;
 	Text hText;
 
-	void Start () {
+	void Start () 
+	{
 		currentHealth = 100;
 		hText = GameObject.FindGameObjectWithTag ("HText").GetComponent<Text> ();
 	}
 
-	void Update () {
+	void Update () 
+	{
 		//If the player has been damaged in the last frame, set the color of the damageImage to be red.
 		//Then, lerp from red to clear over flashSpeed * Time.deltaTime
 		if (damaged)
