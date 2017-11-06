@@ -72,6 +72,7 @@ public class PlayerMove : MonoBehaviour {
 				case "Health":
 				case "Freeze":
 				case "Speed":
+				case "Spread":
 				case "Slow":
 					powerupManager.Powerup (true, other.gameObject.tag);
 					Destroy (other.gameObject);
