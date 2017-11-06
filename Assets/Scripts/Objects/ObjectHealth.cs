@@ -8,10 +8,7 @@ public class ObjectHealth : MonoBehaviour {
 
 	void Start () 
 	{
-		if (gameObject.tag == "Box")
-			health = 100;
-		else
-			health = 50;
+		health = 100;
 	}
 
 	void Update () 

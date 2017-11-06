@@ -2,40 +2,21 @@
 
 public class PlayerAttack : MonoBehaviour
 {
+	public bool spread;
 	public float fireRate;
-	public GameObject gunEnd;
+	public GameObject gunEnd, farLeftRenderer, farRightRenderer, nearLeftRenderer, nearRightRenderer;
 	public int damagePerShot;
-    public GameObject LineRender2;
-    public GameObject LineRender3;
-    public GameObject LineRender4;
-    public GameObject LineRender5;
-    public bool spread;
 
-
-    float range, timer, effectsDisplayTime;
+	EnemyHealth enemyHealth;
+	float range, timer, effectsDisplayTime;
 	GameObject pauseMenu;
 	int shootableMask;
-   
-    LineRenderer centerLine;
-    LineRenderer nearRightLine;
-    LineRenderer farRightLine;
-    LineRenderer nearLeftLine;
-    LineRenderer farLeftLine;
+	LineRenderer centerLine, farLeftLine, farRightLine, nearLeftLine, nearRightLine;
+	ObjectHealth objectHealth;
+	Ray centerRay = new Ray();
+	RaycastHit hitInfo;
 
-    Ray centerShootRay = new Ray();
-    Ray nearRightShootRay = new Ray();
-    Ray farRightShootRay = new Ray();
-    Ray nearLeftShootRay = new Ray();
-    Ray farLeftShootRay = new Ray();
-
-    RaycastHit centerShootHitInfo;
-    RaycastHit nearRightShootHitInfo;
-    RaycastHit farRightShootHitInfo;
-    RaycastHit nearLeftShootHitInfo;
-    RaycastHit farLeftShootHitInfo;
-
-
-    void Start()
+	void Start()
 	{
 		//General presets. Changed coolDown to fireRate to avoid confusion with terminology. Effective cooldown is simply 1/fireRate.
 		//Example: Fire rate of 2 per second means there is a 0.5 second wait in between each shot. 1/2 = 0.5.
@@ -45,13 +26,12 @@ public class PlayerAttack : MonoBehaviour
 		effectsDisplayTime = .1f;
 		pauseMenu = GameObject.FindGameObjectWithTag ("Pause");
 		range = 100f;
-        shootableMask = LayerMask.GetMask ("Shootable");
-        centerLine = GetComponent <LineRenderer> ();
-        nearRightLine = LineRender3.GetComponent<LineRenderer>();
-        farRightLine = LineRender2.GetComponent<LineRenderer>();
-        nearLeftLine = LineRender4.GetComponent<LineRenderer>();
-        farLeftLine = LineRender5.GetComponent<LineRenderer>();
-        //spread = false;
+		shootableMask = LayerMask.GetMask ("Shootable");
+		centerLine = GetComponent <LineRenderer> ();
+		farLeftLine = farLeftRenderer.GetComponent<LineRenderer>();
+		farRightLine = farRightRenderer.GetComponent<LineRenderer>();
+		nearLeftLine = nearLeftRenderer.GetComponent<LineRenderer>();
+		nearRightLine = nearRightRenderer.GetComponent<LineRenderer>();
 	}
 
 
@@ -62,162 +42,58 @@ public class PlayerAttack : MonoBehaviour
 
 		//Fire1 is by default set to either left click, or left control. When either is pressed and the cooldown has been reached, continue with shooting a line.
 		//Additionally, there is a check that the game isn't paused. Though when paused everything stops in place, it would still be possible to start a shot.
-		if(Input.GetButton ("Fire1") && timer >= (1/fireRate) && !pauseMenu.activeSelf)
-			Shoot ();
+		if (Input.GetButton ("Fire1") && timer >= (1 / fireRate) && !pauseMenu.activeSelf) {
+			//First, reset the cooldown timer to 0. Then enable/setup the center line (regardless of if spread shot or not, center line will always be active).
+			timer = 0f;
 
-        //Disable the gun line when the cooldown (multiplied by the time set for how long to display the line) has been reached.
-        if (timer >= (1 / fireRate) * effectsDisplayTime)
-        {
-            centerLine.enabled = false;
-            nearRightLine.enabled = false;
-            farRightLine.enabled = false;
-            nearLeftLine.enabled = false;
-            farLeftLine.enabled = false;
-        }
-    }
+			centerLine.enabled = true;
+			centerLine.SetPosition (0, gunEnd.transform.position);
+			centerRay.origin = gunEnd.transform.position;
+			centerRay.direction = transform.forward;
 
-    //For standard shot, lineRenderer and Raycast is initalized and fired. Line start point it set
-    //to gun tip. Ray is drawn to first shootable object or drawn to max range. if it hits something
-    //apply damage and draw line to that object. Spread shot utilizes extra line renderers attached as
-    //empty child game objects.
-    void Shoot ()
-    {
-        //If else will chance to a switch statement if more then 2 firetypes are implimented
-        if (spread == false)
-        {
-            //Honestly not too sure how most of this actually works, came from a tutorial.
-            timer = 0f;
+			Shoot (centerRay, centerLine);
 
+			if (spread) {
+				//If spread shot is active, fire the extra 4 shots as well. Angle() returns the ray, adjusted by an angle.
+				//Angle() also handles the setup for the line just like centerLine above.
+				Shoot (Angle (centerRay, nearLeftLine, -.5f), nearLeftLine);
+				Shoot (Angle (centerRay, farLeftLine, -.25f), farLeftLine);
+				Shoot (Angle (centerRay, nearRightLine, .5f), nearRightLine);
+				Shoot (Angle (centerRay, farRightLine, .25f), farRightLine);
+			}
+		}
 
-            centerLine.enabled = true;
-            centerLine.SetPosition(0, gunEnd.transform.position);
+		//Disable the gun line(s) when the cooldown (multiplied by the time set for how long to display the line) has been reached.
+		if (timer >= (1 / fireRate) * effectsDisplayTime) {
+			centerLine.enabled = false;
+			nearRightLine.enabled = false;
+			farRightLine.enabled = false;
+			nearLeftLine.enabled = false;
+			farLeftLine.enabled = false;
+		}
+	}
 
-            centerShootRay.origin = gunEnd.transform.position;
-            centerShootRay.direction = transform.forward;
+	void Shoot(Ray ray, LineRenderer line)
+	{
+		//Physics.Raycast returns true if the ray hits a collider. Check if it hit an enemy or object, and deal damage if so, then draw the line accordingly.
+		if (Physics.Raycast (ray, out hitInfo, range, shootableMask)) {
+			enemyHealth = hitInfo.collider.GetComponent<EnemyHealth> ();
+			objectHealth = hitInfo.collider.GetComponentInParent<ObjectHealth> ();
+			if (enemyHealth != null)
+				enemyHealth.TakeDamage (damagePerShot);
+			if (objectHealth != null)
+				objectHealth.TakeDamage (damagePerShot);
+			line.SetPosition (1, hitInfo.point);
+		}else{
+			line.SetPosition (1, ray.origin + ray.direction * range);
+		}
+	}
 
-            if (Physics.Raycast(centerShootRay, out centerShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = centerShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = centerShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                centerLine.SetPosition(1, centerShootHitInfo.point);
-            }
-            else
-            {
-                centerLine.SetPosition(1, centerShootRay.origin + centerShootRay.direction * range);
-            }
-        }
-        else
-        {
-
-            timer = 0f;
-
-            centerLine.enabled = true;
-            centerLine.SetPosition(0, gunEnd.transform.position);
-            centerShootRay.origin = gunEnd.transform.position;
-            centerShootRay.direction = transform.forward;
-
-            nearRightLine.enabled = true;
-            nearRightLine.SetPosition(0, gunEnd.transform.position);
-            nearRightShootRay.origin = gunEnd.transform.position;
-            nearRightShootRay.direction = transform.forward + (transform.right / 4);
-
-            farRightLine.enabled = true;
-            farRightLine.SetPosition(0, gunEnd.transform.position);
-            farRightShootRay.origin = gunEnd.transform.position;
-            farRightShootRay.direction = transform.forward + (transform.right / 2);
-
-            nearLeftLine.enabled = true;
-            nearLeftLine.SetPosition(0, gunEnd.transform.position);
-            nearLeftShootRay.origin = gunEnd.transform.position;
-            nearLeftShootRay.direction = transform.forward - (transform.right / 4);
-
-            farLeftLine.enabled = true;
-            farLeftLine.SetPosition(0, gunEnd.transform.position);
-            farLeftShootRay.origin = gunEnd.transform.position;
-            farLeftShootRay.direction = transform.forward - (transform.right / 2);
-
-
-
-            if (Physics.Raycast(centerShootRay, out centerShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = centerShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = centerShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                centerLine.SetPosition(1, centerShootHitInfo.point);
-            }
-            else
-            {
-                centerLine.SetPosition(1, centerShootRay.origin + centerShootRay.direction * range);
-            }
-
-            if (Physics.Raycast(nearRightShootRay, out nearRightShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = nearRightShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = nearRightShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                nearRightLine.SetPosition(1, nearRightShootHitInfo.point);
-            }
-            else
-            {
-                nearRightLine.SetPosition(1, nearRightShootRay.origin + nearRightShootRay.direction * range);
-            }
-
-            if (Physics.Raycast(farRightShootRay, out farRightShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = farRightShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = farRightShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                farRightLine.SetPosition(1, farRightShootHitInfo.point);
-            }
-            else
-            {
-                farRightLine.SetPosition(1, farRightShootRay.origin + farRightShootRay.direction * range);
-            }
-
-            if (Physics.Raycast(nearLeftShootRay, out nearLeftShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = nearLeftShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = nearLeftShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                nearLeftLine.SetPosition(1, nearLeftShootHitInfo.point);
-            }
-            else
-            {
-                nearLeftLine.SetPosition(1, nearLeftShootRay.origin + nearLeftShootRay.direction * range);
-            }
-
-            if (Physics.Raycast(farLeftShootRay, out farLeftShootHitInfo, range, shootableMask))
-            {
-                EnemyHealth enemyHealth = farLeftShootHitInfo.collider.GetComponent<EnemyHealth>();
-                ObjectHealth objectHealth = farLeftShootHitInfo.collider.GetComponentInParent<ObjectHealth>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damagePerShot);
-                if (objectHealth != null)
-                    objectHealth.TakeDamage(damagePerShot);
-                farLeftLine.SetPosition(1, farLeftShootHitInfo.point);
-            }
-            else
-            {
-                farLeftLine.SetPosition(1, farLeftShootRay.origin + farLeftShootRay.direction * range);
-            }
-
-        }
-
-    }
+	Ray Angle(Ray ray, LineRenderer line, float angleAdjust)
+	{
+		line.enabled = true;
+		line.SetPosition (0, gunEnd.transform.position);
+		ray.direction = transform.forward + (transform.right * angleAdjust);
+		return ray;
+	}
 }

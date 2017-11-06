@@ -56,6 +56,9 @@ public class PowerupManager : MonoBehaviour {
 			case "Speed":
 				otherText.text = "Player speed increased!";
 				break;
+			case "Spread":
+				otherText.text = "Spread shot active!";
+				break;
 			case "Slow":
 				otherText.text = "Enemies slowed!";
 				break;
@@ -94,7 +97,12 @@ public class PowerupManager : MonoBehaviour {
 					//Speed powerup increases the player's movement speed from 5 to 10.
 					move.speed = 10f;
 					break;
+				case "Spread":
+					//Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
+					attack.spread = true;
+					break;
 				case "Slow":
+					//Slow powerup slows enemy movement speed from 3 to 1.5.
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
 						skeleton.GetComponent<NavMeshAgent> ().speed = 1.5f;
@@ -136,6 +144,10 @@ public class PowerupManager : MonoBehaviour {
 				case "Speed":
 					otherText.text = "";
 					move.speed = 5f;
+					break;
+				case "Spread":
+					otherText.text = "";
+					attack.spread = false;
 					break;
 				case "Slow":
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");

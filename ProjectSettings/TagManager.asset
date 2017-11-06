@@ -21,6 +21,7 @@ TagManager:
   - Spawner
   - Speed
   - Slow
+  - Spread
   layers:
   - Default
   - TransparentFX
