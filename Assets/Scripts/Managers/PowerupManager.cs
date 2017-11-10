@@ -13,18 +13,13 @@ public class PowerupManager : MonoBehaviour {
 	PlayerAttack attack;
 	PlayerHealth health;
 	PlayerMove move;
-	Text fText, dText, hText, otherText;
 
 	void Start()
 	{
 		currentPowerup = "None";
-		attack = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerAttack>();
-		health = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
-		move = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMove> ();
-		fText = GameObject.FindGameObjectWithTag ("FText").GetComponent<Text>();
-		dText = GameObject.FindGameObjectWithTag ("DText").GetComponent<Text> ();
-		hText = GameObject.FindGameObjectWithTag("HText").GetComponent<Text>();
-		otherText = GameObject.FindGameObjectWithTag ("Other").GetComponent<Text> ();
+		attack = GameObject.Find("Player").GetComponent<PlayerAttack>();
+		health = GameObject.Find("Player").GetComponent<PlayerHealth> ();
+		move = GameObject.Find("Player").GetComponent<PlayerMove> ();
 	}
 
 	void Update()
@@ -39,28 +34,23 @@ public class PowerupManager : MonoBehaviour {
 	{
 		//Each powerup activation will trigger the associated text to turn yellow so it's noticed that it's active.
 		switch (currentPowerup) {
-			case "FireRate":
-				fText.text = "Fire Rate: " + attack.fireRate + "/s";
-				fText.color = Color.yellow;
+			case "Attack":
+				UIManager.powerupText.text = "Enemies damaged!";
 				break;
 			case "Damage":
-				dText.text = "Damage: " + attack.damagePerShot;
-				dText.color = Color.yellow;
+				UIManager.powerupText.text = "Damage increased!";
 				break;
-			case "Health":
-				hText.text = "Health: " + health.currentHealth + "/100";
+			case "FireRate":
+				UIManager.powerupText.text = "Fire Rate: " + attack.fireRate + "/s";
 				break;
 			case "Freeze":
-				otherText.text = "Enemies Frozen!";
+				UIManager.powerupText.text = "Enemies Frozen!";
 				break;
 			case "Speed":
-				otherText.text = "Player speed increased!";
+				UIManager.powerupText.text = "Player speed increased!";
 				break;
 			case "Spread":
-				otherText.text = "Spread shot active!";
-				break;
-			case "Slow":
-				otherText.text = "Enemies slowed!";
+				UIManager.powerupText.text = "Spread shot active!";
 				break;
 		}
 	}
@@ -70,9 +60,11 @@ public class PowerupManager : MonoBehaviour {
 		if (start) {
 			//If here, we are activating a powerup.
 			switch (name) {
-				case "FireRate":
-					//FireRate powerup increases the fire rate of the player's gun from 2 to 10 shots per second.
-					attack.fireRate = 10f;
+				case "Attack":
+					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
+					foreach (GameObject skeleton in enemies) {
+						skeleton.GetComponent<Skeleton>().TakeDamage (50);
+					}
 					break;
 				case "Damage":
 					//Damage powerup increases the player's attack power from 20 to 40.
@@ -82,11 +74,15 @@ public class PowerupManager : MonoBehaviour {
 					//Health powerup recovers the player's health by 10.
 					health.ChangeHealth (10);
 					break;
+				case "FireRate":
+					//FireRate powerup increases the fire rate of the player's gun from 2 to 10 shots per second.
+					attack.fireRate = 10f;
+					break;
 				case "Freeze":
 					//Freeze powerup freezes all enemies in place for 5 seconds.
 					//First, disable all the spawners temporarily so enemies don't continue to spawn while the current enemies are frozen in place.
 					//Then, reference each active Skeleton in the scene and stop their movement.
-					GameObject.FindGameObjectWithTag ("Spawner").GetComponent<EnemyManager> ().spawnTime += 5f;
+					GameObject.Find("Managers").GetComponent<EnemyManager> ().spawnTime += 5f;
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
 						skeleton.GetComponent<NavMeshAgent> ().isStopped = true;
@@ -94,27 +90,21 @@ public class PowerupManager : MonoBehaviour {
 					}
 					break;
 				case "Speed":
-					//Speed powerup increases the player's movement speed from 5 to 10.
-					move.speed = 10f;
+					//Speed powerup increases the player's movement speed from 10 to 15.
+					move.speed = 15f;
 					break;
 				case "Spread":
 					//Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
 					attack.spread = true;
 					break;
-				case "Slow":
-					//Slow powerup slows enemy movement speed from 3 to 1.5.
-					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
-					foreach (GameObject skeleton in enemies) {
-						skeleton.GetComponent<NavMeshAgent> ().speed = 1.5f;
-					}
-					break;
 			}
-			//Adjust the currentPowerup value, and set the endTimer to be 5 seconds from now. Health powerups don't need a cooldown, so just set endTimer to be now.
+			//Adjust the currentPowerup value, and set the endTimer to be 5 seconds from now. 
+			//Health nd attack powerups don't need a cooldown, so just set endTimer to be now.
 			currentPowerup = name;
 			if (currentPowerup == "Health")
 				endTimer = Time.time;
 			else
-				endTimer = Time.time + 5f;
+				endTimer = Time.time + 2.5f;
 			
 			UpdateText ();
 		} else {
@@ -123,17 +113,12 @@ public class PowerupManager : MonoBehaviour {
 			switch (name) {
 				case "FireRate":
 					attack.fireRate = 2f;
-					fText.color = Color.black;
-					fText.text = "Fire Rate: " + attack.fireRate + "/s";
 					break;
 				case "Damage":
 					attack.damagePerShot = 20;
-					dText.color = Color.black;
-					dText.text = "Damage: " + attack.damagePerShot;
 					break;
 				case "Freeze":
-					otherText.text = "";
-					GameObject.FindGameObjectWithTag ("Spawner").GetComponent<EnemyManager> ().spawnTime = 1.5f;
+					GameObject.Find ("Managers").GetComponent<EnemyManager> ().spawnTime = 1.5f;
 					//Re-get the list of enemies - if an enemy is defeated while freeze is active, an error will occur referencing it here.
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
@@ -142,21 +127,14 @@ public class PowerupManager : MonoBehaviour {
 					}
 					break;
 				case "Speed":
-					otherText.text = "";
-					move.speed = 5f;
+					move.speed = 10f;
 					break;
 				case "Spread":
-					otherText.text = "";
 					attack.spread = false;
 					break;
-				case "Slow":
-					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
-					foreach (GameObject skeleton in enemies) {
-						skeleton.GetComponent<NavMeshAgent> ().speed = 3f;
-					}
-					break;
 			}
-			//Health powerup doesn't need a case because there is nothing to deactivate as a result of it being picked up.
+			//Health and attack powerups doesn't need a case because there is nothing to deactivate.
+			UIManager.powerupText.text = "";
 			currentPowerup = "None";
 		}
 	}

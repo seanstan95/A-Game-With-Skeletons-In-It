@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-	
+
 	public GameObject player;
 
 	Vector3 offset;
 
-	private void Start()
+	public void Start()
 	{
-		//Set the offset as the preset distance between the camera object and the player.
-		offset = transform.position - player.transform.position;
+		offset = transform.position - player.transform.position;	
 	}
 
-	private void LateUpdate()
+	void LateUpdate()
 	{
-		//Camera control is done in LateUpdate() because LateUpdate runs after all other Update() are ran. 
-		//Items may have moved while Update() calls continue, so this ensures camera is always kept accurate.
+		//First set the position to the same offest from the player. Then, if pressing Q/E, rotate the camera around the player as well.
 		transform.position = player.transform.position + offset;
+
+		if(Input.GetKey(KeyCode.Q))
+			transform.RotateAround (player.transform.position, Vector3.down, (100 * Time.deltaTime));
+		if(Input.GetKey(KeyCode.E))
+			transform.RotateAround (player.transform.position, Vector3.up, (100 * Time.deltaTime));
+
+		offset = transform.position - player.transform.position;
 	}
 }

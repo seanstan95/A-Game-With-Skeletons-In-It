@@ -14,9 +14,9 @@ public class PlayerMove : MonoBehaviour {
 
 	void Start()
 	{
-		speed = 5f;
+		speed = 10f;
 		floorMask = LayerMask.GetMask ("Floor");
-		powerupManager = GameObject.FindGameObjectWithTag ("HUD").GetComponent<PowerupManager> ();
+		powerupManager = GameObject.Find ("Managers").GetComponent<PowerupManager> ();
 	}
 
 	void FixedUpdate()
@@ -37,7 +37,7 @@ public class PlayerMove : MonoBehaviour {
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
 		movement.Set (horizontal, 0f, vertical);
-		movement = movement.normalized * speed * Time.deltaTime;
+		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
 	}
 
@@ -64,16 +64,16 @@ public class PlayerMove : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		//First of all, none of the below matters unless there is no active powerup, so check for that first.
-		//Next, check if the object in question is a powerup - if so, activate it using the tag name as reference. Destroy it immediately after.
+		//Next, check if the object in question is a powerup - if so, activate it. Destroy it immediately after.
 		if (PowerupManager.currentPowerup == "None") {
 			switch (other.gameObject.tag) {
-				case "FireRate":
+				case "Attack":
 				case "Damage":
-				case "Health":
+				case "FireRate":
 				case "Freeze":
+				case "Health":
 				case "Speed":
 				case "Spread":
-				case "Slow":
 					powerupManager.Powerup (true, other.gameObject.tag);
 					Destroy (other.gameObject);
 					break;

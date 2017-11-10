@@ -7,13 +7,12 @@ public class PlayerAttack : MonoBehaviour
 	public GameObject gunEnd, farLeftRenderer, farRightRenderer, nearLeftRenderer, nearRightRenderer;
 	public int damagePerShot;
 
-	EnemyHealth enemyHealth;
+	Skeleton skeleton;
 	float range, timer, effectsDisplayTime;
-	GameObject pauseMenu;
 	int shootableMask;
 	LineRenderer centerLine, farLeftLine, farRightLine, nearLeftLine, nearRightLine;
 	ObjectHealth objectHealth;
-	Ray centerRay = new Ray();
+	Ray ray = new Ray();
 	RaycastHit hitInfo;
 
 	void Start()
@@ -24,7 +23,6 @@ public class PlayerAttack : MonoBehaviour
 		fireRate = 2f;
 		damagePerShot = 20;
 		effectsDisplayTime = .1f;
-		pauseMenu = GameObject.FindGameObjectWithTag ("Pause");
 		range = 100f;
 		shootableMask = LayerMask.GetMask ("Shootable");
 		centerLine = GetComponent <LineRenderer> ();
@@ -42,24 +40,24 @@ public class PlayerAttack : MonoBehaviour
 
 		//Fire1 is by default set to either left click, or left control. When either is pressed and the cooldown has been reached, continue with shooting a line.
 		//Additionally, there is a check that the game isn't paused. Though when paused everything stops in place, it would still be possible to start a shot.
-		if (Input.GetButton ("Fire1") && timer >= (1 / fireRate) && !pauseMenu.activeSelf) {
+		if (Input.GetButton ("Fire1") && timer >= (1 / fireRate) && !UIManager.pauseMenu.activeSelf) {
 			//First, reset the cooldown timer to 0. Then enable/setup the center line (regardless of if spread shot or not, center line will always be active).
 			timer = 0f;
 
 			centerLine.enabled = true;
 			centerLine.SetPosition (0, gunEnd.transform.position);
-			centerRay.origin = gunEnd.transform.position;
-			centerRay.direction = transform.forward;
+			ray.origin = gunEnd.transform.position;
+			ray.direction = transform.forward;
 
-			Shoot (centerRay, centerLine);
+			Shoot (ray, centerLine);
 
 			if (spread) {
 				//If spread shot is active, fire the extra 4 shots as well. Angle() returns the ray, adjusted by an angle.
 				//Angle() also handles the setup for the line just like centerLine above.
-				Shoot (Angle (centerRay, nearLeftLine, -.5f), nearLeftLine);
-				Shoot (Angle (centerRay, farLeftLine, -.25f), farLeftLine);
-				Shoot (Angle (centerRay, nearRightLine, .5f), nearRightLine);
-				Shoot (Angle (centerRay, farRightLine, .25f), farRightLine);
+				Shoot (Angle (ray, nearLeftLine, -.5f), nearLeftLine);
+				Shoot (Angle (ray, farLeftLine, -.25f), farLeftLine);
+				Shoot (Angle (ray, nearRightLine, .5f), nearRightLine);
+				Shoot (Angle (ray, farRightLine, .25f), farRightLine);
 			}
 		}
 
@@ -77,10 +75,12 @@ public class PlayerAttack : MonoBehaviour
 	{
 		//Physics.Raycast returns true if the ray hits a collider. Check if it hit an enemy or object, and deal damage if so, then draw the line accordingly.
 		if (Physics.Raycast (ray, out hitInfo, range, shootableMask)) {
-			enemyHealth = hitInfo.collider.GetComponent<EnemyHealth> ();
+			skeleton = hitInfo.collider.GetComponent<Skeleton> ();
 			objectHealth = hitInfo.collider.GetComponentInParent<ObjectHealth> ();
-			if (enemyHealth != null)
-				enemyHealth.TakeDamage (damagePerShot);
+			if (skeleton != null) {
+				skeleton.TakeDamage (damagePerShot);
+				GameObject.Find("HUD").GetComponent<UIManager>().UpdateEnemy (skeleton);
+			}
 			if (objectHealth != null)
 				objectHealth.TakeDamage (damagePerShot);
 			line.SetPosition (1, hitInfo.point);
