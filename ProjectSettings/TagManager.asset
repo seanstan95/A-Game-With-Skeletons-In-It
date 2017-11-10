@@ -4,24 +4,14 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - GunEnd
+  - Skeleton
   - Damage
   - FireRate
-  - Health
-  - FText
-  - DText
-  - HText
-  - HUD
-  - StatHUD
-  - Pause
-  - Box
   - Freeze
-  - Other
-  - Skeleton
-  - Spawner
-  - Speed
-  - Slow
+  - Health
   - Spread
+  - Attack
+  - Speed
   layers:
   - Default
   - TransparentFX

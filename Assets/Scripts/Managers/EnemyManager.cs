@@ -18,7 +18,7 @@ public class EnemyManager : MonoBehaviour {
 	{
 		spawnTime = 1.5f;
 		//InvokeRepeating calls the Spawn() method every spawnTime seconds (1.5 seconds).
-		playerHealth = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerHealth> ();
+		playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth> ();
 		Invoke("Spawn", spawnTime);
 	}
 

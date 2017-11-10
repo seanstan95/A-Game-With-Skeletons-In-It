@@ -398,10 +398,8 @@ GameObject:
   - component: {fileID: 95103233855495588}
   - component: {fileID: 54070781441645588}
   - component: {fileID: 136787543456951996}
-  - component: {fileID: 114588523135781442}
-  - component: {fileID: 114116591671635612}
-  - component: {fileID: 114179865698336408}
   - component: {fileID: 195617007414721674}
+  - component: {fileID: 114484398998032010}
   m_Layer: 8
   m_Name: Skeleton
   m_TagString: Skeleton
@@ -2052,7 +2050,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114116591671635612
+--- !u!114 &114484398998032010
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2060,41 +2058,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1420079372358564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3b14aed291917b4cb2849fe9fe13aea, type: 3}
+  m_Script: {fileID: 11500000, guid: 76347017813a01849acac3e0e047b62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
+  playerHealth: {fileID: 0}
   powerups:
+  - {fileID: 1238064286272268, guid: fd4a459b716696f448da389e6095d14e, type: 2}
+  - {fileID: 100000, guid: 28fe12ae0e871fa40a4bd624f0b60a72, type: 2}
+  - {fileID: 100004, guid: e215e54895ffb7244a653e278e11e636, type: 2}
+  - {fileID: 1531654959643300, guid: c4a477bdd5b3ff74fab6a2720229be92, type: 2}
+  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
+  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
   - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
---- !u!114 &114179865698336408
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1420079372358564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f5c869a56449b04c910d0d25473e19b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackDamage: 10
-  playerInRange: 0
---- !u!114 &114588523135781442
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1420079372358564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13c804b1df92e4049ac61a1a6ec5c601, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &136787543456951996
 CapsuleCollider:
   m_ObjectHideFlags: 1
