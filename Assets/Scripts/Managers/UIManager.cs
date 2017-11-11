@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour {
 
 	public static GameObject pauseMenu;
-	public static Text powerupText;
+	public static Text heldText, powerupText;
 
 	PlayerHealth playerHealth;
 	RectTransform enemySlider, playerSlider;
 
 	void Start () 
 	{
+		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
 		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
 		playerSlider = GameObject.Find ("PlayerValue").GetComponent<RectTransform> ();
 		pauseMenu = GameObject.Find ("PauseMenu");
@@ -41,6 +42,12 @@ public class UIManager : MonoBehaviour {
 				pauseMenu.SetActive(false);
 				Time.timeScale = 1;
 			}
+		}
+
+		//If F is pressed, activate the currently held powerup.
+		if (Input.GetKeyDown (KeyCode.F) && PowerupManager.currentPowerup == "None") {
+			PowerupManager.UsePowerup (true);
+			heldText.text = "Held Powerup: None";
 		}
 	}
 

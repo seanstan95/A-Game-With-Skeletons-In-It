@@ -13,7 +13,7 @@ namespace SkeletonEditor
 
 
         private int currentAnimation;
-        private List<string> animations;
+        //private List<string> animations;
        
 
         private bool startMouseRotate;
@@ -33,12 +33,12 @@ namespace SkeletonEditor
             initRotation = transform.rotation;
 
           
-            animations = new List<string>()
+            /*animations = new List<string>()
             {
                 "Hit1",
                 "Fall1",
                 "Attack1h1",    
-            };
+            };*/
         }
 
         void Update() {

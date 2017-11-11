@@ -6,17 +6,29 @@ public class PlayerMove : MonoBehaviour {
 
 	public float speed;
 
+	bool overItem;
 	float camRayLength = 100f, horizontal, vertical;
-	int floorMask;
+	GameObject otherPowerup;
+	int floorMask, index;
 	RaycastHit floorhit;
-	PowerupManager powerupManager;
 	Vector3 movement;
 
 	void Start()
 	{
 		speed = 10f;
 		floorMask = LayerMask.GetMask ("Floor");
-		powerupManager = GameObject.Find ("Managers").GetComponent<PowerupManager> ();
+	}
+
+	void Update()
+	{
+		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
+			//First, instantiate our currently held powerup so that it is also on the ground with the one we're switching with.
+			//Then update the current powerup to be the new one, and destroy it on the ground so that what's left on the ground is the one we just swapped.
+			Instantiate (PowerupManager.powerups [PowerupManager.GetIndex(PowerupManager.heldPowerup)], otherPowerup.transform.position, PowerupManager.powerups [index].transform.rotation);
+			PowerupManager.heldPowerup = otherPowerup.tag;
+			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
+			Destroy (otherPowerup);
+		}
 	}
 
 	void FixedUpdate()
@@ -58,26 +70,31 @@ public class PlayerMove : MonoBehaviour {
 	{
 		//Bool check if horizontal or vertical are 0 - if not, set the walking animation to be true.
 		bool walking = horizontal != 0f || vertical != 0f;
-		GetComponent<Animator>().SetBool ("IsWalking", walking);
+		GetComponent<Animator>().SetBool ("Walking", walking);
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		//First of all, none of the below matters unless there is no active powerup, so check for that first.
-		//Next, check if the object in question is a powerup - if so, activate it. Destroy it immediately after.
-		if (PowerupManager.currentPowerup == "None") {
-			switch (other.gameObject.tag) {
-				case "Attack":
-				case "Damage":
-				case "FireRate":
-				case "Freeze":
-				case "Health":
-				case "Speed":
-				case "Spread":
-					powerupManager.Powerup (true, other.gameObject.tag);
-					Destroy (other.gameObject);
-					break;
+		//First, to get it out of the way, find the Powerup Array index for the item we have collided with.
+		index = PowerupManager.GetIndex (other.gameObject.tag);
+
+		//If the result of index above is less than 7, then we know the item we collided with is not a powerup, so skip all of this.
+		if (index < 7) {
+			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
+			if (PowerupManager.heldPowerup == "None") {
+				PowerupManager.heldPowerup = other.gameObject.tag;
+				UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
+				Destroy (other.gameObject);
+			}else{
+				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
+				otherPowerup = other.gameObject;
+				overItem = true;
 			}
 		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		overItem = false;
 	}
 }

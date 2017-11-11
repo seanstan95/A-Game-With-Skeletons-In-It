@@ -4,33 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
-public class PowerupManager : MonoBehaviour {
+public static class PowerupManager {
 
-	public static string currentPowerup;
+	public static string currentPowerup, heldPowerup;
+	public static GameObject[] powerups;
 
-	float endTimer;
-	GameObject[] enemies;
-	PlayerAttack attack;
-	PlayerHealth health;
-	PlayerMove move;
+	private static float endTimer;
+	private static GameObject[] enemies;
+	private static PlayerAttack attack;
+	private static PlayerHealth health;
+	private static PlayerMove move;
 
-	void Start()
+	public static void Initialize()
 	{
 		currentPowerup = "None";
+		heldPowerup = "None";
 		attack = GameObject.Find("Player").GetComponent<PlayerAttack>();
 		health = GameObject.Find("Player").GetComponent<PlayerHealth> ();
 		move = GameObject.Find("Player").GetComponent<PlayerMove> ();
 	}
 
-	void Update()
+	public static void Update()
 	{
 		//End timer is set when a powerup is activated, and is usually just +5 second from activation time. When it's reached, disable the powerup.
 		if (currentPowerup != "None" && Time.time >= endTimer) {
-			Powerup (false, currentPowerup);
+			UsePowerup (false);
 		}
 	}
 
-	void UpdateText()
+	static void UpdateText()
 	{
 		//Each powerup activation will trigger the associated text to turn yellow so it's noticed that it's active.
 		switch (currentPowerup) {
@@ -41,7 +43,7 @@ public class PowerupManager : MonoBehaviour {
 				UIManager.powerupText.text = "Damage increased!";
 				break;
 			case "FireRate":
-				UIManager.powerupText.text = "Fire Rate: " + attack.fireRate + "/s";
+				UIManager.powerupText.text = "Fire rate increased!";
 				break;
 			case "Freeze":
 				UIManager.powerupText.text = "Enemies Frozen!";
@@ -55,11 +57,14 @@ public class PowerupManager : MonoBehaviour {
 		}
 	}
 
-	public void Powerup(bool start, string name)
+	public static void UsePowerup(bool start)
 	{
 		if (start) {
-			//If here, we are activating a powerup.
-			switch (name) {
+			//If here, we are activating a powerup. Switch currentPowerup to what we were holding, and set heldPowerup to be nothing, so a player can pick up more.
+			currentPowerup = heldPowerup;
+			heldPowerup = "None";
+
+			switch (currentPowerup) {
 				case "Attack":
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
@@ -86,7 +91,7 @@ public class PowerupManager : MonoBehaviour {
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
 						skeleton.GetComponent<NavMeshAgent> ().isStopped = true;
-					skeleton.GetComponent<Animator> ().SetTrigger("Idle");
+						skeleton.GetComponent<Animator> ().SetBool("Walking", false);
 					}
 					break;
 				case "Speed":
@@ -99,8 +104,7 @@ public class PowerupManager : MonoBehaviour {
 					break;
 			}
 			//Adjust the currentPowerup value, and set the endTimer to be 5 seconds from now. 
-			//Health nd attack powerups don't need a cooldown, so just set endTimer to be now.
-			currentPowerup = name;
+			//Health and attack powerups don't need a cooldown, so just set endTimer to be now.
 			if (currentPowerup == "Health")
 				endTimer = Time.time;
 			else
@@ -110,7 +114,7 @@ public class PowerupManager : MonoBehaviour {
 		} else {
 			//If here, then we are disabling a powerup.
 			//Re-set the values back to default, change the text color to black from yellow, and update the text accordingly.
-			switch (name) {
+			switch (currentPowerup) {
 				case "FireRate":
 					attack.fireRate = 2f;
 					break;
@@ -123,7 +127,7 @@ public class PowerupManager : MonoBehaviour {
 					enemies = GameObject.FindGameObjectsWithTag ("Skeleton");
 					foreach (GameObject skeleton in enemies) {
 						skeleton.GetComponent<NavMeshAgent> ().isStopped = false;
-						skeleton.GetComponent<Animator> ().SetTrigger("Walking");
+						skeleton.GetComponent<Animator> ().SetBool ("Walking", true);
 					}
 					break;
 				case "Speed":
@@ -136,6 +140,28 @@ public class PowerupManager : MonoBehaviour {
 			//Health and attack powerups doesn't need a case because there is nothing to deactivate.
 			UIManager.powerupText.text = "";
 			currentPowerup = "None";
+		}
+	}
+
+	public static int GetIndex(string name)
+	{
+		switch (name) {
+			case "Attack":
+				return 0;
+			case "Damage":
+				return 1;
+			case "FireRate":
+				return 2;
+			case "Freeze":
+				return 3;
+			case "Health":
+				return 4;
+			case "Speed":
+				return 5;
+			case "Spread":
+				return 6;
+			default:
+				return 7;
 		}
 	}
 }
