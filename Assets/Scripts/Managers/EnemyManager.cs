@@ -5,19 +5,18 @@ using UnityEngine.AI;
 
 public class EnemyManager : MonoBehaviour {
 
+	private float loopTime;
+	private GameObject newSpawn;
+	private int spawnPointIndex;
+	private PlayerHealth playerHealth;
+
+	public float spawnTime;
 	public GameObject enemy;
 	public Transform[] spawnPoints;
-
-	float loopTime;
-	GameObject newSpawn;
-	public float spawnTime;
-	int spawnPointIndex;
-	PlayerHealth playerHealth;
 
 	void Start()
 	{
 		spawnTime = 1.5f;
-		//InvokeRepeating calls the Spawn() method every spawnTime seconds (1.5 seconds).
 		playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth> ();
 		Invoke("Spawn", spawnTime);
 	}

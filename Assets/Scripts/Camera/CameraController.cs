@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
+	private Vector3 offset;
 	public GameObject player;
-
-	Vector3 offset;
 
 	public void Start()
 	{
@@ -15,9 +14,10 @@ public class CameraController : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		//First set the position to the same offest from the player. Then, if pressing Q/E, rotate the camera around the player as well.
+		//The camera maintains the same offset away from the player regardless of player position or camera rotation.
 		transform.position = player.transform.position + offset;
 
+		//Rotation speed can be adjusted by changing the value of 100 to something else.
 		if(Input.GetKey(KeyCode.Q))
 			transform.RotateAround (player.transform.position, Vector3.down, (100 * Time.deltaTime));
 		if(Input.GetKey(KeyCode.E))

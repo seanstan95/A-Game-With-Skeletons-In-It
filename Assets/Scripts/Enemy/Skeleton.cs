@@ -7,51 +7,51 @@ public class Skeleton : Enemy {
 
 	void Start()
 	{
-		damagePerHit = -10;
+		attackTimer = .50f;
+		coolDown = 1.33f;
 		currentHealth = 100;
+		damagePerHit = -10;
+		playerHealth = GameObject.Find ("Player").GetComponent<PlayerHealth> ();
+		GetComponent<Animator> ().SetBool ("Walking", true);
 	}
 
 	void Update()
 	{
-		ParentUpdate ("Fall");
+		DeathTasks();
 
-		//As long as the player and enemy are both still alive, continue nav mesh movement, unless Freeze powerup is active.
+		//First of all, none of the below matters unless both the player and skeleton are alive.
 		if (currentHealth > 0 && playerHealth.currentHealth > 0) {
-			if(PowerupManager.currentPowerup != "Freeze")
-				//GetComponent<Animator>().SetBool("Walking", true);
+
+			//Check if the player is within 4.25 distance from the skeleton (roughly how far the sword attack animation reaches outwards).
+			//If so and the player was not previously in range, we know to change from attacking to walking.
+			//Vice versa if the player was in range but now isn't.
+			if (Vector3.Distance (transform.position, playerHealth.gameObject.transform.position) < 4.25f) {
+				if (!playerInRange) {
+					GetComponent<Animator> ().SetBool ("Walking", false);
+					GetComponent<Animator> ().SetBool ("Attack", true);
+					playerInRange = true;
+				}
+			} else {
+				if (playerInRange) {
+					GetComponent<Animator> ().SetBool ("Attack", false);
+					GetComponent<Animator> ().SetBool ("Walking", true);
+					playerInRange = false;
+				}
+			}
+
+			//If movement is allowed (player is out of range and nav mesh is not stopped)
 			if(!playerInRange && GetComponent<NavMeshAgent>().isStopped == false)
 				GetComponent<NavMeshAgent>().SetDestination (playerHealth.gameObject.transform.position);
-		}
-			
-		attackTimer += Time.deltaTime;
-		
-		//attackTimer controls how fast the enemy can attack, playerInRange ensures the player is close enough, and the player must be alive.
-		if (attackTimer >= coolDown && playerInRange && playerHealth.currentHealth > 0) {
-			playerHealth.ChangeHealth (damagePerHit);
-			attackTimer = 0f;
-		}
-	}
 
-	void OnCollisionEnter (Collision other)
-	{
-		//Checks if an object has entered the collider attached to this enemy. If it is the player, we know the player is in range of being attacked.
-		if (other.gameObject == playerHealth.gameObject) {
-			playerInRange = true;
-			GetComponent<Animator> ().SetBool ("Walking", false);
-			GetComponent<Animator> ().SetBool ("Attack", true);
-			GetComponent<NavMeshAgent> ().isStopped = true;
-		}
-	}
+			//If player is in range, begin incrementing attackTimer
+			if(playerInRange)
+				attackTimer += Time.deltaTime;
 
-	void OnCollisionExit(Collision other)
-	{
-		//Checks if an object has exited the collider attached to this enemy. If it is the player, we know the player is out of range of being attacked.
-		if (other.gameObject == playerHealth.gameObject) {
-			playerInRange = false;
-			GetComponent<Animator> ().SetBool ("Attack", false);
-			GetComponent<Animator> ().SetBool ("Walking", true);
-			if(PowerupManager.currentPowerup != "Freeze")
-				GetComponent<NavMeshAgent> ().isStopped = false;
+			//coolDown controls how fast the enemy can attack, playerInRange ensures the player is close enough, and the player must be alive.
+			if (attackTimer >= coolDown && playerInRange) {
+				playerHealth.ChangeHealth (damagePerHit);
+				attackTimer = 0f;
+			}
 		}
 	}
 }
