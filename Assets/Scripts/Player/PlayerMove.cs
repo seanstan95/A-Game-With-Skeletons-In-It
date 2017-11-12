@@ -4,36 +4,31 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
 
-	public float speed;
+	private bool overItem;
+	private float horizontal, rayLength = 100f, speed = 10f, vertical;
+	private GameObject otherPowerup;
+	private int floorMask, index;
+	private RaycastHit floorhit;
+	private Vector3 movement;
 
-	bool overItem;
-	float camRayLength = 100f, horizontal, vertical;
-	GameObject otherPowerup;
-	int floorMask, index;
-	RaycastHit floorhit;
-	Vector3 movement;
-
-	void Start()
+	private void Start()
 	{
-		speed = 10f;
 		floorMask = LayerMask.GetMask ("Floor");
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
-			//First, instantiate our currently held powerup so that it is also on the ground with the one we're switching with.
-			//Then update the current powerup to be the new one, and destroy it on the ground so that what's left on the ground is the one we just swapped.
-			Instantiate (PowerupManager.powerups [PowerupManager.GetIndex(PowerupManager.heldPowerup)], otherPowerup.transform.position, PowerupManager.powerups [index].transform.rotation);
+			//Update the current powerup to be the one on the ground, and destroy it.
 			PowerupManager.heldPowerup = otherPowerup.tag;
 			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 			Destroy (otherPowerup);
+			overItem = false;
 		}
 	}
 
-	void FixedUpdate()
+	private void FixedUpdate()
 	{
-		//This script runs through FixedUpdate instead of Update because FixedUpdate runs as often as needed with the physics engine, whereas Update is always per-frame.
 		//First, grab the values applied to the horizontal and vertical axis. If nothing, it returns 0.
 		horizontal = Input.GetAxisRaw ("Horizontal");
 		vertical = Input.GetAxisRaw ("Vertical");
@@ -44,7 +39,7 @@ public class PlayerMove : MonoBehaviour {
 		Animate (horizontal, vertical);
 	}
 
-	void Move(float horizontal, float vertical)
+	private void Move(float horizontal, float vertical)
 	{
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
@@ -53,12 +48,12 @@ public class PlayerMove : MonoBehaviour {
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
 	}
 
-	void Turning()
+	private void Turning()
 	{
-		//Honestly not too sure how most of this actually works, came from a tutorial.
+		//This rotates the player model to wherever the mouse is placed, as long as the mouse is on the floor of the game.
 		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-		if (Physics.Raycast (camRay, out floorhit, camRayLength, floorMask)) {
+		if (Physics.Raycast (camRay, out floorhit, rayLength, floorMask)) {
 			Vector3 playerToMouse = floorhit.point - transform.position;
 			playerToMouse.y = 0f;
 			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
@@ -66,20 +61,20 @@ public class PlayerMove : MonoBehaviour {
 		}
 	}
 
-	void Animate(float horizontal, float vertical)
+	private void Animate(float horizontal, float vertical)
 	{
 		//Bool check if horizontal or vertical are 0 - if not, set the walking animation to be true.
 		bool walking = horizontal != 0f || vertical != 0f;
 		GetComponent<Animator>().SetBool ("Walking", walking);
 	}
 
-	void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		//First, to get it out of the way, find the Powerup Array index for the item we have collided with.
 		index = PowerupManager.GetIndex (other.gameObject.tag);
 
-		//If the result of index above is less than 7, then we know the item we collided with is not a powerup, so skip all of this.
-		if (index < 7) {
+		//If the result of index above is 6 (default case from GetIndex), then we know the item we collided with is not a powerup, so skip all of this.
+		if (index != 6) {
 			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
 			if (PowerupManager.heldPowerup == "None") {
 				PowerupManager.heldPowerup = other.gameObject.tag;
@@ -93,7 +88,7 @@ public class PlayerMove : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerExit(Collider other)
+	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
 	}

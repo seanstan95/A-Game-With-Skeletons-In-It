@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Skeleton : Enemy {
 
-	void Start()
+	private void Start()
 	{
 		attackTimer = .50f;
 		coolDown = 1.33f;
@@ -15,12 +15,12 @@ public class Skeleton : Enemy {
 		GetComponent<Animator> ().SetBool ("Walking", true);
 	}
 
-	void Update()
+	private void Update()
 	{
 		DeathTasks();
 
 		//First of all, none of the below matters unless both the player and skeleton are alive.
-		if (currentHealth > 0 && playerHealth.currentHealth > 0) {
+		if (currentHealth > 0 && PlayerHealth.currentHealth > 0) {
 
 			//Check if the player is within 4.25 distance from the skeleton (roughly how far the sword attack animation reaches outwards).
 			//If so and the player was not previously in range, we know to change from attacking to walking.
@@ -49,7 +49,7 @@ public class Skeleton : Enemy {
 
 			//coolDown controls how fast the enemy can attack, playerInRange ensures the player is close enough, and the player must be alive.
 			if (attackTimer >= coolDown && playerInRange) {
-				playerHealth.ChangeHealth (damagePerHit);
+				PlayerHealth.ChangeHealth (damagePerHit);
 				attackTimer = 0f;
 			}
 		}

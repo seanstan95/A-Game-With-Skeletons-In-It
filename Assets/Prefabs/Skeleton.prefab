@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 54249246268163636}
   m_Layer: 8
   m_Name: Skeleton
-  m_TagString: Skeleton
+  m_TagString: NormalEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1549,14 +1549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76347017813a01849acac3e0e047b62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerups:
-  - {fileID: 1238064286272268, guid: fd4a459b716696f448da389e6095d14e, type: 2}
-  - {fileID: 100000, guid: 28fe12ae0e871fa40a4bd624f0b60a72, type: 2}
-  - {fileID: 100004, guid: e215e54895ffb7244a653e278e11e636, type: 2}
-  - {fileID: 1531654959643300, guid: c4a477bdd5b3ff74fab6a2720229be92, type: 2}
-  - {fileID: 100000, guid: 9eed400248687b047840931e6a777358, type: 2}
-  - {fileID: 1279902760168382, guid: 8646f4e4cb4d2ff4f9c50d46515bb2dc, type: 2}
-  - {fileID: 1279902760168382, guid: 1ba09a35fc721e24484b4ddfe2ad1816, type: 2}
 --- !u!136 &136551880596190130
 CapsuleCollider:
   m_ObjectHideFlags: 1

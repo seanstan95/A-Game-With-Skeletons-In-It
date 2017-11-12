@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Skeleton
   - Damage
   - FireRate
   - Freeze
@@ -12,6 +11,7 @@ TagManager:
   - Spread
   - Attack
   - Speed
+  - NormalEnemy
   layers:
   - Default
   - TransparentFX

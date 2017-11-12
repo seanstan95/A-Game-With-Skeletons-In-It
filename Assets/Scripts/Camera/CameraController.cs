@@ -7,12 +7,12 @@ public class CameraController : MonoBehaviour {
 	private Vector3 offset;
 	public GameObject player;
 
-	public void Start()
+	private void Start()
 	{
 		offset = transform.position - player.transform.position;	
 	}
 
-	void LateUpdate()
+	private void LateUpdate()
 	{
 		//The camera maintains the same offset away from the player regardless of player position or camera rotation.
 		transform.position = player.transform.position + offset;
