@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour {
 	protected int currentHealth, damagePerHit, powerupIndex;
 	protected PlayerHealth playerHealth;
 
-	public void DeathTasks()
+	protected void DeathTasks()
 	{
 		//If the enemy is dead, disable collider and stop movement.
 		if (currentHealth <= 0){

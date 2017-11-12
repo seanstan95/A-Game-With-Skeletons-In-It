@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour {
 
-	void Start () {
-		PowerupManager.Initialize ();
+	public GameObject[] powerups;
+
+	private void Start () {
+		PowerupManager.Initialize (powerups);
+		UIManager.Initialize ();
 	}
 
-	void Update () {
+	private void Update () {
 		PowerupManager.Update ();
+		UIManager.Update ();
 	}
 }

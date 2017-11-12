@@ -4,15 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour {
+public static class UIManager {
 
 	public static GameObject pauseMenu;
 	public static Text heldText, powerupText;
 
-	PlayerHealth playerHealth;
-	RectTransform enemySlider, playerSlider;
+	private static RectTransform enemySlider, playerSlider;
 
-	void Start () 
+	public static void Initialize () 
 	{
 		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
 		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
@@ -20,14 +19,13 @@ public class UIManager : MonoBehaviour {
 		pauseMenu = GameObject.Find ("PauseMenu");
 		pauseMenu.SetActive (false);
 		powerupText = GameObject.Find ("PowerupText").GetComponent<Text> ();
-		playerHealth = GameObject.Find ("Player").GetComponent<PlayerHealth> ();
 	}
 
-	void Update () 
+	public static void Update () 
 	{
 		//If player is dead, trigger game over animation.
-		if (playerHealth.currentHealth <= 0)
-			GetComponent<Animator> ().SetTrigger ("GameOver");
+		if (PlayerHealth.currentHealth <= 0)
+			GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("GameOver");
 
 		//If escape is pressed, exit to the main menu.
 		if (Input.GetKeyDown (KeyCode.Escape))
@@ -46,17 +44,17 @@ public class UIManager : MonoBehaviour {
 
 		//If F is pressed, activate the currently held powerup.
 		if (Input.GetKeyDown (KeyCode.F) && PowerupManager.currentPowerup == "None") {
-			PowerupManager.UsePowerup (true);
+			PowerupManager.UsePowerup ();
 			heldText.text = "Held Powerup: None";
 		}
 	}
 
-	public void UpdateEnemy(Skeleton skeleton)
+	public static void UpdateEnemy(Enemy enemy)
 	{
-		enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, skeleton.getHealth());
+		enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth());
 	}
 
-	public void UpdatePlayer(float amount)
+	public static void UpdatePlayer(float amount)
 	{
 		playerSlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, amount);
 	}
