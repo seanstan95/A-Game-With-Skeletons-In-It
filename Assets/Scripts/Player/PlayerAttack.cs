@@ -3,17 +3,16 @@
 public class PlayerAttack : MonoBehaviour
 {
 	private Enemy enemyHit;
-	private float effectsDisplayTime = .1f, range = 100f, timer;
+	private float effectsDisplayTime = .1f, timer;
 	private int shootableMask;
 	private Ray ray = new Ray();
 	private RaycastHit hitInfo;
-
 	public GameObject gunEnd;
 	//Visualize line entries 0-4 as left to right (far left, near left, center, near right, far right)
 	public LineRenderer[] lines = new LineRenderer[5];
 	public static bool spread;
 	public static int damagePerShot = 20;
-	public static float fireRate = 2f;
+	public static float fireRate = 2f, range = 100f;
 
 	private void Start () 
 	{
