@@ -590,9 +590,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: e30586aa-a2b3-4071-be8d-3394e4e28b5c
+  cloudProjectId: fb50ae7f-e756-4e13-823d-b7d0ffd9700b
   projectName: Shooter-Game
-  organizationId: seanstan95
+  organizationId: colby-moniz
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
