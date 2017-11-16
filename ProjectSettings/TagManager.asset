@@ -10,8 +10,8 @@ TagManager:
   - Health
   - Spread
   - Attack
-  - Speed
   - NormalEnemy
+  - BossEnemy
   layers:
   - Default
   - TransparentFX
