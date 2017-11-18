@@ -7,29 +7,33 @@ using UnityEngine.SceneManagement;
 public static class UIManager {
 
 	public static GameObject pauseMenu;
-	public static Text heldText, powerupText;
+	public static Text countText, enemyText, heldText, powerupText;
 
-	private static RectTransform enemySlider, playerSlider;
+	private static RectTransform bossSlider, enemySlider, playerSlider;
 
 	public static void Initialize () 
 	{
-		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
-		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
-		playerSlider = GameObject.Find ("PlayerValue").GetComponent<RectTransform> ();
 		pauseMenu = GameObject.Find ("PauseMenu");
 		pauseMenu.SetActive (false);
+		countText = GameObject.Find ("EnemyCount").GetComponent<Text> ();
+		enemyText = GameObject.Find ("EnemyTitle").GetComponent<Text> ();
+		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
 		powerupText = GameObject.Find ("PowerupText").GetComponent<Text> ();
+		bossSlider = GameObject.Find ("BossValue").GetComponent<RectTransform> ();
+		bossSlider.gameObject.SetActive (false);
+		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
+		playerSlider = GameObject.Find ("PlayerValue").GetComponent<RectTransform> ();
 	}
 
 	public static void Update () 
 	{
 		//If player is dead, trigger game over animation.
 		if (PlayerHealth.currentHealth <= 0)
-			GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("GameOver");
+			GameManager.SetState ("GAMEOVER");
 
 		//If escape is pressed, exit to the main menu.
 		if (Input.GetKeyDown (KeyCode.Escape))
-			SceneManager.LoadScene ("MainMenu");
+			GameManager.SetState ("MENU");
 
 		//If space is pressed, pause or resume the game.
 		if (Input.GetKeyDown (KeyCode.Space)) {
@@ -51,7 +55,21 @@ public static class UIManager {
 
 	public static void UpdateEnemy(Enemy enemy)
 	{
-		enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth());
+		if (enemy.tag == "BossEnemy")
+			enemyText.text = "Boss Health";
+		else
+			enemyText.text = "Enemy Health";
+
+		if (enemy.getHealth () > 100) {
+			if (!bossSlider.gameObject.activeSelf)
+				bossSlider.gameObject.SetActive (true);
+			enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, 100);
+			bossSlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth () - 100);
+		} else {
+			if (bossSlider.gameObject.activeSelf)
+				bossSlider.gameObject.SetActive (false);
+			enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
+		}
 	}
 
 	public static void UpdatePlayer(float amount)
