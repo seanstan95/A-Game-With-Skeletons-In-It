@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour {
 
-	public void LoadScene(string name)
+	public void ChangeState(string state)
 	{
-		SceneManager.LoadScene (name);
+		GameManager.SetState (state);
 	}
 
 	public void Resume()

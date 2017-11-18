@@ -86,8 +86,8 @@ public static class PowerupManager {
 				}
 				break;
 			case "Spread":
-                //Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
-                PlayerAttack.range = 50f;
+				//Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
+				PlayerAttack.range = 10f;
 				PlayerAttack.spread = true;
 				break;
 		}
@@ -123,7 +123,7 @@ public static class PowerupManager {
 				break;
 			case "Spread":
 				PlayerAttack.spread = false;
-                PlayerAttack.range = 100f;
+				PlayerAttack.range = 25f;
 				break;
 		}
 		//Health and attack powerups doesn't need a case because there is nothing to deactivate.

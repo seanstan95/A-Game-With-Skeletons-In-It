@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour {
 
 	private bool overItem;
-	private float horizontal, rayLength = 100f, speed = 10f, vertical;
+	private float horizontal, rayLength = 100f, speed = 5f, vertical;
 	private GameObject otherPowerup;
 	private int floorMask, index;
 	private RaycastHit floorhit;
@@ -44,6 +45,7 @@ public class PlayerMove : MonoBehaviour {
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
 		movement.Set (horizontal, 0f, vertical);
+		//movement = (movement.normalized * speed * Time.deltaTime);
 		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
 	}
@@ -70,11 +72,24 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//First, to get it out of the way, find the Powerup Array index for the item we have collided with.
-		index = PowerupManager.GetIndex (other.gameObject.tag);
-
+		//Manages level triggers. Activates the appropriate movement for each enemy.
+		switch (other.name) {
+			case "Trigger1":
+				GameObject.Find ("Skeleton1").GetComponent<Skeleton> ().follow = true;
+				Destroy (other.gameObject);
+				break;
+			case "Trigger2":
+				GameObject.Find ("Skeleton2").GetComponent<Skeleton> ().follow = true;
+				Destroy (other.gameObject);
+				break;
+			case "Trigger3":
+				GameObject.Find ("Skeleton3").GetComponent<Skeleton> ().follow = true;
+				Destroy (other.gameObject);
+				break;
+		}
+				
 		//If the result of index above is 6 (default case from GetIndex), then we know the item we collided with is not a powerup, so skip all of this.
-		if (index != 6) {
+		if (PowerupManager.GetIndex(other.tag) != 6) {
 			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
 			if (PowerupManager.heldPowerup == "None") {
 				PowerupManager.heldPowerup = other.gameObject.tag;

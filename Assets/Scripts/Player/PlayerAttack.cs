@@ -12,7 +12,7 @@ public class PlayerAttack : MonoBehaviour
 	public LineRenderer[] lines = new LineRenderer[5];
 	public static bool spread;
 	public static int damagePerShot = 20;
-	public static float fireRate = 2f, range = 100f;
+	public static float fireRate = 2f, range = 25f;
 
 	private void Start () 
 	{
