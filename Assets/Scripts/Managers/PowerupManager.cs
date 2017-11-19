@@ -78,7 +78,6 @@ public static class PowerupManager {
 				//Freeze powerup freezes all enemies in place for 5 seconds.
 				//First, disable all the spawners temporarily so enemies don't continue to spawn while the current enemies are frozen in place.
 				//Then, reference each active Skeleton in the scene and stop their movement.
-				EnemyManager.spawnTime = 4f;
 				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
 				foreach (GameObject enemy in enemies) {
 					enemy.GetComponent<NavMeshAgent> ().isStopped = true;
@@ -113,7 +112,6 @@ public static class PowerupManager {
 				PlayerAttack.damagePerShot = 20;
 				break;
 			case "Freeze":
-				EnemyManager.spawnTime = 1.5f;
 				//Re-get the list of enemies - if an enemy is defeated while freeze is active, an error will occur referencing it here.
 				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
 				foreach (GameObject skeleton in enemies) {

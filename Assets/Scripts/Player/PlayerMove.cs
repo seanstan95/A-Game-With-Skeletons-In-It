@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class PlayerMove : MonoBehaviour {
 
 	private bool overItem;
-	private float horizontal, rayLength = 100f, speed = 5f, vertical;
+	private float damageTimer, horizontal, rayLength = 100f, speed = 5f, vertical;
 	private GameObject otherPowerup;
 	private int floorMask, index;
 	private RaycastHit floorhit;
@@ -14,11 +14,15 @@ public class PlayerMove : MonoBehaviour {
 
 	private void Start()
 	{
+		GameManager.SetState ("LVLONEP"); //remove when done testing enemies in level one
 		floorMask = LayerMask.GetMask ("Floor");
 	}
 
 	private void Update()
 	{
+		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
+		damageTimer += Time.deltaTime;
+
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
 			//Update the current powerup to be the one on the ground, and destroy it.
 			PowerupManager.heldPowerup = otherPowerup.tag;
@@ -72,22 +76,19 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//Manages level triggers. Activates the appropriate movement for each enemy.
+		//Manages enemy activations via triggers. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
 		switch (other.name) {
 			case "Trigger1":
-				GameObject.Find ("Skeleton1").GetComponent<Skeleton> ().follow = true;
-				Destroy (other.gameObject);
-				break;
 			case "Trigger2":
-				GameObject.Find ("Skeleton2").GetComponent<Skeleton> ().follow = true;
-				Destroy (other.gameObject);
-				break;
 			case "Trigger3":
-				GameObject.Find ("Skeleton3").GetComponent<Skeleton> ().follow = true;
-				Destroy (other.gameObject);
-				break;
+			case "Trigger4":
+				if (GameManager.GetLevel () == "LevelOne") {
+					LevelOne.EnemyTrigger (other.name);
+					Destroy (other.gameObject);
+				}
+				return;
 		}
-				
+
 		//If the result of index above is 6 (default case from GetIndex), then we know the item we collided with is not a powerup, so skip all of this.
 		if (PowerupManager.GetIndex(other.tag) != 6) {
 			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
@@ -106,5 +107,20 @@ public class PlayerMove : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
+	}
+
+	private void OnCollisionEnter(Collision other)
+	{
+		//Environemnt objects that deal damage have non-trigger colliders to separate them from enemy activation triggers.
+		switch (other.gameObject.name) {
+			case "GreatAxe":
+			case "Needle":
+			case "Cutter":
+				if (damageTimer >= 1) {
+					PlayerHealth.ChangeHealth (-10);
+					damageTimer = 0f;
+				}
+				break;
+		}
 	}
 }
