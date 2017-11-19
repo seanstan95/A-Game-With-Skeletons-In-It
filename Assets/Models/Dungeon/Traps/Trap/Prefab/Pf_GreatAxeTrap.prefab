@@ -10,12 +10,13 @@ GameObject:
   - component: {fileID: 432086}
   - component: {fileID: 3332088}
   - component: {fileID: 2332088}
+  - component: {fileID: 65754006736247060}
   m_Layer: 9
   m_Name: GreatAxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &132088
 GameObject:
@@ -32,7 +33,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &132090
 GameObject:
@@ -48,7 +49,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &432086
 Transform:
@@ -82,9 +83,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132090}
-  m_LocalRotation: {x: 0.50000006, y: -0.5, z: -0.50000006, w: 0.5}
-  m_LocalPosition: {x: 2.1874344, y: 0.5784632, z: 0.40087482}
-  m_LocalScale: {x: 0.06410269, y: 0.06410262, z: 0.06410264}
+  m_LocalRotation: {x: 0.00000002980232, y: -0.7071068, z: -0.7071068, w: -0.00000002980232}
+  m_LocalPosition: {x: 0.003003272, y: 0.0136000635, z: 3.7072868}
+  m_LocalScale: {x: 0.12499982, y: 2.7, z: 0.09999988}
   m_Children:
   - {fileID: 432088}
   - {fileID: 432086}
@@ -195,3 +196,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132090}
   m_IsPrefabParent: 1
+--- !u!65 &65754006736247060
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132086}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 5.4, z: 1}
+  m_Center: {x: 0, y: -1.9, z: 0}

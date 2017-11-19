@@ -12,9 +12,8 @@ public class GameManager : MonoBehaviour {
 	{
 		MENU,        //transition to main menu
 		OPTIONS,     //transition to options menu
-		LVLONE,      //transition to level one
-		LVLONEBOSS,  //fighting level one boss
-		PLAYING,     //playing in a level
+		LVLONET,     //transition to level one
+		LVLONEP,		 //playing level one
 		WAITING,     //waiting at a menu scene
 		GAMEOVER     //player is dead
 	};
@@ -44,22 +43,16 @@ public class GameManager : MonoBehaviour {
 				SceneManager.LoadScene ("OptionsMenu");
 				state = StateType.WAITING;
 				break;
-			case StateType.LVLONE:
+			case StateType.LVLONET:
 				SceneManager.LoadScene ("LevelOne");
-				state = StateType.PLAYING;
+				state = StateType.LVLONEP;
 				break;
-			case StateType.LVLONEBOSS:
-				//when level one is working properly
-				/*if(GameObject.FindGameObjectWithTag("BossEnemey").GetComponent<Enemy>().getHealth() <= 0) {
-					state = StateType.MENU;
-				}*/
-				break;
-			case StateType.WAITING:
-				break;
-			case StateType.PLAYING:
+			case StateType.LVLONEP:
 				//Check for player death
 				if (PlayerHealth.currentHealth <= 0)
 					state = StateType.GAMEOVER;
+				break;
+			case StateType.WAITING:
 				break;
 			case StateType.GAMEOVER:
 				//Reached when the player is dead - triggers GameOver animation
@@ -78,14 +71,14 @@ public class GameManager : MonoBehaviour {
 			case "OPTIONS":
 				state = StateType.OPTIONS;
 				break;
-			case "LVLONE":
-				state = StateType.LVLONE;
+			case "LVLONET":
+				state = StateType.LVLONET;
 				break;
-			case "LVLONEBOSS":
-				state = StateType.LVLONEBOSS;
+			case "LVLONEP":
+				state = StateType.LVLONEP;
 				break;
 			case "PLAYING":
-				state = StateType.PLAYING;
+				state = StateType.WAITING;
 				break;
 			case "GAMEOVER":
 				state = StateType.GAMEOVER;
@@ -96,7 +89,7 @@ public class GameManager : MonoBehaviour {
 	public static string GetLevel()
 	{
 		switch (state) {
-			case StateType.PLAYING:
+			case StateType.LVLONEP:
 				return "LevelOne";
 			default:
 				return "Error";
