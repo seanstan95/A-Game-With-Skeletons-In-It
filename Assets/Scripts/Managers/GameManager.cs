@@ -10,13 +10,12 @@ public class GameManager : MonoBehaviour {
 
 	public enum StateType
 	{
-		MENU,         //transition to main menu
-		OPTIONS,      //transition to options menu
-		LVLONE,       //transition to level one
-		LVLONEBOSS,   //fighting level one boss
-		PLAYING,      //playing in a level
-		WAITING,      //waiting at a menu screen
-		GAMEOVER      //game is over
+		MENU,        //transition to main menu
+		OPTIONS,     //transition to options menu
+		LVLONET,     //transition to level one
+		LVLONEP,		 //playing level one
+		WAITING,     //waiting at a menu scene
+		GAMEOVER     //player is dead
 	};
 
 	private void Start()
@@ -27,13 +26,14 @@ public class GameManager : MonoBehaviour {
 			Destroy (gameObject);
 			return;
 		}
-		
+
 		//This prevents the GameManager object from dying when the MainMenu scene is left.
-		DontDestroyOnLoad (gameObject);
+		DontDestroyOnLoad(gameObject);
 	}
 
 	private void Update()
 	{
+		Debug.Log (state);
 		switch (state) {
 			case StateType.MENU:
 				SceneManager.LoadScene ("MainMenu");
@@ -43,26 +43,19 @@ public class GameManager : MonoBehaviour {
 				SceneManager.LoadScene ("OptionsMenu");
 				state = StateType.WAITING;
 				break;
-			case StateType.LVLONE:
+			case StateType.LVLONET:
 				SceneManager.LoadScene ("LevelOne");
-				state = StateType.PLAYING;
+				state = StateType.LVLONEP;
 				break;
-			case StateType.LVLONEBOSS:
-				//when level one is working properly
-				/*Debug.Log(GameObject.FindGameObjectWithTag("BossEnemy").GetComponent<Enemy>().getHealth());
-				if (GameObject.FindGameObjectWithTag ("BossEnemy").GetComponent<Enemy> ().getHealth () <= 0) {
-					state = StateType.MENU;
-				}*/
-				break;
-			case StateType.WAITING:
-				break;
-			case StateType.PLAYING:
+			case StateType.LVLONEP:
 				//Check for player death
 				if (PlayerHealth.currentHealth <= 0)
 					state = StateType.GAMEOVER;
 				break;
+			case StateType.WAITING:
+				break;
 			case StateType.GAMEOVER:
-				//Reached when player is dead - triggers gameover animation
+				//Reached when the player is dead - triggers GameOver animation
 				GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("GameOver");
 				state = StateType.WAITING;
 				break;
@@ -78,15 +71,29 @@ public class GameManager : MonoBehaviour {
 			case "OPTIONS":
 				state = StateType.OPTIONS;
 				break;
-			case "LEVELONE":
-				state = StateType.LVLONE;
+			case "LVLONET":
+				state = StateType.LVLONET;
+				break;
+			case "LVLONEP":
+				state = StateType.LVLONEP;
 				break;
 			case "PLAYING":
-				state = StateType.PLAYING;
+				state = StateType.WAITING;
 				break;
 			case "GAMEOVER":
 				state = StateType.GAMEOVER;
 				break;
 		}
 	}
+
+	public static string GetLevel()
+	{
+		switch (state) {
+			case StateType.LVLONEP:
+				return "LevelOne";
+			default:
+				return "Error";
+		}
+	}
 }
+

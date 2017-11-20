@@ -7,7 +7,6 @@ public class PlayerHealth : MonoBehaviour {
 
 	private float flashSpeed = 2f;
 	private static bool damaged;
-
 	public Image damageImage;
 	public static int currentHealth = 100;
 
