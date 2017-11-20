@@ -16,14 +16,21 @@ public class CameraController : MonoBehaviour {
 	{
 		//The camera maintains the same offset away from the player regardless of player position or camera rotation.
 		transform.position = player.transform.position + offset;
+      
 
-		//Rotation speed can be adjusted by changing the value of 100 to something else.
-		if(Input.GetKey(KeyCode.Q))
+
+        //Rotation speed can be adjusted by changing the value of 100 to something else.
+        if (Input.GetKey(KeyCode.Q))
 			transform.RotateAround (player.transform.position, Vector3.down, (100 * Time.deltaTime));
 		if(Input.GetKey(KeyCode.E))
 			transform.RotateAround (player.transform.position, Vector3.up, (100 * Time.deltaTime));
         if (Input.GetKey(KeyCode.R))
-            transform.rotation = Quaternion.Euler(player.transform.forward);
+        {
+            //transform.rotation = Quaternion.Euler(player.transform.forward);
+            //transform.position = player.transform.position + (-player.transform.forward * offset.magnitude);
+            transform.rotation = Quaternion.Euler(22, player.transform.rotation.y, 0);
+
+        }
 
         offset = transform.position - player.transform.position;
 	}
