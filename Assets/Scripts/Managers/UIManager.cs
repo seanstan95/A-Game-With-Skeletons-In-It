@@ -6,19 +6,29 @@ using UnityEngine.UI;
 public static class UIManager {
 
 	public static GameObject pauseMenu;
-	public static Text enemyText, heldText, powerupText;
 
-	private static RectTransform bossSlider, enemySlider, playerSlider;
+	public static Text bossText, enemyText, heldText, powerupInfo, powerupText;
+
+	private static GameObject bossSlider2;
+	private static RectTransform bossSlider1, enemySlider, playerSlider;
+
 
 	public static void Initialize () 
 	{
 		pauseMenu = GameObject.Find ("PauseMenu");
 		pauseMenu.SetActive (false);
-		enemyText = GameObject.Find ("Title").GetComponent<Text> ();
+
+		bossText = GameObject.Find ("BossTitle").GetComponent<Text> ();
+		bossText.gameObject.SetActive (false);
+		enemyText = GameObject.Find ("EnemyTitle").GetComponent<Text> ();
 		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
 		powerupText = GameObject.Find ("PowerupText").GetComponent<Text> ();
-		bossSlider = GameObject.Find ("BossValue").GetComponent<RectTransform> ();
-		bossSlider.gameObject.SetActive (false);
+		powerupInfo = GameObject.Find ("PowerupInfo").GetComponent<Text> ();
+		powerupInfo.gameObject.SetActive (false);
+		bossSlider1 = GameObject.Find ("BossValue").GetComponent<RectTransform> ();
+		bossSlider1.gameObject.SetActive (false);
+		bossSlider2 = GameObject.Find ("BossHealth");
+		bossSlider2.SetActive (false);
 		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
 		playerSlider = GameObject.Find ("PlayerValue").GetComponent<RectTransform> ();
 	}
@@ -53,22 +63,30 @@ public static class UIManager {
 
 	public static void UpdateEnemy(Enemy enemy)
 	{
-		if (enemy.tag == "BossEnemy")
-			enemyText.text = "Boss Health";
-		else if (enemy.tag == "NormalEnemy")
-			enemyText.text = "Enemy Health";
-		
-		if (enemy.getHealth () > 100) {
-			if (!bossSlider.gameObject.activeSelf)
-				bossSlider.gameObject.SetActive (true);
-			enemySlider.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 100);
-			bossSlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth () - 100);
-		} else {
-			if (bossSlider.gameObject.activeSelf)
-				bossSlider.gameObject.SetActive (false);
+
+		if (enemy.tag == "BossEnemy") {
+			if (!bossSlider1.gameObject.active) {
+				bossSlider1.gameObject.SetActive (true);
+				bossSlider2.SetActive (true);
+				bossText.gameObject.SetActive (true);
+			}
+			if (enemySlider.gameObject.active) {
+				enemySlider.gameObject.SetActive (false);
+				enemyText.gameObject.SetActive (false);
+			}
+			bossSlider1.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
+		} else if(enemy.tag == "NormalEnemy") {
+			if (!enemySlider.gameObject.active) {
+				enemySlider.gameObject.SetActive (true);
+				enemyText.gameObject.SetActive (true);
+			}
+			if (bossSlider1.gameObject.activeSelf) {
+				bossSlider1.gameObject.SetActive (false);
+				bossSlider2.SetActive (false);
+				bossText.gameObject.SetActive (false);
+			}
 			enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
 		}
-
 	}
 
 	public static void UpdatePlayer(float amount)

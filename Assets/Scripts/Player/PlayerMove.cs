@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour {
 
 	private bool overItem;
-	private float horizontal, rayLength = 100f, speed = 10f, vertical;
+	private float damageTimer, horizontal, rayLength = 100f, speed = 5f, vertical;
 	private GameObject otherPowerup;
 	private int floorMask, index;
 	private RaycastHit floorhit;
@@ -13,17 +14,22 @@ public class PlayerMove : MonoBehaviour {
 
 	private void Start()
 	{
+		GameManager.SetState ("LVLONEP"); //remove when done testing enemies in level one
 		floorMask = LayerMask.GetMask ("Floor");
 	}
 
 	private void Update()
 	{
+		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
+		damageTimer += Time.deltaTime;
+
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
 			//Update the current powerup to be the one on the ground, and destroy it.
 			PowerupManager.heldPowerup = otherPowerup.tag;
 			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 			Destroy (otherPowerup);
 			overItem = false;
+			UIManager.powerupInfo.gameObject.SetActive (false);
 		}
 	}
 
@@ -44,6 +50,7 @@ public class PlayerMove : MonoBehaviour {
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
 		movement.Set (horizontal, 0f, vertical);
+		//movement = (movement.normalized * speed * Time.deltaTime);
 		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
 	}
@@ -70,11 +77,22 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//First, to get it out of the way, find the Powerup Array index for the item we have collided with.
-		index = PowerupManager.GetIndex (other.gameObject.tag);
+		//Manages enemy activations via triggers. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
+		switch (other.name) {
+			case "Trigger1":
+			case "Trigger2":
+			case "Trigger3":
+			case "Trigger4":
+			case "BossTrigger":
+				if (GameManager.GetLevel () == "LevelOne") {
+					LevelOne.EnemyTrigger (other.name);
+					Destroy (other.gameObject);
+				}
+				return;
+		}
 
 		//If the result of index above is 6 (default case from GetIndex), then we know the item we collided with is not a powerup, so skip all of this.
-		if (index != 6) {
+		if (PowerupManager.GetIndex(other.tag) != 6) {
 			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
 			if (PowerupManager.heldPowerup == "None") {
 				PowerupManager.heldPowerup = other.gameObject.tag;
@@ -82,6 +100,8 @@ public class PlayerMove : MonoBehaviour {
 				Destroy (other.gameObject);
 			}else{
 				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
+				UIManager.powerupInfo.gameObject.SetActive(true);
+				UIManager.powerupInfo.text = "On Ground: " + other.tag;
 				otherPowerup = other.gameObject;
 				overItem = true;
 			}
@@ -91,5 +111,21 @@ public class PlayerMove : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
+		UIManager.powerupInfo.gameObject.SetActive (false);
+	}
+
+	private void OnCollisionEnter(Collision other)
+	{
+		//Environemnt objects that deal damage have non-trigger colliders to separate them from enemy activation triggers.
+		switch (other.gameObject.name) {
+			case "GreatAxe":
+			case "Needle":
+			case "Cutter":
+				if (damageTimer >= 1) {
+					PlayerHealth.ChangeHealth (-10);
+					damageTimer = 0f;
+				}
+				break;
+		}
 	}
 }

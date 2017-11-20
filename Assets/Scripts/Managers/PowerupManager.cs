@@ -78,7 +78,6 @@ public static class PowerupManager {
 				//Freeze powerup freezes all enemies in place for 5 seconds.
 				//First, disable all the spawners temporarily so enemies don't continue to spawn while the current enemies are frozen in place.
 				//Then, reference each active Skeleton in the scene and stop their movement.
-				EnemyManager.spawnTime = 4f;
 				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
 				foreach (GameObject enemy in enemies) {
 					enemy.GetComponent<NavMeshAgent> ().isStopped = true;
@@ -86,8 +85,8 @@ public static class PowerupManager {
 				}
 				break;
 			case "Spread":
-                //Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
-                PlayerAttack.range = 50f;
+				//Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.
+				PlayerAttack.range = 10f;
 				PlayerAttack.spread = true;
 				break;
 		}
@@ -96,7 +95,7 @@ public static class PowerupManager {
 		if (currentPowerup == "Health")
 			endTimer = Time.time;
 		else
-			endTimer = Time.time + 2.5f;
+			endTimer = Time.time + 3f;
 		
 		UpdateText ();
 	}
@@ -113,7 +112,6 @@ public static class PowerupManager {
 				PlayerAttack.damagePerShot = 20;
 				break;
 			case "Freeze":
-				EnemyManager.spawnTime = 1.5f;
 				//Re-get the list of enemies - if an enemy is defeated while freeze is active, an error will occur referencing it here.
 				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
 				foreach (GameObject skeleton in enemies) {
@@ -123,7 +121,7 @@ public static class PowerupManager {
 				break;
 			case "Spread":
 				PlayerAttack.spread = false;
-                PlayerAttack.range = 100f;
+				PlayerAttack.range = 25f;
 				break;
 		}
 		//Health and attack powerups doesn't need a case because there is nothing to deactivate.
