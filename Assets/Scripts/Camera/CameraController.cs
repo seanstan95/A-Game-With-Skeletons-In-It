@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour {
 	private void LateUpdate()
 	{
         transform.position = chest.transform.position;
-        transform.rotation = player.transform.rotation;
+        transform.rotation = Quaternion.Lerp(transform.rotation ,player.transform.rotation, 2*Time.deltaTime);
 
 
         //**********************************************
