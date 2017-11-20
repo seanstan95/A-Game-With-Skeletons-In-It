@@ -95,7 +95,7 @@ public static class PowerupManager {
 		if (currentPowerup == "Health")
 			endTimer = Time.time;
 		else
-			endTimer = Time.time + 2.5f;
+			endTimer = Time.time + 3f;
 		
 		UpdateText ();
 	}

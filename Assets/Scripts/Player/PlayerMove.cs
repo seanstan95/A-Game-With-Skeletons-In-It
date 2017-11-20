@@ -29,6 +29,7 @@ public class PlayerMove : MonoBehaviour {
 			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 			Destroy (otherPowerup);
 			overItem = false;
+			UIManager.powerupInfo.gameObject.SetActive (false);
 		}
 	}
 
@@ -82,6 +83,7 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger2":
 			case "Trigger3":
 			case "Trigger4":
+			case "BossTrigger":
 				if (GameManager.GetLevel () == "LevelOne") {
 					LevelOne.EnemyTrigger (other.name);
 					Destroy (other.gameObject);
@@ -98,6 +100,8 @@ public class PlayerMove : MonoBehaviour {
 				Destroy (other.gameObject);
 			}else{
 				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
+				UIManager.powerupInfo.gameObject.SetActive(true);
+				UIManager.powerupInfo.text = "On Ground: " + other.tag;
 				otherPowerup = other.gameObject;
 				overItem = true;
 			}
@@ -107,6 +111,7 @@ public class PlayerMove : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
+		UIManager.powerupInfo.gameObject.SetActive (false);
 	}
 
 	private void OnCollisionEnter(Collision other)
