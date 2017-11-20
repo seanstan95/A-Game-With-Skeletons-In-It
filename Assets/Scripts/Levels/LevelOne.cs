@@ -10,6 +10,7 @@ public class LevelOne : MonoBehaviour {
 
 	private void Start()
 	{
+		//On level start, grab reference to the 2 skeletons that are disabled initially.
 		skeleton7 = GameObject.Find ("Skeleton7");
 		skeleton7.SetActive (false);
 		skeleton8 = GameObject.Find ("Skeleton8");
@@ -18,6 +19,7 @@ public class LevelOne : MonoBehaviour {
 
 	public static void EnemyTrigger(string trigger)
 	{
+		//This function handles activating enemies from their stationary position once the player hits certain trigger points.
 		switch (trigger) {
 			case "Trigger1":
 				GameObject.Find ("Skeleton1").GetComponent<Skeleton> ().follow = true;
@@ -33,11 +35,15 @@ public class LevelOne : MonoBehaviour {
 			case "Trigger4":
 				GameObject.Find ("Skeleton6").GetComponent<Skeleton> ().follow = true;
 				break;
+			case "BossTrigger":
+				GameObject.Find ("Boss").GetComponent<SkeletonBoss> ().follow = true;
+				break;
 		}
 	}
 
 	public static void ActivateSkeletons()
 	{
+		//This function simply re-enables the 2 skeletons that were disabled on level start.
 		skeleton7.SetActive (true);
 		skeleton7.GetComponent<Skeleton> ().follow = true;
 		skeleton8.SetActive (true);

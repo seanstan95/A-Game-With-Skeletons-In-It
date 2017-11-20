@@ -6,14 +6,12 @@ using UnityEngine.AI;
 public class Skeleton : Enemy {
 
 	public bool deathTasks, follow;
-	public int number;
 
 	private void Start()
 	{
 		coolDown = 1.33f;
 		currentHealth = 100;
 		damagePerHit = -10;
-		number = GameObject.FindGameObjectsWithTag ("NormalEnemy").Length + 1;
 		player = GameObject.Find ("Player");
 	}
 
@@ -21,7 +19,6 @@ public class Skeleton : Enemy {
 	{
 		//Death() handles timing of destroying the skeleton when dead. If it returns false, the skeleton is still alive, so continue.
 		if (!Death ()) {
-			//Check if the skeleton is within 10 distance from the skeleton - if not, disable movement and don't continue.
 			if (!follow) {
 				GetComponent<NavMeshAgent> ().isStopped = true;
 				GetComponent<Animator> ().SetBool ("Walking", false);
