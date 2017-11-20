@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public static class UIManager {
 
 	public static GameObject pauseMenu;
+
 	public static Text bossText, enemyText, heldText, powerupInfo, powerupText;
 
 	private static GameObject bossSlider2;
 	private static RectTransform bossSlider1, enemySlider, playerSlider;
 
+
 	public static void Initialize () 
 	{
 		pauseMenu = GameObject.Find ("PauseMenu");
 		pauseMenu.SetActive (false);
+
 		bossText = GameObject.Find ("BossTitle").GetComponent<Text> ();
 		bossText.gameObject.SetActive (false);
 		enemyText = GameObject.Find ("EnemyTitle").GetComponent<Text> ();
@@ -61,6 +63,7 @@ public static class UIManager {
 
 	public static void UpdateEnemy(Enemy enemy)
 	{
+
 		if (enemy.tag == "BossEnemy") {
 			if (!bossSlider1.gameObject.active) {
 				bossSlider1.gameObject.SetActive (true);
