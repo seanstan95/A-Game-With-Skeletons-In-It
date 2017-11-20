@@ -22,7 +22,9 @@ public class CameraController : MonoBehaviour {
 			transform.RotateAround (player.transform.position, Vector3.down, (100 * Time.deltaTime));
 		if(Input.GetKey(KeyCode.E))
 			transform.RotateAround (player.transform.position, Vector3.up, (100 * Time.deltaTime));
+        if (Input.GetKey(KeyCode.R))
+            transform.rotation = Quaternion.Euler(player.transform.forward);
 
-		offset = transform.position - player.transform.position;
+        offset = transform.position - player.transform.position;
 	}
 }
