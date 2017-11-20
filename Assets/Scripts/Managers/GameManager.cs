@@ -97,15 +97,3 @@ public class GameManager : MonoBehaviour {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
