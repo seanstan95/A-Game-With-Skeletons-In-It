@@ -9,9 +9,11 @@ public class Skeleton : Enemy {
 
 	private void Start()
 	{
+		animator = GetComponent<Animator> ();
 		coolDown = 1.33f;
 		currentHealth = 100;
 		damagePerHit = -10;
+		navAgent = GetComponent<NavMeshAgent> ();
 		player = GameObject.Find ("Player");
 	}
 
@@ -20,17 +22,17 @@ public class Skeleton : Enemy {
 		//Death() handles timing of destroying the skeleton when dead. If it returns false, the skeleton is still alive, so continue.
 		if (!Death ()) {
 			if (!follow) {
-				GetComponent<NavMeshAgent> ().isStopped = true;
-				GetComponent<Animator> ().SetBool ("Walking", false);
-				GetComponent<Animator> ().SetBool ("Idle", true);
+				navAgent.isStopped = true;
+				animator.SetBool ("Walking", false);
+				animator.SetBool ("Idle", true);
 			} else {
 				//If not already walking, start walking, since the player is close enough to be chased now. Same for nav mesh movement.
-				if (!GetComponent<Animator> ().GetBool ("Walking")) {
-					GetComponent<Animator> ().SetBool ("Walking", true);
-					GetComponent<Animator> ().SetBool ("Idle", false);
+				if (!animator.GetBool ("Walking")) {
+					animator.SetBool ("Walking", true);
+					animator.SetBool ("Idle", false);
 				}
-				if (GetComponent<NavMeshAgent> ().isStopped)
-					GetComponent<NavMeshAgent> ().isStopped = false;
+				if (navAgent.isStopped)
+					navAgent.isStopped = false;
 				
 				//Check if the player is within 4 distance from the skeleton (roughly how far the sword attack animation reaches outwards).
 				//If so and the player was not previously in range, we know to change from attacking to walking.
@@ -38,14 +40,14 @@ public class Skeleton : Enemy {
 				if (Vector3.Distance (transform.position, player.transform.position) < 4f) {
 					if (!playerInRange) {
 						attackTimer = .50f;
-						GetComponent<Animator> ().SetBool ("Walking", false);
-						GetComponent<Animator> ().SetBool ("Attacking", true);
+						animator.SetBool ("Walking", false);
+						animator.SetBool ("Attacking", true);
 						playerInRange = true;
 					}
 				} else {
 					if (playerInRange) {
-						GetComponent<Animator> ().SetBool ("Attacking", false);
-						GetComponent<Animator> ().SetBool ("Walking", true);
+						animator.SetBool ("Attacking", false);
+						animator.SetBool ("Walking", true);
 						playerInRange = false;
 					}
 				}
@@ -53,7 +55,7 @@ public class Skeleton : Enemy {
 
 			//If movement is allowed (player is out of range and nav mesh is not stopped)
 			if (!playerInRange && follow)
-				GetComponent<NavMeshAgent> ().SetDestination (player.transform.position);
+				navAgent.SetDestination (player.transform.position);
 
 			//If player is in range, begin incrementing attackTimer
 			if (playerInRange)
