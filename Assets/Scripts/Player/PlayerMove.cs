@@ -5,23 +5,24 @@ using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour {
 
-	private bool overItem;
-	private float damageTimer, horizontal, rayLength = 100f, speed = 5f, vertical;
+	private bool collision, overItem;
+	private float damageTimer, horizontal, speed = 5f, vertical;
 	private GameObject otherPowerup;
-	private int floorMask, index;
-	private RaycastHit floorhit;
+	private int index;
 	private Vector3 movement;
-
-	private void Start()
-	{
-		GameManager.SetState ("LVLONEP"); //remove when done testing enemies in level one
-		floorMask = LayerMask.GetMask ("Floor");
-	}
 
 	private void Update()
 	{
 		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
-		damageTimer += Time.deltaTime;
+		if(damageTimer < 1)
+			damageTimer += Time.deltaTime;
+
+		if (collision) {
+			if (damageTimer >= 1) {
+				PlayerHealth.ChangeHealth (-10);
+				damageTimer = 0f;
+			}
+		}
 
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
 			//Update the current powerup to be the one on the ground, and destroy it.
@@ -39,9 +40,8 @@ public class PlayerMove : MonoBehaviour {
 		horizontal = Input.GetAxisRaw ("Horizontal");
 		vertical = Input.GetAxisRaw ("Vertical");
 
-		//Run through a few tasks: determine movement of the player, determine any rotation of the player, and animate accordingly.
+		//Run through a few tasks: determine movement of the player, and animate accordingly.
 		Move (horizontal, vertical);
-		Turning ();
 		Animate (horizontal, vertical);
 	}
 
@@ -50,22 +50,8 @@ public class PlayerMove : MonoBehaviour {
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
 		movement.Set (horizontal, 0f, vertical);
-		//movement = (movement.normalized * speed * Time.deltaTime);
 		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
-	}
-
-	private void Turning()
-	{
-		//This rotates the player model to wherever the mouse is placed, as long as the mouse is on the floor of the game.
-		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-
-		if (Physics.Raycast (camRay, out floorhit, rayLength, floorMask)) {
-			Vector3 playerToMouse = floorhit.point - transform.position;
-			playerToMouse.y = 0f;
-			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
-			GetComponent<Rigidbody>().MoveRotation (newRotation);
-		}
 	}
 
 	private void Animate(float horizontal, float vertical)
@@ -121,11 +107,18 @@ public class PlayerMove : MonoBehaviour {
 			case "GreatAxe":
 			case "Needle":
 			case "Cutter":
-				if (damageTimer >= 1) {
-					PlayerHealth.ChangeHealth (-10);
-					damageTimer = 0f;
-				}
+			case "Spear":
+			case "SawBlade":
+				collision = true;
+
+				if (other.gameObject.name == "Spear")
+					other.gameObject.GetComponentInParent<Animation> ().Rewind ();
 				break;
 		}
+	}
+
+	private void OnCollisionExit(Collision other)
+	{
+		collision = false;
 	}
 }
