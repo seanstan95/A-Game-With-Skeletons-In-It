@@ -110,7 +110,7 @@ public class PlayerMove : MonoBehaviour {
 			case "Spear":
 			case "SawBlade":
 				collision = true;
-
+				//Reset spear animation on contact with player
 				if (other.gameObject.name == "Spear")
 					other.gameObject.GetComponentInParent<Animation> ().Rewind ();
 				break;
