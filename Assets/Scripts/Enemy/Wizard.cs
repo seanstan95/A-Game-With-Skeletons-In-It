@@ -7,7 +7,6 @@ public class Wizard : Enemy {
 
 	public bool follow;
 	public GameObject projectile;
-	private Transform wandEnd;
 
 	private void Start()
 	{
@@ -17,7 +16,6 @@ public class Wizard : Enemy {
 		damagePerHit = -10;
 		navAgent = GetComponent<NavMeshAgent> ();
 		player = GameObject.Find ("Player");
-		wandEnd = GameObject.Find ("End").transform;
 	}
 
 	private void Update()
@@ -32,7 +30,7 @@ public class Wizard : Enemy {
 			}
 
 			//Regardless of whether tracking the player or not, check if the player is close enough to be shot at.
-			if (Vector3.Distance (transform.position, player.transform.position) <= 10) {
+			if (Vector3.Distance (transform.position, player.transform.position) <= 20) {
 				if (!playerInRange) {
 					playerInRange = true;
 					animator.SetBool ("Idle", false);
@@ -65,6 +63,6 @@ public class Wizard : Enemy {
 	private void Shoot()
 	{
 		Debug.Log ("Invoked shoot");
-		Instantiate (projectile, wandEnd.position, wandEnd.rotation);
+		Instantiate (projectile, transform.position, transform.rotation);
 	}
 }
