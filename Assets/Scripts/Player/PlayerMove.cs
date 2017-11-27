@@ -5,23 +5,30 @@ using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour {
 
-	private bool overItem;
-	private float damageTimer, horizontal, rayLength = 100f, speed = 5f, vertical;
+	private bool collision, overItem;
+	private float damageTimer, horizontal, speed = 5f, vertical;
 	private GameObject otherPowerup;
-	private int floorMask, index;
-	private RaycastHit floorhit;
 	private Vector3 movement;
+	public static string room;
 
+	//REMOVE WHEN DONE TESTING
 	private void Start()
 	{
-		GameManager.SetState ("LVLONEP"); //remove when done testing enemies in level one
-		floorMask = LayerMask.GetMask ("Floor");
+		GameManager.SetState ("LVL2P");
 	}
 
 	private void Update()
 	{
 		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
-		damageTimer += Time.deltaTime;
+		if(damageTimer < 1)
+			damageTimer += Time.deltaTime;
+
+		if (collision) {
+			if (damageTimer >= 1) {
+				PlayerHealth.ChangeHealth (-10);
+				damageTimer = 0f;
+			}
+		}
 
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
 			//Update the current powerup to be the one on the ground, and destroy it.
@@ -39,9 +46,8 @@ public class PlayerMove : MonoBehaviour {
 		horizontal = Input.GetAxisRaw ("Horizontal");
 		vertical = Input.GetAxisRaw ("Vertical");
 
-		//Run through a few tasks: determine movement of the player, determine any rotation of the player, and animate accordingly.
+		//Run through a few tasks: determine movement of the player, and animate accordingly.
 		Move (horizontal, vertical);
-		Turning ();
 		Animate (horizontal, vertical);
 	}
 
@@ -50,22 +56,8 @@ public class PlayerMove : MonoBehaviour {
 		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
 		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
 		movement.Set (horizontal, 0f, vertical);
-		//movement = (movement.normalized * speed * Time.deltaTime);
 		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
 		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
-	}
-
-	private void Turning()
-	{
-		//This rotates the player model to wherever the mouse is placed, as long as the mouse is on the floor of the game.
-		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-
-		if (Physics.Raycast (camRay, out floorhit, rayLength, floorMask)) {
-			Vector3 playerToMouse = floorhit.point - transform.position;
-			playerToMouse.y = 0f;
-			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
-			GetComponent<Rigidbody>().MoveRotation (newRotation);
-		}
 	}
 
 	private void Animate(float horizontal, float vertical)
@@ -77,7 +69,7 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//Manages enemy activations via triggers. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
+		//Manages enemy activations via triggers in levels. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
 		switch (other.name) {
 			case "Trigger1":
 			case "Trigger2":
@@ -88,6 +80,39 @@ public class PlayerMove : MonoBehaviour {
 					LevelOne.EnemyTrigger (other.name);
 					Destroy (other.gameObject);
 				}
+				if (GameManager.GetLevel () == "LevelTwo") {
+					GameObject.Find ("WizardBoss").GetComponent<WizardBoss> ().enabled = true;
+				}
+				return;
+			case "WizardShoot(Clone)":
+				//PlayerHealth.ChangeHealth (-5);
+				Destroy (other.gameObject);
+				break;
+			case "BossShoot(Clone)":
+				PlayerHealth.ChangeHealth (-10);
+				Destroy (other.gameObject);
+				break;
+		}
+
+		//Manages boss spawn point room system in level two. Returns out to avoid attemtping to get a powerupmanager index since these aren't powerups.
+		switch (other.name) {
+			case "TopLeft":
+				room = "TopLeft";
+				return;
+			case "TopMiddle":
+				room = "TopMiddle";
+				return;
+			case "TopRight":
+				room = "TopRight";
+				return;
+			case "BottomLeft":
+				room = "BottomLeft";
+				return;
+			case "BottomMiddle":
+				room = "BottomMiddle";
+				return;
+			case "BottomRight":
+				room = "BottomRight";
 				return;
 		}
 
@@ -121,11 +146,18 @@ public class PlayerMove : MonoBehaviour {
 			case "GreatAxe":
 			case "Needle":
 			case "Cutter":
-				if (damageTimer >= 1) {
-					PlayerHealth.ChangeHealth (-10);
-					damageTimer = 0f;
-				}
+			case "Spear":
+			case "SawBlade":
+				collision = true;
+				//Reset spear animation on contact with player
+				if (other.gameObject.name == "Spear")
+					other.gameObject.GetComponentInParent<Animation> ().Rewind ();
 				break;
 		}
+	}
+
+	private void OnCollisionExit(Collision other)
+	{
+		collision = false;
 	}
 }

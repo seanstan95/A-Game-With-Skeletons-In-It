@@ -6,18 +6,14 @@ using UnityEngine.UI;
 public static class UIManager {
 
 	public static GameObject pauseMenu;
-
 	public static Text bossText, enemyText, heldText, powerupInfo, powerupText;
-
 	private static GameObject bossSlider2;
 	private static RectTransform bossSlider1, enemySlider, playerSlider;
-
 
 	public static void Initialize () 
 	{
 		pauseMenu = GameObject.Find ("PauseMenu");
 		pauseMenu.SetActive (false);
-
 		bossText = GameObject.Find ("BossTitle").GetComponent<Text> ();
 		bossText.gameObject.SetActive (false);
 		enemyText = GameObject.Find ("EnemyTitle").GetComponent<Text> ();
@@ -63,22 +59,23 @@ public static class UIManager {
 
 	public static void UpdateEnemy(Enemy enemy)
 	{
-
 		if (enemy.tag == "BossEnemy") {
-			if (!bossSlider1.gameObject.active) {
+			if (!bossSlider1.gameObject.activeSelf) {
 				bossSlider1.gameObject.SetActive (true);
 				bossSlider2.SetActive (true);
 				bossText.gameObject.SetActive (true);
 			}
-			if (enemySlider.gameObject.active) {
+			if (enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (false);
 				enemyText.gameObject.SetActive (false);
+				GameObject.Find ("EnemyHealth").SetActive (false);
 			}
 			bossSlider1.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
 		} else if(enemy.tag == "NormalEnemy") {
-			if (!enemySlider.gameObject.active) {
+			if (!enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (true);
 				enemyText.gameObject.SetActive (true);
+				GameObject.Find ("EnemyHealth").SetActive (true);
 			}
 			if (bossSlider1.gameObject.activeSelf) {
 				bossSlider1.gameObject.SetActive (false);

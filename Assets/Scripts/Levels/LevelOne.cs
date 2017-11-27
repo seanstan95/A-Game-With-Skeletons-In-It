@@ -5,7 +5,6 @@ using UnityEngine;
 public class LevelOne : MonoBehaviour {
 
 	public static bool continueBars;
-	public static int enemyCount;
 	private static GameObject skeleton7, skeleton8;
 
 	private void Start()
