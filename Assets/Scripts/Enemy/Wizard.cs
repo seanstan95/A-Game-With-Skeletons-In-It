@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Wizard : Enemy {
 
 	public bool follow;
-	public GameObject projectile;
+	public GameObject end, projectile;
 
 	private void Start()
 	{
@@ -66,6 +66,6 @@ public class Wizard : Enemy {
 
 	private void Shoot()
 	{
-		Instantiate (projectile, transform.position, transform.rotation);
+		Instantiate (projectile, end.transform.position, transform.rotation);
 	}
 }
