@@ -2464,7 +2464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   follow: 0
-  projectile: {fileID: 0}
+  projectile: {fileID: 1944623323362906, guid: 622b85f96d61ebe4cb550ce12f36d998, type: 2}
 --- !u!136 &136694945573431504
 CapsuleCollider:
   m_ObjectHideFlags: 1

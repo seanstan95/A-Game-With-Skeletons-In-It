@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class WizardShoot : MonoBehaviour {
 
-	private GameObject player;
+	private Rigidbody rigidBody;
+	private float speed = 20;
 
 	private void Start()
 	{
-		player = GameObject.Find ("Player");
-		Destroy (gameObject, 5f);
+		rigidBody = GetComponent<Rigidbody> ();
+		Destroy (gameObject, 2.5f);
 	}
 
 	private void Update()
 	{
-		transform.Translate (-player.transform.position * Time.deltaTime, Space.World);
+		rigidBody.AddForce (transform.forward * speed);
 	}
 }
