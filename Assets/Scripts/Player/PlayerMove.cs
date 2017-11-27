@@ -8,8 +8,14 @@ public class PlayerMove : MonoBehaviour {
 	private bool collision, overItem;
 	private float damageTimer, horizontal, speed = 5f, vertical;
 	private GameObject otherPowerup;
-	private int index;
 	private Vector3 movement;
+	public static string room;
+
+	//REMOVE WHEN DONE TESTING
+	private void Start()
+	{
+		GameManager.SetState ("LVL2P");
+	}
 
 	private void Update()
 	{
@@ -63,7 +69,7 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//Manages enemy activations via triggers. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
+		//Manages enemy activations via triggers in levels. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
 		switch (other.name) {
 			case "Trigger1":
 			case "Trigger2":
@@ -74,6 +80,37 @@ public class PlayerMove : MonoBehaviour {
 					LevelOne.EnemyTrigger (other.name);
 					Destroy (other.gameObject);
 				}
+				if (GameManager.GetLevel () == "LevelTwo") {
+					GameObject.Find ("WizardBoss").GetComponent<WizardBoss> ().enabled = true;
+				}
+				return;
+			case "WizardShoot(Clone)":
+				PlayerHealth.ChangeHealth (-5);
+				break;
+			case "BossShoot(Clone)":
+				PlayerHealth.ChangeHealth (-10);
+				break;
+		}
+
+		//Manages boss spawn point room system in level two. Returns out to avoid attemtping to get a powerupmanager index since these aren't powerups.
+		switch (other.name) {
+			case "TopLeft":
+				room = "TopLeft";
+				return;
+			case "TopMiddle":
+				room = "TopMiddle";
+				return;
+			case "TopRight":
+				room = "TopRight";
+				return;
+			case "BottomLeft":
+				room = "BottomLeft";
+				return;
+			case "BottomMiddle":
+				room = "BottomMiddle";
+				return;
+			case "BottomRight":
+				room = "BottomRight";
 				return;
 		}
 

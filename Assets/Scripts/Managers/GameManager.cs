@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
 		OPTIONS,     //transition to options menu
 		LVLONET,     //transition to level one
 		LVLONEP,		 //playing level one
+		LVLTWOT, 	 //transition to level two
+		LVLTWOP,		 //playing level 2
 		WAITING,     //waiting at a menu scene
 		GAMEOVER     //player is dead
 	};
@@ -33,7 +35,6 @@ public class GameManager : MonoBehaviour {
 
 	private void Update()
 	{
-		Debug.Log (state);
 		switch (state) {
 			case StateType.MENU:
 				SceneManager.LoadScene ("MainMenu");
@@ -49,6 +50,14 @@ public class GameManager : MonoBehaviour {
 				break;
 			case StateType.LVLONEP:
 				//Check for player death
+				if (PlayerHealth.currentHealth <= 0)
+					state = StateType.GAMEOVER;
+				break;
+			case StateType.LVLTWOT:
+				SceneManager.LoadScene ("LevelTwo");
+				state = StateType.LVLTWOP;
+				break;
+			case StateType.LVLTWOP:
 				if (PlayerHealth.currentHealth <= 0)
 					state = StateType.GAMEOVER;
 				break;
@@ -77,6 +86,12 @@ public class GameManager : MonoBehaviour {
 			case "LVLONEP":
 				state = StateType.LVLONEP;
 				break;
+			case "LVLTWOT":
+				state = StateType.LVLTWOT;
+				break;
+			case "LVLTWOP":
+				state = StateType.LVLTWOP;
+				break;
 			case "PLAYING":
 				state = StateType.WAITING;
 				break;
@@ -91,6 +106,8 @@ public class GameManager : MonoBehaviour {
 		switch (state) {
 			case StateType.LVLONEP:
 				return "LevelOne";
+			case StateType.LVLTWOP:
+				return "LevelTwo";
 			default:
 				return "Error";
 		}

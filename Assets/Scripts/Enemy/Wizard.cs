@@ -11,9 +11,8 @@ public class Wizard : Enemy {
 	private void Start()
 	{
 		animator = GetComponent<Animator> ();
-		coolDown = 1.33f;
+		coolDown = 2f;
 		currentHealth = 100;
-		damagePerHit = -10;
 		navAgent = GetComponent<NavMeshAgent> ();
 		player = GameObject.Find ("Player");
 	}
@@ -25,8 +24,13 @@ public class Wizard : Enemy {
 			attackTimer += Time.deltaTime;
 
 			//if this copy of Wizard is meant to follow the player around, update tracking
+			//else, disable nav mesh (avoids odd interaction with some environment areas that don't bake properly)
 			if (follow) {
+				if (!navAgent.isActiveAndEnabled)
+					navAgent.enabled = true;
 				navAgent.SetDestination (player.transform.position);
+			} else {
+				navAgent.enabled = false;
 			}
 
 			//Regardless of whether tracking the player or not, check if the player is close enough to be shot at.
@@ -37,7 +41,7 @@ public class Wizard : Enemy {
 					animator.SetBool ("Walking", false);
 					animator.SetBool ("Attacking", true);
 				}
-				if (attackTimer >= 1.5) {
+				if (attackTimer >= coolDown) {
 					attackTimer = 0;
 					Invoke ("Shoot", 0f);
 					Invoke ("Shoot", .1f);
@@ -47,7 +51,7 @@ public class Wizard : Enemy {
 				if (playerInRange) {
 					playerInRange = false;
 					animator.SetBool ("Attacking", false);
-					//when out of range of player, trigger the appripriate animations based on if this wizard follows the player or not
+					//when out of range of player, trigger the appropriate animations based on if this wizard follows the player or not
 					if (follow) {
 						animator.SetBool ("Idle", false);
 						animator.SetBool ("Walking", true);
@@ -62,7 +66,6 @@ public class Wizard : Enemy {
 
 	private void Shoot()
 	{
-		Debug.Log ("Invoked shoot");
 		Instantiate (projectile, transform.position, transform.rotation);
 	}
 }
