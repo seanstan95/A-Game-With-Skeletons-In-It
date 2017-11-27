@@ -85,10 +85,12 @@ public class PlayerMove : MonoBehaviour {
 				}
 				return;
 			case "WizardShoot(Clone)":
-				PlayerHealth.ChangeHealth (-5);
+				//PlayerHealth.ChangeHealth (-5);
+				Destroy (other.gameObject);
 				break;
 			case "BossShoot(Clone)":
 				PlayerHealth.ChangeHealth (-10);
+				Destroy (other.gameObject);
 				break;
 		}
 

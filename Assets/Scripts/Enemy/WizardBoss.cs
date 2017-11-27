@@ -6,7 +6,7 @@ public class WizardBoss : Enemy {
 
 	private int room;
 	private float aliveTimer;
-	public GameObject projectile;
+	public GameObject end, projectile;
 
 	private void Start()
 	{
@@ -90,6 +90,6 @@ public class WizardBoss : Enemy {
 
 	private void Shoot()
 	{
-		Instantiate (projectile, transform.position, transform.rotation);
+		Instantiate (projectile, end.transform.position, transform.rotation);
 	}
 }
