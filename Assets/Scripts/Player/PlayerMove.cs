@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour {
 	//REMOVE WHEN DONE TESTING
 	private void Start()
 	{
-		GameManager.SetState ("LVL2P");
+		GameManager.SetState ("LVLTHREEP");
 	}
 
 	private void Update()
@@ -75,17 +75,21 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger2":
 			case "Trigger3":
 			case "Trigger4":
-			case "BossTrigger":
 				if (GameManager.GetLevel () == "LevelOne") {
 					LevelOne.EnemyTrigger (other.name);
 					Destroy (other.gameObject);
 				}
-				if (GameManager.GetLevel () == "LevelTwo") {
+				if (GameManager.GetLevel () == "LevelThree") {
+					LevelThree.EnemyTrigger (other.name);
+				}
+				break;
+			case "BossTrigger":
+				if (GameManager.GetLevel() != "LevelOne") {
 					GameObject.Find ("WizardBoss").GetComponent<WizardBoss> ().enabled = true;
 				}
 				return;
 			case "WizardShoot(Clone)":
-				//PlayerHealth.ChangeHealth (-5);
+				PlayerHealth.ChangeHealth (-5);
 				Destroy (other.gameObject);
 				break;
 			case "BossShoot(Clone)":

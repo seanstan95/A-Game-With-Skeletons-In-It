@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour {
 
 	private bool count, dead, drop;
+	private CapsuleCollider capsule;
 	private float destroyTimer;
 	protected Animator animator;
 	protected bool playerInRange, sinking;
@@ -14,12 +15,17 @@ public class Enemy : MonoBehaviour {
 	protected int currentHealth, damagePerHit, powerupIndex;
 	protected NavMeshAgent navAgent;
 
+	private void Start()
+	{
+		capsule = GetComponent<CapsuleCollider> ();
+	}
+
 	protected bool Death()
 	{
 		//If the enemy is dead, disable collider and stop movement.
 		if (currentHealth <= 0) {
-			if (GetComponent<CapsuleCollider> ().enabled && !navAgent.isStopped) {
-				GetComponent<CapsuleCollider> ().enabled = false;
+			if (capsule && !navAgent.isStopped) {
+				capsule.enabled = false;
 				navAgent.isStopped = true;
 			}
 
@@ -34,6 +40,19 @@ public class Enemy : MonoBehaviour {
 				powerupIndex = Random.Range (0, PowerupManager.powerups.Length);
 				Instantiate (PowerupManager.powerups [powerupIndex], transform.position, PowerupManager.powerups [powerupIndex].transform.rotation);
 				drop = true;
+			}
+
+			if (!count) {
+				//Increment the appropriate level's counter
+				switch (GameManager.GetLevel ()) {
+					case "LevelOne":
+						LevelOne.enemyCount++;
+						break;
+					case "LevelThree":
+						LevelThree.enemyCount++;
+						break;
+				}
+				count = true;
 			}
 
 			//After 2 seconds, destroy the object.

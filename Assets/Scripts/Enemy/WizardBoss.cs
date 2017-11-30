@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class WizardBoss : Enemy {
 
-	private int room;
+	private int threeRoom, twoRoom;
 	private float aliveTimer;
 	public GameObject end, projectile;
+	public Transform[] spawns;
 
 	private void Start()
 	{
@@ -40,50 +41,51 @@ public class WizardBoss : Enemy {
 
 	private void ChangePosition()
 	{
-		//First, randomize a room value to spawn from (if the room has only 2 options and a 3 is rolled, boss will spawn at #2)
-		room = Random.Range (0, 3);
+		//First, randomize a room value to spawn from
+		threeRoom = Random.Range (0, 3);
+		twoRoom = Random.Range (0, 2);
 
 		//Next, use the player's current room + the random value to determine which room the boss will spawn in next.
 		switch (PlayerMove.room) {
 			case "TopLeft":
-				if (room == 0)
-					transform.position = GameObject.Find ("BottomLeft").transform.position;
-				else if (room == 1 || room == 2)
-					transform.position = GameObject.Find ("TopMiddle").transform.position;
+				if (twoRoom == 0)
+					transform.position = spawns [3].position;
+				else if (twoRoom == 1)
+					transform.position = spawns [1].position;
 				break;
 			case "TopRight":
-				if (room == 0)
-					transform.position = GameObject.Find ("TopMiddle").transform.position;
-				else if (room == 1 || room == 2)
-					transform.position = GameObject.Find ("BottomRight").transform.position;
+				if (twoRoom == 0)
+					transform.position = spawns [1].position;
+				else if (twoRoom == 1)
+					transform.position = spawns [5].position;
 				break;
 			case "BottomLeft":
-				if (room == 0)
-					transform.position = GameObject.Find ("BottomMiddle").transform.position;
-				else if (room == 1 || room == 2)
-					transform.position = GameObject.Find ("TopLeft").transform.position;
+				if (twoRoom == 0)
+					transform.position = spawns [4].position;
+				else if (twoRoom == 1)
+					transform.position = spawns [0].position;
 				break;
 			case "BottomRight":
-				if (room == 0)
-					transform.position = GameObject.Find ("BottomMiddle").transform.position;
-				else if (room == 1 || room == 2)
-					transform.position = GameObject.Find ("TopRight").transform.position;
+				if (twoRoom == 0)
+					transform.position = spawns [4].position;
+				else if (twoRoom == 1)
+					transform.position = spawns [2].position;
 				break;
 			case "TopMiddle":
-				if (room == 0)
-					transform.position = GameObject.Find ("TopLeft").transform.position;
-				else if (room == 1)
-					transform.position = GameObject.Find ("BottomMiddle").transform.position;
-				else if (room == 2)
-					transform.position = GameObject.Find ("TopRight").transform.position;
+				if (threeRoom == 0)
+					transform.position = spawns [0].position;
+				else if (threeRoom == 1)
+					transform.position = spawns [4].position;
+				else if (threeRoom == 2)
+					transform.position = spawns [2].position;
 				break;
 			case "BottomMiddle":
-				if (room == 0)
-					transform.position = GameObject.Find ("BottomLeft").transform.position;
-				else if (room == 1)
-					transform.position = GameObject.Find ("TopMiddle").transform.position;
-				else if (room == 2)
-					transform.position = GameObject.Find ("BottomRight").transform.position;
+				if (threeRoom == 0)
+					transform.position = spawns [3].position;
+				else if (threeRoom == 1)
+					transform.position = spawns [1].position;
+				else if (threeRoom == 2)
+					transform.position = spawns [5].position;
 				break;
 		}
 	}
