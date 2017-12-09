@@ -59,7 +59,7 @@ public static class PowerupManager {
 				//Attack powerup damages all active enemies by 50.
 				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
 				foreach (GameObject enemy in enemies) {
-					enemy.GetComponent<Enemy>().TakeDamage (50);
+					enemy.GetComponent<Enemy>().currentHealth -= 50;
 				}
 				break;
 			case "Damage":
@@ -68,21 +68,11 @@ public static class PowerupManager {
 				break;
 			case "Health":
 				//Health powerup recovers the player's health by 10.
-				PlayerHealth.ChangeHealth (10);
+				PlayerHealth.ChangeHealth (20);
 				break;
 			case "FireRate":
 				//FireRate powerup increases the fire rate of the player's gun from 2 to 10 shots per second.
 				PlayerAttack.fireRate = 10f;
-				break;
-			case "Freeze":
-				//Freeze powerup freezes all enemies in place for 5 seconds.
-				//First, disable all the spawners temporarily so enemies don't continue to spawn while the current enemies are frozen in place.
-				//Then, reference each active Skeleton in the scene and stop their movement.
-				enemies = GameObject.FindGameObjectsWithTag ("NormalEnemy");
-				foreach (GameObject enemy in enemies) {
-					enemy.GetComponent<NavMeshAgent> ().isStopped = true;
-					enemy.GetComponent<Animator> ().SetBool("Walking", false);
-				}
 				break;
 			case "Spread":
 				//Spread powerup makes the player's gun shoot 5 bullet lines instead of just one.

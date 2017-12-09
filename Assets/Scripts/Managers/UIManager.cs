@@ -6,35 +6,28 @@ using UnityEngine.UI;
 public static class UIManager {
 
 	public static GameObject pauseMenu;
-	public static Text bossText, enemyText, heldText, powerupInfo, powerupText;
-	private static GameObject bossSlider2;
-	private static RectTransform bossSlider1, enemySlider, playerSlider;
+	public static Text heldText, onGroundText, powerupText;
+	public static Slider playerSlider;
+	private static Slider bossSlider, enemySlider;
 
 	public static void Initialize () 
 	{
 		pauseMenu = GameObject.Find ("PauseMenu");
-		pauseMenu.SetActive (false);
-		bossText = GameObject.Find ("BossTitle").GetComponent<Text> ();
-		bossText.gameObject.SetActive (false);
-		enemyText = GameObject.Find ("EnemyTitle").GetComponent<Text> ();
 		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
 		powerupText = GameObject.Find ("PowerupText").GetComponent<Text> ();
-		powerupInfo = GameObject.Find ("PowerupInfo").GetComponent<Text> ();
-		powerupInfo.gameObject.SetActive (false);
-		bossSlider1 = GameObject.Find ("BossValue").GetComponent<RectTransform> ();
-		bossSlider1.gameObject.SetActive (false);
-		bossSlider2 = GameObject.Find ("BossHealth");
-		bossSlider2.SetActive (false);
-		enemySlider = GameObject.Find ("EnemyValue").GetComponent<RectTransform> ();
-		playerSlider = GameObject.Find ("PlayerValue").GetComponent<RectTransform> ();
+		onGroundText = GameObject.Find ("OnGround").GetComponent<Text> ();
+		bossSlider = GameObject.Find ("BossHealth").GetComponent<Slider> ();
+		enemySlider = GameObject.Find ("EnemyHealth").GetComponent<Slider> ();
+		playerSlider = GameObject.Find ("PlayerHealth").GetComponent<Slider> ();
+
+		pauseMenu.SetActive (false);
+		enemySlider.gameObject.SetActive (false);
+		bossSlider.gameObject.SetActive (false);
+		onGroundText.gameObject.SetActive (false);
 	}
 
 	public static void Update () 
 	{
-		//If player is dead, trigger game over animation.
-		if (PlayerHealth.currentHealth <= 0)
-			GameManager.SetState ("GAMEOVER");
-
 		//If escape is pressed, exit to the main menu.
 		if (Input.GetKeyDown (KeyCode.Escape))
 			GameManager.SetState ("MENU");
@@ -60,34 +53,25 @@ public static class UIManager {
 	public static void UpdateEnemy(Enemy enemy)
 	{
 		if (enemy.tag == "BossEnemy") {
-			if (!bossSlider1.gameObject.activeSelf) {
-				bossSlider1.gameObject.SetActive (true);
-				bossSlider2.SetActive (true);
-				bossText.gameObject.SetActive (true);
+			if (!bossSlider.gameObject.activeSelf) {
+				bossSlider.gameObject.SetActive (true);
 			}
 			if (enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (false);
-				enemyText.gameObject.SetActive (false);
-				GameObject.Find ("EnemyHealth").SetActive (false);
 			}
-			bossSlider1.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
+			if (bossSlider.maxValue != enemy.maxHealth)
+				bossSlider.maxValue = enemy.maxHealth;
+			bossSlider.value = enemy.currentHealth;
 		} else if(enemy.tag == "NormalEnemy") {
 			if (!enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (true);
-				enemyText.gameObject.SetActive (true);
-				GameObject.Find ("EnemyHealth").SetActive (true);
 			}
-			if (bossSlider1.gameObject.activeSelf) {
-				bossSlider1.gameObject.SetActive (false);
-				bossSlider2.SetActive (false);
-				bossText.gameObject.SetActive (false);
+			if (bossSlider.gameObject.activeSelf) {
+				bossSlider.gameObject.SetActive (false);
 			}
-			enemySlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, enemy.getHealth ());
+			if (enemySlider.maxValue != enemy.maxHealth)
+				enemySlider.maxValue = enemy.maxHealth;
+			enemySlider.value = enemy.currentHealth;
 		}
-	}
-
-	public static void UpdatePlayer(float amount)
-	{
-		playerSlider.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, amount);
 	}
 }

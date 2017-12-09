@@ -5,41 +5,35 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
-	private bool count, dead, drop;
-	private CapsuleCollider capsule;
+	private bool count, deadTrigger;
 	private float destroyTimer;
 	protected Animator animator;
-	protected bool playerInRange, sinking;
+	protected bool playerInRange;
 	protected float attackTimer, coolDown;
-	protected GameObject player;
-	protected int currentHealth, damagePerHit, powerupIndex;
-	protected NavMeshAgent navAgent;
-
-	private void Start()
-	{
-		capsule = GetComponent<CapsuleCollider> ();
-	}
+	protected int damagePerHit;
+	public bool active;
+	public CapsuleCollider capsule;
+	public float maxHealth;
+	public int currentHealth;
+	public GameObject player, projectile, wandEnd;
+	public NavMeshAgent navAgent;
 
 	protected bool Death()
 	{
-		//If the enemy is dead, disable collider and stop movement.
+		//If the enemy is dead, run through a number of tasks
 		if (currentHealth <= 0) {
-			if (capsule && !navAgent.isStopped) {
+
+			//Disable collider and stop movement (if using a navmeshagent)
+			if (capsule.gameObject.activeSelf) {
 				capsule.enabled = false;
-				navAgent.isStopped = true;
+				if(navAgent != null)
+					navAgent.isStopped = true;
 			}
 
-			//If the death trigger hasn't happened yet, do so now.
-			if (!dead) {
+			//If the death animation hasn't happened yet, do so now.
+			if (!deadTrigger) {
 				animator.SetTrigger ("Die");
-				dead = true;
-			}
-
-			//If no random item has been chosen yet, do so now.
-			if (!drop) {
-				powerupIndex = Random.Range (0, PowerupManager.powerups.Length);
-				Instantiate (PowerupManager.powerups [powerupIndex], transform.position, PowerupManager.powerups [powerupIndex].transform.rotation);
-				drop = true;
+				deadTrigger = true;
 			}
 
 			if (!count) {
@@ -60,19 +54,16 @@ public class Enemy : MonoBehaviour {
 			if (destroyTimer >= 2f)
 				Destroy (gameObject);
 
+			//Return true if enemy is dead, false if still alive
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public void TakeDamage(int amount)
+	//Used by wizards for ranged shots
+	protected void Shoot()
 	{
-		currentHealth -= amount;
-	}
-
-	public int getHealth()
-	{
-		return currentHealth;
+		Instantiate (projectile, wandEnd.transform.position, transform.rotation);
 	}
 }

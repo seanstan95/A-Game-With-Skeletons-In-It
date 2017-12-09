@@ -31,6 +31,7 @@ public class PlayerHealth : MonoBehaviour {
 		currentHealth += amount;
 		if (currentHealth > 100)
 			currentHealth = 100;
-		UIManager.UpdatePlayer (currentHealth);
+		
+		UIManager.playerSlider.value = currentHealth;
 	}
 }

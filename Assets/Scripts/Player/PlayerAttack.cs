@@ -61,7 +61,7 @@ public class PlayerAttack : MonoBehaviour
 		if (Physics.Raycast (ray, out hitInfo, range, shootableMask)) {
 			enemyHit = hitInfo.collider.GetComponent<Enemy> ();
 			if (enemyHit != null) {
-				enemyHit.TakeDamage (damagePerShot);
+				enemyHit.currentHealth -= damagePerShot;
 				UIManager.UpdateEnemy (enemyHit);
 			}
 			line.SetPosition (1, hitInfo.point);

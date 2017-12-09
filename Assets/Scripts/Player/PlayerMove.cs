@@ -5,29 +5,31 @@ using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour {
 
+	private Animator animator;
 	private bool collision, overItem;
-	private float damageTimer, horizontal, speed = 5f, vertical;
+	private float damageTimer, mouseX, moveH, moveV, speed = 5f;
 	private GameObject otherPowerup;
+	private Rigidbody rigidBody;
 	private Vector3 movement;
 	public static string room;
 
-	//REMOVE WHEN DONE TESTING
 	private void Start()
 	{
-		GameManager.SetState ("LVLTHREEP");
+		Cursor.lockState = CursorLockMode.Locked;
+		animator = GetComponent<Animator> ();
+		rigidBody = GetComponent<Rigidbody> ();
+		//REMOVE WHEN DONE TESTING
+		GameManager.SetState ("LVLONEP");
 	}
 
 	private void Update()
 	{
 		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
-		if(damageTimer < 1)
+		if (collision && damageTimer >= 1) {
+			PlayerHealth.ChangeHealth (-10);
+			damageTimer = 0f;
+		} else if (damageTimer < 1) {
 			damageTimer += Time.deltaTime;
-
-		if (collision) {
-			if (damageTimer >= 1) {
-				PlayerHealth.ChangeHealth (-10);
-				damageTimer = 0f;
-			}
 		}
 
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
@@ -36,35 +38,28 @@ public class PlayerMove : MonoBehaviour {
 			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 			Destroy (otherPowerup);
 			overItem = false;
-			UIManager.powerupInfo.gameObject.SetActive (false);
+			UIManager.onGroundText.gameObject.SetActive (false);
 		}
 	}
 
 	private void FixedUpdate()
 	{
-		//First, grab the values applied to the horizontal and vertical axis. If nothing, it returns 0.
-		horizontal = Input.GetAxisRaw ("Horizontal");
-		vertical = Input.GetAxisRaw ("Vertical");
+		//First, grab the values applied to the movement axis.
+		moveH = Input.GetAxisRaw ("Horizontal");
+		moveV = Input.GetAxisRaw ("Vertical");
+		mouseX = Input.GetAxisRaw ("Mouse X");
 
-		//Run through a few tasks: determine movement of the player, and animate accordingly.
-		Move (horizontal, vertical);
-		Animate (horizontal, vertical);
-	}
+		//Move and rotate the player, then animate accordingly.
+		movement.Set(moveH, 0f, moveV);
+		movement = Camera.main.transform.TransformDirection (movement.normalized * speed * Time.deltaTime);
+		rigidBody.MovePosition (transform.position + movement);
+		Vector3 rotate = new Vector3 (0, mouseX, 0);
+		transform.Rotate(rotate * 1.5f);
 
-	private void Move(float horizontal, float vertical)
-	{
-		//Set the x and z values using the axis, and set y to always be 0 since we don't want our player flying off to another planet.
-		//Normalize the movement value based on speed and deltaTime, and tell the Rigidbody component to move the player to the new position.
-		movement.Set (horizontal, 0f, vertical);
-		movement = Camera.main.transform.TransformDirection(movement.normalized * speed * Time.deltaTime);
-		GetComponent<Rigidbody>().MovePosition (transform.position + movement);
-	}
-
-	private void Animate(float horizontal, float vertical)
-	{
-		//Bool check if horizontal or vertical are 0 - if not, set the walking animation to be true.
-		bool walking = horizontal != 0f || vertical != 0f;
-		GetComponent<Animator>().SetBool ("Walking", walking);
+		if (moveH != 0f || moveV != 0f)
+			animator.SetBool ("Walking", true);
+		else
+			animator.SetBool ("Walking", false);
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -75,19 +70,16 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger2":
 			case "Trigger3":
 			case "Trigger4":
+			case "BossTrigger":
 				if (GameManager.GetLevel () == "LevelOne") {
 					LevelOne.EnemyTrigger (other.name);
 					Destroy (other.gameObject);
 				}
 				if (GameManager.GetLevel () == "LevelThree") {
 					LevelThree.EnemyTrigger (other.name);
+					Destroy (other.gameObject);
 				}
 				break;
-			case "BossTrigger":
-				if (GameManager.GetLevel() != "LevelOne") {
-					GameObject.Find ("WizardBoss").GetComponent<WizardBoss> ().enabled = true;
-				}
-				return;
 			case "WizardShoot(Clone)":
 				PlayerHealth.ChangeHealth (-5);
 				Destroy (other.gameObject);
@@ -129,8 +121,8 @@ public class PlayerMove : MonoBehaviour {
 				Destroy (other.gameObject);
 			}else{
 				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
-				UIManager.powerupInfo.gameObject.SetActive(true);
-				UIManager.powerupInfo.text = "On Ground: " + other.tag;
+				UIManager.onGroundText.gameObject.SetActive(true);
+				UIManager.onGroundText.text = "On Ground: " + other.tag;
 				otherPowerup = other.gameObject;
 				overItem = true;
 			}
@@ -140,7 +132,7 @@ public class PlayerMove : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
-		UIManager.powerupInfo.gameObject.SetActive (false);
+		UIManager.onGroundText.gameObject.SetActive (false);
 	}
 
 	private void OnCollisionEnter(Collision other)

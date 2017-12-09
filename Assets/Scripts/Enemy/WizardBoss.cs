@@ -6,15 +6,15 @@ public class WizardBoss : Enemy {
 
 	private int threeRoom, twoRoom;
 	private float aliveTimer;
-	public GameObject end, projectile;
 	public Transform[] spawns;
 
 	private void Start()
 	{
 		animator = GetComponent<Animator> ();
+		capsule = GetComponent<CapsuleCollider> ();
 		coolDown = 2f;
-		currentHealth = 500;
-		player = GameObject.Find ("Player");
+		maxHealth = 500;
+		currentHealth = (int)maxHealth;
 	}
 
 	private void Update()
@@ -88,10 +88,5 @@ public class WizardBoss : Enemy {
 					transform.position = spawns [5].position;
 				break;
 		}
-	}
-
-	private void Shoot()
-	{
-		Instantiate (projectile, end.transform.position, transform.rotation);
 	}
 }
