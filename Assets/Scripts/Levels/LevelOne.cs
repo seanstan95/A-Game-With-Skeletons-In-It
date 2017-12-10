@@ -19,6 +19,17 @@ public class LevelOne : MonoBehaviour {
 				if (ironBars.activeSelf)
 					ironBars.SetActive (false);
 				break;
+			case 11:
+				GameObject.Find ("Skeleton12").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton13").GetComponent<Skeleton> ().active = true;
+				break;
+			case 13:
+				GameObject.Find ("Skeleton14").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton15").GetComponent<Skeleton> ().active = true;
+				break;
+			case 15:
+				GameObject.Find ("SkeletonBoss").GetComponent<Skeleton> ().active = true;
+				break;
 			default:
 				break;
 		}
@@ -43,8 +54,9 @@ public class LevelOne : MonoBehaviour {
 			case "Trigger4":
 				GameObject.Find ("Skeleton7").GetComponent<Skeleton> ().active = true;
 				break;
-			case "BossTrigger":
-				GameObject.Find ("SkeletonBoss").GetComponent<Skeleton> ().active = true;
+			case "Trigger5":
+				GameObject.Find ("Skeleton10").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton11").GetComponent<Skeleton> ().active = true;
 				break;
 		}
 	}

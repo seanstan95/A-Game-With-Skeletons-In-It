@@ -12,17 +12,19 @@ public class Skeleton : Enemy {
 	{
 		animator = GetComponent<Animator> ();
 		capsule = GetComponent<CapsuleCollider> ();
+		capsule.enabled = false;
 		coolDown = 1.33f;
+		//Differentiate between normal and boss skeleton information
 		if (tag == "NormalEnemy") {
 			activeTime = .82f;
-			maxHealth = 100;
+			maxHealth = 120;
 			damagePerHit = -10;
 			distance = 4f;
 		} else if (tag == "BossEnemy") {
 			activeTime = 1.35f;
 			maxHealth = 300;
 			damagePerHit = -20;
-			distance = 4f;
+			distance = 5.2f;
 		}
 		currentHealth = (int)maxHealth;
 		newPos = new Vector3 (transform.position.x, 1.5f, transform.position.z);
@@ -41,6 +43,7 @@ public class Skeleton : Enemy {
 					return;
 				} else if (!navAgent.enabled) {
 					navAgent.enabled = true;
+					capsule.enabled = true;
 					animator.SetBool ("Walking", true);
 				}
 

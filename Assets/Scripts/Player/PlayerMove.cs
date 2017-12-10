@@ -70,6 +70,7 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger2":
 			case "Trigger3":
 			case "Trigger4":
+			case "Trigger5":
 			case "BossTrigger":
 				if (GameManager.GetLevel () == "LevelOne") {
 					LevelOne.EnemyTrigger (other.name);
