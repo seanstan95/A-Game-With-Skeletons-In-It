@@ -27,7 +27,10 @@ public class Skeleton : Enemy {
 			distance = 5.2f;
 		}
 		currentHealth = (int)maxHealth;
+		if(GameManager.GetLevel() == "LevelTwo")
+			levelTwo = GameObject.Find ("Managers").GetComponent<LevelTwo> ();
 		newPos = new Vector3 (transform.position.x, 1.5f, transform.position.z);
+		player = GameObject.Find ("Player");
 	}
 
 	private void Update()

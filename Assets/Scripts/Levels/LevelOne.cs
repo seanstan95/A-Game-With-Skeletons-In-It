@@ -11,23 +11,23 @@ public class LevelOne : MonoBehaviour {
 	private void Update()
 	{
 		switch (enemyCount) {
-			case 7:
-				GameObject.Find ("Skeleton8").GetComponent<Skeleton> ().active = true;
+			case 8:
 				GameObject.Find ("Skeleton9").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton10").GetComponent<Skeleton> ().active = true;
 				break;
-			case 9:
+			case 10:
 				if (ironBars.activeSelf)
 					ironBars.SetActive (false);
 				break;
-			case 11:
-				GameObject.Find ("Skeleton12").GetComponent<Skeleton> ().active = true;
+			case 12:
 				GameObject.Find ("Skeleton13").GetComponent<Skeleton> ().active = true;
-				break;
-			case 13:
 				GameObject.Find ("Skeleton14").GetComponent<Skeleton> ().active = true;
-				GameObject.Find ("Skeleton15").GetComponent<Skeleton> ().active = true;
 				break;
-			case 15:
+			case 14:
+				GameObject.Find ("Skeleton15").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton16").GetComponent<Skeleton> ().active = true;
+				break;
+			case 16:
 				GameObject.Find ("SkeletonBoss").GetComponent<Skeleton> ().active = true;
 				break;
 			default:
@@ -53,10 +53,11 @@ public class LevelOne : MonoBehaviour {
 				break;
 			case "Trigger4":
 				GameObject.Find ("Skeleton7").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton8").GetComponent<Skeleton> ().active = true;
 				break;
 			case "Trigger5":
-				GameObject.Find ("Skeleton10").GetComponent<Skeleton> ().active = true;
 				GameObject.Find ("Skeleton11").GetComponent<Skeleton> ().active = true;
+				GameObject.Find ("Skeleton12").GetComponent<Skeleton> ().active = true;
 				break;
 		}
 	}

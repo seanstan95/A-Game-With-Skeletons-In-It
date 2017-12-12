@@ -37,9 +37,11 @@ public static class UIManager {
 			if (Time.timeScale == 1) {
 				Time.timeScale = 0;
 				pauseMenu.SetActive(true);
+				GameObject.Find ("Managers").GetComponent<AudioSource> ().Pause ();
 			} else {
 				pauseMenu.SetActive(false);
 				Time.timeScale = 1;
+				GameObject.Find ("Managers").GetComponent<AudioSource> ().UnPause ();
 			}
 		}
 

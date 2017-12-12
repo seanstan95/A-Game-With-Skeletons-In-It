@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		rigidBody = GetComponent<Rigidbody> ();
 		//REMOVE WHEN DONE TESTING
-		GameManager.SetState ("LVLONEP");
+		GameManager.SetState ("LVLTWOP");
 	}
 
 	private void Update()

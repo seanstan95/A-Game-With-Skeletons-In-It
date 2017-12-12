@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 	protected bool playerInRange;
 	protected float attackTimer, coolDown;
 	protected int damagePerHit;
+	protected LevelTwo levelTwo;
 	public bool active;
 	public CapsuleCollider capsule;
 	public float maxHealth;
@@ -41,6 +42,12 @@ public class Enemy : MonoBehaviour {
 				switch (GameManager.GetLevel ()) {
 					case "LevelOne":
 						LevelOne.enemyCount++;
+						break;
+					case "LevelTwo":
+						if (name == "Skeleton(Clone)") {
+							levelTwo.enemyCount++;
+							levelTwo.Spawn ();
+						}
 						break;
 					case "LevelThree":
 						LevelThree.enemyCount++;
