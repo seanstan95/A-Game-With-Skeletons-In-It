@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public static class UIManager {
 
 	public static GameObject pauseMenu;
-	public static Text heldText, onGroundText, powerupText;
+	public static Text heldText, levelText, onGroundText;
 	public static Slider playerSlider;
 	private static Slider bossSlider, enemySlider;
 
@@ -14,7 +14,7 @@ public static class UIManager {
 	{
 		pauseMenu = GameObject.Find ("PauseMenu");
 		heldText = GameObject.Find ("HeldPowerup").GetComponent<Text> ();
-		powerupText = GameObject.Find ("PowerupText").GetComponent<Text> ();
+		levelText = GameObject.Find ("LevelText").GetComponent<Text> ();
 		onGroundText = GameObject.Find ("OnGround").GetComponent<Text> ();
 		bossSlider = GameObject.Find ("BossHealth").GetComponent<Slider> ();
 		enemySlider = GameObject.Find ("EnemyHealth").GetComponent<Slider> ();
@@ -55,14 +55,14 @@ public static class UIManager {
 	public static void UpdateEnemy(Enemy enemy)
 	{
 		if (enemy.tag == "BossEnemy") {
-			if (!bossSlider.gameObject.activeSelf) {
-				bossSlider.gameObject.SetActive (true);
-			}
 			if (enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (false);
 			}
-			if (bossSlider.maxValue != enemy.maxHealth)
-				bossSlider.maxValue = enemy.maxHealth;
+			if (!bossSlider.gameObject.activeSelf) {
+				bossSlider.gameObject.SetActive (true);
+			}
+			//Adjust max value to represent current enemy's max health
+			bossSlider.maxValue = enemy.maxHealth;
 			bossSlider.value = enemy.currentHealth;
 		} else if(enemy.tag == "NormalEnemy") {
 			if (!enemySlider.gameObject.activeSelf) {
@@ -71,8 +71,8 @@ public static class UIManager {
 			if (bossSlider.gameObject.activeSelf) {
 				bossSlider.gameObject.SetActive (false);
 			}
-			if (enemySlider.maxValue != enemy.maxHealth)
-				enemySlider.maxValue = enemy.maxHealth;
+			//Adjust max value to represent current enemy's max health
+			enemySlider.maxValue = enemy.maxHealth;
 			enemySlider.value = enemy.currentHealth;
 		}
 	}

@@ -20,4 +20,10 @@ public class WizardShoot : MonoBehaviour {
 	{
 		rigidBody.AddForce (transform.forward * speed);
 	}
+
+	private void OnCollisionEnter(Collision other)
+	{
+		if (other.gameObject.tag == "StopShoot")
+			Destroy (gameObject);
+	}
 }

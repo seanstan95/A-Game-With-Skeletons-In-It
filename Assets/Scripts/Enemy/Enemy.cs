@@ -46,7 +46,8 @@ public class Enemy : MonoBehaviour {
 					case "LevelTwo":
 						if (name == "Skeleton(Clone)") {
 							levelTwo.enemyCount++;
-							levelTwo.Spawn ();
+							if ((10 - levelTwo.enemyCount) > 0)
+								UIManager.levelText.text = "Defeat " + (10 - levelTwo.enemyCount) + " Skeletons to advance.";
 						}
 						break;
 					case "LevelThree":

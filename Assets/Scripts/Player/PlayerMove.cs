@@ -54,7 +54,7 @@ public class PlayerMove : MonoBehaviour {
 		movement = Camera.main.transform.TransformDirection (movement.normalized * speed * Time.deltaTime);
 		rigidBody.MovePosition (transform.position + movement);
 		Vector3 rotate = new Vector3 (0, mouseX, 0);
-		transform.Rotate(rotate * 1.5f);
+		transform.Rotate(rotate * 4f);
 
 		if (moveH != 0f || moveV != 0f)
 			animator.SetBool ("Walking", true);

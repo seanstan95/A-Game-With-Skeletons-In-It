@@ -31,19 +31,19 @@ public static class PowerupManager {
 		//Each powerup activation will trigger the associated text to turn yellow so it's noticed that it's active.
 		switch (currentPowerup) {
 			case "Attack":
-				UIManager.powerupText.text = "Enemies damaged!";
+				UIManager.levelText.text = "Enemies damaged!";
 				break;
 			case "Damage":
-				UIManager.powerupText.text = "Damage increased!";
+				UIManager.levelText.text = "Damage increased!";
 				break;
 			case "FireRate":
-				UIManager.powerupText.text = "Fire rate increased!";
+				UIManager.levelText.text = "Fire rate increased!";
 				break;
 			case "Freeze":
-				UIManager.powerupText.text = "Enemies Frozen!";
+				UIManager.levelText.text = "Enemies Frozen!";
 				break;
 			case "Spread":
-				UIManager.powerupText.text = "Spread shot active!";
+				UIManager.levelText.text = "Spread shot active!";
 				break;
 		}
 	}
@@ -115,7 +115,7 @@ public static class PowerupManager {
 				break;
 		}
 		//Health and attack powerups doesn't need a case because there is nothing to deactivate.
-		UIManager.powerupText.text = "";
+		UIManager.levelText.text = "";
 		currentPowerup = "None";
 	}
 
