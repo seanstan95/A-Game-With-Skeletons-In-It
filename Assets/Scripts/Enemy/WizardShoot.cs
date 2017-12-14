@@ -12,16 +12,16 @@ public class WizardShoot : MonoBehaviour {
 	{
 		player = GameObject.Find ("Player");
 		rigidBody = GetComponent<Rigidbody> ();
-		transform.LookAt (player.transform);
-		Destroy (gameObject, 2.5f);
+		Destroy (gameObject, 2f);
 	}
 
 	private void Update()
 	{
+		transform.LookAt (player.transform);
 		rigidBody.AddForce (transform.forward * speed);
 	}
 
-	private void OnCollisionEnter(Collision other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.tag == "StopShoot")
 			Destroy (gameObject);

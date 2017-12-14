@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour {
 		if (currentHealth <= 0) {
 
 			//Disable collider and stop movement (if using a navmeshagent)
-			if (capsule.gameObject.activeSelf) {
+			if (capsule.enabled) {
 				capsule.enabled = false;
 				if(navAgent != null)
 					navAgent.isStopped = true;

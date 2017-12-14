@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class WizardBoss : Enemy {
 
-	private int threeRoom, twoRoom;
+	private bool invoke;
+	private int seconds = 5, threeRoom, twoRoom;
 	private float aliveTimer;
+	private Vector3 afterPosition, beforePosition;
 	public Transform[] spawns;
 
 	private void Start()
@@ -20,12 +22,17 @@ public class WizardBoss : Enemy {
 	private void Update()
 	{
 		transform.LookAt (player.transform);
-		if (!Death ()) {
+		if (!Death () && active) {
+			if (!invoke) {
+				InvokeRepeating ("UpdateText", 0f, 1f);
+				invoke = true;
+			}
+
 			if (aliveTimer < 5) {
 				aliveTimer += Time.deltaTime;
 				attackTimer += Time.deltaTime;
 
-				if (Vector3.Distance (transform.position, player.transform.position) < 27 && attackTimer > coolDown) {
+				if (Vector3.Distance (transform.position, player.transform.position) < 13.5 && attackTimer > coolDown) {
 					Invoke ("Shoot", 0f);
 					Invoke ("Shoot", .1f);
 					Invoke ("Shoot", .2f);
@@ -33,13 +40,21 @@ public class WizardBoss : Enemy {
 				}
 			} else {
 				//if here, it's time to change spawn
-				ChangePosition();
-				aliveTimer = 0;
+				beforePosition = transform.position;
+				afterPosition = ChangePosition ();
+				Debug.Log ("before position: " + beforePosition);
+				Debug.Log ("after position: " + afterPosition);
+
+				if(Vector3.Distance(beforePosition, afterPosition) > 1){
+					transform.position = afterPosition;
+					attackTimer = 0;
+					aliveTimer = 0;
+				}
 			}
 		}
 	}
 
-	private void ChangePosition()
+	private Vector3 ChangePosition()
 	{
 		//First, randomize a room value to spawn from
 		threeRoom = Random.Range (0, 3);
@@ -49,44 +64,59 @@ public class WizardBoss : Enemy {
 		switch (PlayerMove.room) {
 			case "TopLeft":
 				if (twoRoom == 0)
-					transform.position = spawns [3].position;
+					return spawns [1].position;
 				else if (twoRoom == 1)
-					transform.position = spawns [1].position;
+					return spawns [3].position;
 				break;
 			case "TopRight":
 				if (twoRoom == 0)
-					transform.position = spawns [1].position;
+					return spawns [1].position;
 				else if (twoRoom == 1)
-					transform.position = spawns [5].position;
+					return spawns [5].position;
 				break;
 			case "BottomLeft":
 				if (twoRoom == 0)
-					transform.position = spawns [4].position;
+					return spawns [0].position;
 				else if (twoRoom == 1)
-					transform.position = spawns [0].position;
+					return spawns [4].position;
 				break;
 			case "BottomRight":
 				if (twoRoom == 0)
-					transform.position = spawns [4].position;
+					return spawns [2].position;
 				else if (twoRoom == 1)
-					transform.position = spawns [2].position;
+					return spawns [4].position;
 				break;
 			case "TopMiddle":
 				if (threeRoom == 0)
-					transform.position = spawns [0].position;
+					return spawns [0].position;
 				else if (threeRoom == 1)
-					transform.position = spawns [4].position;
+					return spawns [2].position;
 				else if (threeRoom == 2)
-					transform.position = spawns [2].position;
+					return spawns [4].position;
 				break;
 			case "BottomMiddle":
 				if (threeRoom == 0)
-					transform.position = spawns [3].position;
+					return spawns [1].position;
 				else if (threeRoom == 1)
-					transform.position = spawns [1].position;
+					return spawns [3].position;
 				else if (threeRoom == 2)
-					transform.position = spawns [5].position;
+					return spawns [5].position;
 				break;
 		}
+		//should never reach here
+		Debug.Log("ruh roh");
+		return transform.position;
+	}
+
+	private void UpdateText()
+	{
+		if (seconds < 3)
+			UIManager.levelText.text = "Boss Moving in " + seconds + " seconds.";
+		else
+			UIManager.levelText.text = "";
+		
+		seconds--;
+		if (seconds == 0)
+			seconds = 5;
 	}
 }

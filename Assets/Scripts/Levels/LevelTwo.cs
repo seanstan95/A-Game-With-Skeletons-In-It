@@ -9,10 +9,12 @@ public class LevelTwo : MonoBehaviour {
 	public int enemyCount;
 	public GameObject[] bars, spawns;
 	public Wizard[] wizards;
+	public static WizardBoss boss;
 	public GameObject enemy;
 
 	private void Start()
 	{
+		boss = GameObject.Find ("WizardBoss").GetComponent<WizardBoss> ();
 		InvokeRepeating ("Spawn", 5f, 3f);
 		UIManager.levelText.text = "Defeat 10 Skeletons to advance!";
 	}
@@ -30,9 +32,9 @@ public class LevelTwo : MonoBehaviour {
 			bars [2].SetActive (false);
 			wizards [0].active = true;
 			wizards [1].active = true;
-			enemyCount = 10;
+			UIManager.levelText.text = "";
 		}
-		if (enemyCount == 12 && !wizards[2].active) {
+		if (enemyCount >= 12 && !wizards[2].active) {
 			wizards [2].active = true;
 			wizards [3].active = true;
 			wizards [4].active = true;

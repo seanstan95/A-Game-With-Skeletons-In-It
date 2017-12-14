@@ -72,21 +72,28 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger4":
 			case "Trigger5":
 			case "BossTrigger":
-				if (GameManager.GetLevel () == "LevelOne") {
-					LevelOne.EnemyTrigger (other.name);
-					Destroy (other.gameObject);
+				switch (GameManager.GetLevel ()) {
+					case "LevelOne":
+						LevelOne.EnemyTrigger (other.name);
+						break;
+					case "LevelTwo":
+						LevelTwo.boss.active = true;
+						break;
+					case "LevelThree":
+						LevelThree.EnemyTrigger (other.name);
+						break;
 				}
-				if (GameManager.GetLevel () == "LevelThree") {
-					LevelThree.EnemyTrigger (other.name);
-					Destroy (other.gameObject);
-				}
-				break;
-			case "WizardShoot(Clone)":
-				PlayerHealth.ChangeHealth (-5);
 				Destroy (other.gameObject);
 				break;
-			case "BossShoot(Clone)":
-				PlayerHealth.ChangeHealth (-10);
+			case "Fire":
+				collision = true;
+				break;
+			case "WizardShoot(Clone)":
+				//If wizard boss is active, then we're definitely facing level 2 boss, so do 10 damage instead of 5
+				if(LevelTwo.boss.active)
+					PlayerHealth.ChangeHealth (-10);
+				else 
+					PlayerHealth.ChangeHealth (-5);
 				Destroy (other.gameObject);
 				break;
 		}
@@ -133,6 +140,7 @@ public class PlayerMove : MonoBehaviour {
 	private void OnTriggerExit(Collider other)
 	{
 		overItem = false;
+		collision = false;
 		UIManager.onGroundText.gameObject.SetActive (false);
 	}
 

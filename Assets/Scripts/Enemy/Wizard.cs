@@ -17,29 +17,25 @@ public class Wizard : Enemy {
 	private void Update()
 	{
 		//Death() handles timing of destroying the wizard when dead. If it returns false, the wizard is still alive, so continue.
-		if (!Death ()) {
+		if (!Death () && active) {
 			attackTimer += Time.deltaTime;
-
-			//Regardless of whether tracking the player or not, check if the player is close enough to be shot at.
-			if (active) {
-				if (Vector3.Distance (transform.position, player.transform.position) <= 20) {
-					if (!playerInRange) {
-						playerInRange = true;
-						animator.SetBool ("Idle", false);
-						animator.SetBool ("Attacking", true);
-					}
-					if (attackTimer >= coolDown) {
-						attackTimer = 0;
-						Invoke ("Shoot", 0f);
-						Invoke ("Shoot", .1f);
-						Invoke ("Shoot", .2f);
-					}
-				} else {
-					if (playerInRange) {
-						playerInRange = false;
-						animator.SetBool ("Attacking", false);
-						animator.SetBool ("Idle", true);
-					}
+			if (Vector3.Distance (transform.position, player.transform.position) <= 20) {
+				if (!playerInRange) {
+					playerInRange = true;
+					animator.SetBool ("Idle", false);
+					animator.SetBool ("Attacking", true);
+				}
+				if (attackTimer >= coolDown) {
+					attackTimer = 0;
+					Invoke ("Shoot", 0f);
+					Invoke ("Shoot", .1f);
+					Invoke ("Shoot", .2f);
+				}
+			} else {
+				if (playerInRange) {
+					playerInRange = false;
+					animator.SetBool ("Attacking", false);
+					animator.SetBool ("Idle", true);
 				}
 			}
 		}

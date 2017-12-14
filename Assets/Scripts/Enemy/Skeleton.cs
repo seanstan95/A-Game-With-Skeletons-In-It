@@ -36,48 +36,45 @@ public class Skeleton : Enemy {
 	private void Update()
 	{
 		//Death() handles timing of destroying the skeleton when dead. If it returns false, the skeleton is still alive, so continue.
-		if (!Death ()) {
-			//If the skeleton has been activated by the level, continue with tasks
-			if (active) {
-				//This section controls how long to wait for the skeleton's upwards lerp to finish before activating the navAgent and continuing
-				if (lerpTimer <= activeTime) {
-					lerpTimer += Time.deltaTime;
-					transform.position = Vector3.Lerp (transform.position, newPos, .01f);
-					return;
-				} else if (!navAgent.enabled) {
-					navAgent.enabled = true;
-					capsule.enabled = true;
+		if (!Death () && active) {
+			//This section controls how long to wait for the skeleton's upwards lerp to finish before activating the navAgent and continuing
+			if (lerpTimer <= activeTime) {
+				lerpTimer += Time.deltaTime;
+				transform.position = Vector3.Lerp (transform.position, newPos, .01f);
+				return;
+			} else if (!navAgent.enabled) {
+				navAgent.enabled = true;
+				capsule.enabled = true;
+				animator.SetBool ("Walking", true);
+			}
+
+			//Regardless of player position, continue to update the path to the player. Skeleton will only move when agent isStopped is false.
+			navAgent.SetDestination (player.transform.position);
+
+			//Check if the player is within 4 distance from the skeleton (roughly how far the sword attack animation reaches outwards).
+			if (Vector3.Distance (transform.position, player.transform.position) < distance) {
+				if (!playerInRange) {
+					playerInRange = true;
+					navAgent.isStopped = true;
+					attackTimer = .66f;
+					animator.SetBool ("Walking", false);
+					animator.SetBool ("Attacking", true);
+				}
+			} else {
+				if (playerInRange) {
+					playerInRange = false;
+					navAgent.isStopped = false;
+					animator.SetBool ("Attacking", false);
 					animator.SetBool ("Walking", true);
 				}
+			}
 
-				//Regardless of player position, continue to update the path to the player. Skeleton will only move when agent isStopped is false.
-				navAgent.SetDestination (player.transform.position);
-
-				//Check if the player is within 4 distance from the skeleton (roughly how far the sword attack animation reaches outwards).
-				if (Vector3.Distance (transform.position, player.transform.position) < distance) {
-					if (!playerInRange) {
-						playerInRange = true;
-						navAgent.isStopped = true;
-						attackTimer = .66f;
-						animator.SetBool ("Walking", false);
-						animator.SetBool ("Attacking", true);
-					}
-				} else {
-					if (playerInRange) {
-						playerInRange = false;
-						navAgent.isStopped = false;
-						animator.SetBool ("Attacking", false);
-						animator.SetBool ("Walking", true);
-					}
-				}
-
-				//If player is in range, begin incrementing attackTimer. coolDown controls how fast the enemy can attack.
-				if (playerInRange) {
-					attackTimer += Time.deltaTime;
-					if (attackTimer >= coolDown) {
-						PlayerHealth.ChangeHealth (damagePerHit);
-						attackTimer = 0f;
-					}
+			//If player is in range, begin incrementing attackTimer. coolDown controls how fast the enemy can attack.
+			if (playerInRange) {
+				attackTimer += Time.deltaTime;
+				if (attackTimer >= coolDown) {
+					PlayerHealth.ChangeHealth (damagePerHit);
+					attackTimer = 0f;
 				}
 			}
 		}
