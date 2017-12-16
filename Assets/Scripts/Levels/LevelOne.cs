@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelOne : MonoBehaviour {
 
+	private bool end;
+	private float endTimer;
 	public static int enemyCount;
 	public GameObject ironBars;
 	public Skeleton[] skeletons;
@@ -29,6 +31,15 @@ public class LevelOne : MonoBehaviour {
 				break;
 			case 16:
 				GameObject.Find ("SkeletonBoss").GetComponent<Skeleton> ().active = true;
+				break;
+			case 17:
+				if (endTimer < 1) {
+					endTimer += Time.deltaTime;
+				} else if(!end){
+					GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("LevelComplete");
+					GameManager.SetState ("LVLONED");
+					end = true;
+				}
 				break;
 			default:
 				break;

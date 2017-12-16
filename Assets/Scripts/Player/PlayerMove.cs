@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour {
 	private bool collision, overItem;
 	private float damageTimer, mouseX, moveH, moveV, speed = 5f;
 	private GameObject otherPowerup;
+	private LevelThree levelThree;
 	private Rigidbody rigidBody;
 	private Vector3 movement;
 	public static string room;
@@ -18,8 +19,9 @@ public class PlayerMove : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.Locked;
 		animator = GetComponent<Animator> ();
 		rigidBody = GetComponent<Rigidbody> ();
-		//REMOVE WHEN DONE TESTING
-		GameManager.SetState ("LVLTWOP");
+
+		if (GameManager.GetLevel () == "LevelThree")
+			levelThree = GameObject.Find ("Managers").GetComponent<LevelThree> ();
 	}
 
 	private void Update()
@@ -56,10 +58,13 @@ public class PlayerMove : MonoBehaviour {
 		Vector3 rotate = new Vector3 (0, mouseX, 0);
 		transform.Rotate(rotate * 4f);
 
-		if (moveH != 0f || moveV != 0f)
+		if (moveH != 0f || moveV != 0f) {
+			animator.SetBool ("Idle", false);
 			animator.SetBool ("Walking", true);
-		else
+		} else {
 			animator.SetBool ("Walking", false);
+			animator.SetBool ("Idle", true);
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -80,7 +85,7 @@ public class PlayerMove : MonoBehaviour {
 						LevelTwo.boss.active = true;
 						break;
 					case "LevelThree":
-						LevelThree.EnemyTrigger (other.name);
+						levelThree.EnemyTrigger (other.name);
 						break;
 				}
 				Destroy (other.gameObject);
@@ -90,10 +95,17 @@ public class PlayerMove : MonoBehaviour {
 				break;
 			case "WizardShoot(Clone)":
 				//If wizard boss is active, then we're definitely facing level 2 boss, so do 10 damage instead of 5
-				if(LevelTwo.boss.active)
-					PlayerHealth.ChangeHealth (-10);
-				else 
-					PlayerHealth.ChangeHealth (-5);
+				if (GameManager.GetLevel () == "LevelTwo") {
+					if (LevelTwo.boss.active)
+						PlayerHealth.ChangeHealth (-10);
+					else
+						PlayerHealth.ChangeHealth (-5);
+				} else if (GameManager.GetLevel () == "LevelThree") {
+					if (levelThree.wizBoss.active)
+						PlayerHealth.ChangeHealth (-10);
+					else
+						PlayerHealth.ChangeHealth (-5);
+				}
 				Destroy (other.gameObject);
 				break;
 		}

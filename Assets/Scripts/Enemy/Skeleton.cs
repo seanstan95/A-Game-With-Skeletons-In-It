@@ -22,7 +22,10 @@ public class Skeleton : Enemy {
 			distance = 4f;
 		} else if (tag == "BossEnemy") {
 			activeTime = 1.35f;
-			maxHealth = 300;
+			if (GameManager.GetLevel () == "LevelOne")
+				maxHealth = 300;
+			else
+				maxHealth = 500;
 			damagePerHit = -20;
 			distance = 5.2f;
 		}

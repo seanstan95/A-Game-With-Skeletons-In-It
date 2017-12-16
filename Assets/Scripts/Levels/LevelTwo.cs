@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LevelTwo : MonoBehaviour {
 
+	private bool end;
 	private GameObject newSpawn;
 	private int spawn;
+	private float endTimer;
 	public int enemyCount;
 	public GameObject[] bars, spawns;
 	public Wizard[] wizards;
@@ -38,6 +40,15 @@ public class LevelTwo : MonoBehaviour {
 			wizards [2].active = true;
 			wizards [3].active = true;
 			wizards [4].active = true;
+		}
+		if (boss.currentHealth <= 0) {
+			if (endTimer < 1) {
+				endTimer += Time.deltaTime;
+			} else if(!end){
+				GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("LevelComplete");
+				GameManager.SetState ("LVLTWOD");
+				end = true;
+			}
 		}
 	}
 

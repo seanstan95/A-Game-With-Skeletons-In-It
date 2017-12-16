@@ -5,7 +5,7 @@ using UnityEngine;
 public class WizardBoss : Enemy {
 
 	private bool invoke;
-	private int seconds = 5, threeRoom, twoRoom;
+	private int changeTimer, seconds, threeRoom, twoRoom;
 	private float aliveTimer;
 	private Vector3 afterPosition, beforePosition;
 	public Transform[] spawns;
@@ -15,7 +15,14 @@ public class WizardBoss : Enemy {
 		animator = GetComponent<Animator> ();
 		capsule = GetComponent<CapsuleCollider> ();
 		coolDown = 2f;
-		maxHealth = 500;
+		if (GameManager.GetLevel () == "LevelTwo") {
+			changeTimer = 5;
+			maxHealth = 700;
+		} else {
+			changeTimer = 7;
+			maxHealth = 1000;
+		}
+		seconds = changeTimer;
 		currentHealth = (int)maxHealth;
 	}
 
@@ -28,7 +35,7 @@ public class WizardBoss : Enemy {
 				invoke = true;
 			}
 
-			if (aliveTimer < 5) {
+			if (aliveTimer < changeTimer) {
 				aliveTimer += Time.deltaTime;
 				attackTimer += Time.deltaTime;
 
@@ -42,8 +49,6 @@ public class WizardBoss : Enemy {
 				//if here, it's time to change spawn
 				beforePosition = transform.position;
 				afterPosition = ChangePosition ();
-				Debug.Log ("before position: " + beforePosition);
-				Debug.Log ("after position: " + afterPosition);
 
 				if(Vector3.Distance(beforePosition, afterPosition) > 1){
 					transform.position = afterPosition;
@@ -117,6 +122,6 @@ public class WizardBoss : Enemy {
 		
 		seconds--;
 		if (seconds == 0)
-			seconds = 5;
+			seconds = changeTimer;
 	}
 }

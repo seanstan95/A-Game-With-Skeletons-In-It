@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿	using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,19 +29,21 @@ public static class UIManager {
 	public static void Update () 
 	{
 		//If escape is pressed, exit to the main menu.
-		if (Input.GetKeyDown (KeyCode.Escape))
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			GameObject.Find ("Player").GetComponent<AudioSource> ().mute = true;
 			GameManager.SetState ("MENU");
+		}
 
 		//If space is pressed, pause or resume the game.
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			if (Time.timeScale == 1) {
 				Time.timeScale = 0;
 				pauseMenu.SetActive(true);
-				GameObject.Find ("Managers").GetComponent<AudioSource> ().Pause ();
+				GameManager.audioSource.Pause ();
 			} else {
 				pauseMenu.SetActive(false);
 				Time.timeScale = 1;
-				GameObject.Find ("Managers").GetComponent<AudioSource> ().UnPause ();
+				GameManager.audioSource.UnPause ();
 			}
 		}
 
