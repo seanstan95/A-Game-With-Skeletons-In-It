@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
 	{
 		switch (state) {
 			case StateType.MENU:
+				Cursor.lockState = CursorLockMode.None;
 				//if returning to menu from a level
 				if (!canvas.activeSelf) {
 					Time.timeScale = 0;
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour {
 				break;
 			case StateType.LVLONET:
 				PlayerHealth.currentHealth = 100;
+				LevelOne.enemyCount = 0;
 				Time.timeScale = 1;
 				canvas.SetActive (false);
 				SceneManager.LoadScene ("LevelOne");
@@ -81,7 +83,6 @@ public class GameManager : MonoBehaviour {
 				break;
 			case StateType.LVLONED:
 				loadTimer += Time.deltaTime;
-				Debug.Log ("incremented load timer, now " + loadTimer);
 				if (loadTimer >= 5) {
 					state = StateType.LVLTWOT;
 					loadTimer = 0;
@@ -114,8 +115,10 @@ public class GameManager : MonoBehaviour {
 				break;
 			case StateType.LVLTHREED:
 				loadTimer += Time.deltaTime;
-				if (loadTimer >= 5)
+				if (loadTimer >= 5) {
 					state = StateType.MENU;
+					loadTimer = 0;
+				}
 				break;
 			case StateType.LVLONEP:
 			case StateType.LVLTWOP:
@@ -128,7 +131,11 @@ public class GameManager : MonoBehaviour {
 			case StateType.GAMEOVER:
 				//Reached when the player is dead - triggers GameOver animation
 				GameObject.Find ("HUD").GetComponent<Animator> ().SetTrigger ("GameOver");
-				state = StateType.WAITING;
+				loadTimer += Time.deltaTime;
+				if (loadTimer >= 5) {
+					state = StateType.MENU;
+					loadTimer = 0;
+				}
 				break;
 		}
 	}
@@ -165,6 +172,9 @@ public class GameManager : MonoBehaviour {
 				break;
 			case "LVLTHREEP":
 				state = StateType.LVLTHREEP;
+				break;
+			case "LVLTHREED":
+				state = StateType.LVLTHREED;
 				break;
 			case "PLAYING":
 				state = StateType.WAITING;

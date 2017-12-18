@@ -45,7 +45,7 @@ public class FinalBoss : Enemy {
 				//Regardless of player distance, continue to update the path to the player. Boss will only move when agent isStopped is false.
 				navAgent.SetDestination (player.transform.position);
 
-				if (Vector3.Distance (transform.position, player.transform.position) > 3) {
+				if (Vector3.Distance (transform.position, player.transform.position) > 2.5f) {
 					//if here, boss is charging at the player
 					if (playerInRange) {
 						playerInRange = false;
@@ -92,6 +92,7 @@ public class FinalBoss : Enemy {
 								break;
 						}
 						navAgent.isStopped = true;
+						playerInRange = true;
 						transform.localPosition = new Vector3 (-0.3f, -13, 0);
 						transform.localScale = new Vector3 (5, .75f, 5);
 						size = false;

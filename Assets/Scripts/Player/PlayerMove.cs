@@ -37,10 +37,10 @@ public class PlayerMove : MonoBehaviour {
 		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
 			//Update the current powerup to be the one on the ground, and destroy it.
 			PowerupManager.heldPowerup = otherPowerup.tag;
-			UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
+			//UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 			Destroy (otherPowerup);
 			overItem = false;
-			UIManager.onGroundText.gameObject.SetActive (false);
+			//UIManager.onGroundText.gameObject.SetActive (false);
 		}
 	}
 
@@ -139,12 +139,12 @@ public class PlayerMove : MonoBehaviour {
 			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
 			if (PowerupManager.heldPowerup == "None") {
 				PowerupManager.heldPowerup = other.gameObject.tag;
-				UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
+				//UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
 				Destroy (other.gameObject);
 			}else{
 				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
-				UIManager.onGroundText.gameObject.SetActive(true);
-				UIManager.onGroundText.text = "On Ground: " + other.tag;
+				//UIManager.onGroundText.gameObject.SetActive(true);
+				//UIManager.onGroundText.text = "On Ground: " + other.tag;
 				otherPowerup = other.gameObject;
 				overItem = true;
 			}
@@ -155,7 +155,7 @@ public class PlayerMove : MonoBehaviour {
 	{
 		overItem = false;
 		collision = false;
-		UIManager.onGroundText.gameObject.SetActive (false);
+		//UIManager.onGroundText.gameObject.SetActive (false);
 	}
 
 	private void OnCollisionEnter(Collision other)
