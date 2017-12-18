@@ -64,8 +64,15 @@ public static class UIManager {
 				bossSlider.gameObject.SetActive (true);
 			}
 			//Adjust max value to represent current enemy's max health
-			bossSlider.maxValue = enemy.maxHealth;
-			bossSlider.value = enemy.currentHealth;
+			if (enemy.name == "FinalBoss") {
+				if (!FinalBoss.shield) {
+					bossSlider.maxValue = enemy.maxHealth;
+					bossSlider.value = enemy.currentHealth;
+				}
+			} else {
+				bossSlider.maxValue = enemy.maxHealth;
+				bossSlider.value = enemy.currentHealth;
+			}
 		} else if(enemy.tag == "NormalEnemy") {
 			if (!enemySlider.gameObject.activeSelf) {
 				enemySlider.gameObject.SetActive (true);

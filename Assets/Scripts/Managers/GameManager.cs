@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour {
 				state = StateType.WAITING;
 				break;
 			case StateType.LVLONET:
+				PlayerHealth.currentHealth = 100;
 				Time.timeScale = 1;
 				canvas.SetActive (false);
 				SceneManager.LoadScene ("LevelOne");

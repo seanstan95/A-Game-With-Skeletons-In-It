@@ -14,12 +14,13 @@ public class WizardBoss : Enemy {
 	{
 		animator = GetComponent<Animator> ();
 		capsule = GetComponent<CapsuleCollider> ();
-		coolDown = 2f;
 		if (GameManager.GetLevel () == "LevelTwo") {
+			coolDown = 2f;
 			changeTimer = 5;
 			maxHealth = 700;
 		} else {
-			changeTimer = 7;
+			coolDown = 1.5f;
+			changeTimer = 6;
 			maxHealth = 1000;
 		}
 		seconds = changeTimer;
@@ -39,7 +40,7 @@ public class WizardBoss : Enemy {
 				aliveTimer += Time.deltaTime;
 				attackTimer += Time.deltaTime;
 
-				if (Vector3.Distance (transform.position, player.transform.position) < 13.5 && attackTimer > coolDown) {
+				if (Vector3.Distance (transform.position, player.transform.position) < 15 && attackTimer > coolDown) {
 					Invoke ("Shoot", 0f);
 					Invoke ("Shoot", .1f);
 					Invoke ("Shoot", .2f);

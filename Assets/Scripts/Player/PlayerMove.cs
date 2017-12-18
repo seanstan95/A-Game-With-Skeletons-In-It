@@ -77,6 +77,7 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger4":
 			case "Trigger5":
 			case "BossTrigger":
+			case "FinalBossTrigger":
 				switch (GameManager.GetLevel ()) {
 					case "LevelOne":
 						LevelOne.EnemyTrigger (other.name);
@@ -94,6 +95,7 @@ public class PlayerMove : MonoBehaviour {
 				collision = true;
 				break;
 			case "WizardShoot(Clone)":
+			case "WizardShoot2(Clone)":
 				//If wizard boss is active, then we're definitely facing level 2 boss, so do 10 damage instead of 5
 				if (GameManager.GetLevel () == "LevelTwo") {
 					if (LevelTwo.boss.active)

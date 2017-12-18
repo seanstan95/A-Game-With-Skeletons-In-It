@@ -6,6 +6,7 @@ public class LevelThree : MonoBehaviour {
 
 	public static int enemyCount;
 	public GameObject ironBars1, ironBars2;
+	public FinalBoss finalBoss;
 	public Skeleton[] skeletons;
 	public Wizard[] wizards;
 	public WizardBoss wizBoss;
@@ -50,6 +51,9 @@ public class LevelThree : MonoBehaviour {
 				break;
 			case "BossTrigger":
 				wizBoss.active = true;
+				break;
+			case "FinalBossTrigger":
+				finalBoss.active = true;
 				break;
 		}
 	}

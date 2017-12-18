@@ -62,8 +62,22 @@ public class PlayerAttack : MonoBehaviour
 		if (Physics.Raycast (ray, out hitInfo, range, shootableMask)) {
 			enemyHit = hitInfo.collider.GetComponent<Enemy> ();
 			if (enemyHit != null) {
-				enemyHit.currentHealth -= damagePerShot;
-				UIManager.UpdateEnemy (enemyHit);
+				if (enemyHit.name == "FinalBoss") {
+					if (!FinalBoss.shield) {
+						enemyHit.currentHealth -= damagePerShot;
+						UIManager.UpdateEnemy (enemyHit);
+					} else {
+						UIManager.levelText.text = "Shoot a target to disable boss's shield.";
+					}
+				} else {
+					enemyHit.currentHealth -= damagePerShot;
+					UIManager.UpdateEnemy (enemyHit);
+				}
+			}
+			if (hitInfo.collider.name == "Target") {
+				FinalBoss.shield = false;
+				UIManager.levelText.text = "";
+				Destroy (hitInfo.collider.gameObject);
 			}
 			line.SetPosition (1, hitInfo.point);
 		}else{
@@ -71,11 +85,11 @@ public class PlayerAttack : MonoBehaviour
 		}
 	}
 
-	private Ray Angle(Ray ray, LineRenderer line, float angleAdjust)
+	/*private Ray Angle(Ray ray, LineRenderer line, float angleAdjust)
 	{
 		line.enabled = true;
 		line.SetPosition (0, gunEnd.transform.position);
 		ray.direction = transform.forward + (transform.right * angleAdjust);
 		return ray;
-	}
+	}*/
 }
