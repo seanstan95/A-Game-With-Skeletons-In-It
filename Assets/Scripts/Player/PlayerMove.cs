@@ -54,7 +54,8 @@ public class PlayerMove : MonoBehaviour {
 		//Move and rotate the player, then animate accordingly.
 		movement.Set(moveH, 0f, moveV);
 		movement = Camera.main.transform.TransformDirection (movement.normalized * speed * Time.deltaTime);
-		rigidBody.MovePosition (transform.position + movement);
+        movement.y = 0f;
+        transform.position += movement;
 		Vector3 rotate = new Vector3 (0, mouseX, 0);
 		transform.Rotate(rotate * 4f);
 

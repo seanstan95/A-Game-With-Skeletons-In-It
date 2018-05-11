@@ -40,11 +40,13 @@ public static class UIManager {
 				Time.timeScale = 0;
 				pauseMenu.SetActive(true);
 				GameManager.audioSource.Pause ();
-			} else {
+                Cursor.lockState = CursorLockMode.None;
+            } else {
 				pauseMenu.SetActive(false);
 				Time.timeScale = 1;
 				GameManager.audioSource.UnPause ();
-			}
+                Cursor.lockState = CursorLockMode.Locked;
+            }
 		}
 
 		//If F is pressed, activate the currently held powerup.

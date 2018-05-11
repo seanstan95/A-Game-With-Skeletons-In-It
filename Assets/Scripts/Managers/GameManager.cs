@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour {
 		MENU,        //transition to main menu
 		OPTIONS,     //transition to options menu
 		LVLONET,     //transition to level one
-		LVLONEP,		 //playing level one
+		LVLONEP,     //playing level one
 		LVLONED,     //level 1 done
 		LVLTWOT, 	 //transition to level two
-		LVLTWOP,		 //playing level 2
+		LVLTWOP,	 //playing level 2
 		LVLTWOD,     //level 2 done
 		LVLTHREET,   //transition to level three
 		LVLTHREEP,   //playing level 3
