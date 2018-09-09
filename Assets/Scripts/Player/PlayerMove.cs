@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
 
@@ -9,19 +6,23 @@ public class PlayerMove : MonoBehaviour {
 	private bool collision, overItem;
 	private float damageTimer, mouseX, moveH, moveV, speed = 5f;
 	private GameObject otherPowerup;
+    private LevelOne levelOne;
+    private LevelTwo levelTwo;
 	private LevelThree levelThree;
-	private Rigidbody rigidBody;
 	private Vector3 movement;
 	public static string room;
 
 	private void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
 		animator = GetComponent<Animator> ();
-		rigidBody = GetComponent<Rigidbody> ();
 
-		if (GameManager.GetLevel () == "LevelThree")
-			levelThree = GameObject.Find ("Managers").GetComponent<LevelThree> ();
+        if (GameManager.GetLevel() == "LevelOne")
+            levelOne = GameObject.Find("Managers").GetComponent<LevelOne>();
+        else if (GameManager.GetLevel() == "LevelTwo")
+            levelTwo = GameObject.Find("Managers").GetComponent<LevelTwo>();
+        else if (GameManager.GetLevel() == "LevelThree")
+            levelThree = GameObject.Find("Managers").GetComponent<LevelThree>();
 	}
 
 	private void Update()
@@ -81,10 +82,10 @@ public class PlayerMove : MonoBehaviour {
 			case "FinalBossTrigger":
 				switch (GameManager.GetLevel ()) {
 					case "LevelOne":
-						LevelOne.EnemyTrigger (other.name);
+						levelOne.EnemyTrigger (other.name);
 						break;
 					case "LevelTwo":
-						LevelTwo.boss.active = true;
+						levelTwo.boss.active = true;
 						break;
 					case "LevelThree":
 						levelThree.EnemyTrigger (other.name);
@@ -99,7 +100,7 @@ public class PlayerMove : MonoBehaviour {
 			case "WizardShoot2(Clone)":
 				//If wizard boss is active, then we're definitely facing level 2 boss, so do 10 damage instead of 5
 				if (GameManager.GetLevel () == "LevelTwo") {
-					if (LevelTwo.boss.active)
+					if (levelTwo.boss.active)
 						PlayerHealth.ChangeHealth (-10);
 					else
 						PlayerHealth.ChangeHealth (-5);
