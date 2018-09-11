@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public static class PowerupManager {
+/*
+    * Prior to the final build of the game, powerups existed. PowerupManager was the all-in-one manager for activation and running of powerups.
+    * PowerupManager is no longer used or needed (references to it in other scripts have also been removed) as powerups were removed from the game.
+*/
 
+public static class PowerupManager {
+    /*
 	public static string currentPowerup = "None", heldPowerup = "None";
 	public static GameObject[] powerups;
 
@@ -138,4 +140,5 @@ public static class PowerupManager {
 				return 6;
 		}
 	}
+    */
 }

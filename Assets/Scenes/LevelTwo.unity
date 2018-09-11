@@ -1925,16 +1925,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 349967784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d36c044748431144bafbed4a35301c27, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f67f521d060d3d4d8ded2252052d4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerups:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &349967786
 Transform:
   m_ObjectHideFlags: 0
@@ -1959,7 +1952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2bf494cd1bf0ab44b47f4ccbf95ec80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 0
   anim: {fileID: 1052786623}
   skeleSpawn: {fileID: 1218836381872624, guid: 57efacf908ad3004f8851766089100eb, type: 2}
   bars:
@@ -1973,6 +1965,7 @@ MonoBehaviour:
   - {fileID: 2031800066}
   - {fileID: 441267866}
   - {fileID: 639742352}
+  enemyCount: 0
   wizards:
   - {fileID: 1783683551}
   - {fileID: 1220416311}

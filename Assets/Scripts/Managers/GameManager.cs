@@ -1,18 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-	public AudioClip[] clips;
-	public static AudioSource audioSource;
-	private bool audioSet;
-	private static StateType state;
+    private float loadTimer;
+    private static StateType state;
 	private static GameManager instance;
-	private float loadTimer;
 	private GameObject canvas, mainMenu, optionsMenu;
-	public static float musicVolume = 100, sfxVolume = 100;
+    public AudioClip[] clips;
+    public static AudioSource audioSource;
+    public static float musicVolume, sfxVolume;
 
 	public enum StateType
 	{
@@ -48,6 +45,8 @@ public class GameManager : MonoBehaviour {
 		optionsMenu.SetActive (false);
 		DontDestroyOnLoad (canvas);
 		DontDestroyOnLoad (gameObject);
+        musicVolume = 100;
+        sfxVolume = 100;
 	}
 
 	private void Update()

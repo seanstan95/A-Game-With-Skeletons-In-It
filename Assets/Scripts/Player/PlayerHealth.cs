@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
 
-	private float flashSpeed = 2f;
 	private static bool damaged;
 	public Image damageImage;
 	public static int currentHealth = 100;
@@ -14,10 +11,11 @@ public class PlayerHealth : MonoBehaviour {
 	{
 		//If the player has been damaged in the last frame, set the color of the damageImage to be red.
 		//Then, lerp from red to clear over flashSpeed * Time.deltaTime
-		if (damaged)
-			damageImage.color = new Color(250, 0, 0);
-		damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-		damaged = false;
+		if (damaged) {
+            damageImage.color = new Color(250, 0, 0);
+            damaged = false;
+        }
+		damageImage.color = Color.Lerp (damageImage.color, Color.clear, 2f * Time.deltaTime);
 	}
 
 	public static void ChangeHealth(int amount)

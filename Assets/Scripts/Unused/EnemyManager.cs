@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
+/*
+    * This class was originall used in a now unused scene for testing enemy spawning and powerup interaction with enemies.
+    * After powerups were removed from the final version (and debugging was finished) the scene, and this script, were no longer needed.
+*/
 public class EnemyManager : MonoBehaviour {
 
-	private float loopTime;
 	private int spawnPointIndex;
-
 	public GameObject enemy;
 	public static float spawnTime;
 	public Transform[] spawnPoints;
@@ -27,8 +26,7 @@ public class EnemyManager : MonoBehaviour {
 		//Choose a random number from 0 to the amount of spawn points, and Instantiate an enemy at that spawn point.
 		//Don't spawn any enemies if Freeze powerup is active.
 		spawnPointIndex = Random.Range (0, spawnPoints.Length);
-		if(PowerupManager.currentPowerup != "Freeze")
-			Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+        Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
 
 		//Spawn() gets re-called every spawnTime seconds (initially 1.5 but is adjusted when Freeze powerup is active).
 		Invoke ("Spawn", spawnTime);

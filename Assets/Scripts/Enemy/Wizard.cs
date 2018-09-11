@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class Wizard : Enemy {
 
@@ -9,9 +6,8 @@ public class Wizard : Enemy {
 	{
 		animator = GetComponent<Animator> ();
 		capsule = GetComponent<CapsuleCollider> ();
-		coolDown = 2.5f;
 		maxHealth = 150;
-		currentHealth = (int)maxHealth;
+		currentHealth = maxHealth;
 	}
 
 	private void Update()
@@ -25,7 +21,7 @@ public class Wizard : Enemy {
 					animator.SetBool ("Idle", false);
 					animator.SetBool ("Attacking", true);
 				}
-				if (attackTimer >= coolDown) {
+				if (attackTimer >= 2.5f) {
 					attackTimer = 0;
 					Invoke ("Shoot", 0f);
 					Invoke ("Shoot", .1f);

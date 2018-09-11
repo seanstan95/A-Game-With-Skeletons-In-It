@@ -5,11 +5,11 @@ public class LevelTwo : MonoBehaviour {
 	private bool end;
     private float endTimer;
     private int spawnNum;
-	public int enemyCount;
     public Animator anim;
     public GameObject skeleSpawn;
     public GameObject[] bars, spawnPoints;
-	public Wizard[] wizards;
+    public int enemyCount;
+    public Wizard[] wizards;
 	public WizardBoss boss;
 
 	private void Start()
@@ -24,7 +24,8 @@ public class LevelTwo : MonoBehaviour {
 		if (enemyCount == 10 && bars[0].activeSelf) {
 			CancelInvoke ("Spawn");
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("NormalEnemy")) {
-			    enemy.GetComponent<Skeleton> ().currentHealth -= 120;
+                if(enemy.name == "Skeleton(Clone)")
+			        enemy.GetComponent<Skeleton> ().currentHealth -= 120;
 			}
 			bars [0].SetActive (false);
 			bars [1].SetActive (false);

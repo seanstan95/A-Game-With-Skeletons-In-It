@@ -1571,7 +1571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 334682383}
-  - component: {fileID: 334682381}
+  - component: {fileID: 334682382}
   - component: {fileID: 334682384}
   m_Layer: 0
   m_Name: Managers
@@ -1580,7 +1580,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &334682381
+--- !u!114 &334682382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1588,16 +1588,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 334682380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d36c044748431144bafbed4a35301c27, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f67f521d060d3d4d8ded2252052d4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerups:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &334682383
 Transform:
   m_ObjectHideFlags: 0
@@ -2324,7 +2317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &568451063
@@ -7766,18 +7759,6 @@ Prefab:
       propertyPath: damageImage
       value: 
       objectReference: {fileID: 1864432113}
-    - target: {fileID: 4884764174005960, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4041362248469842, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4041362248469842, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 2.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fe42fc6605f5f48bd5e374ad413cf0, type: 2}
   m_IsPrefabAsset: 0

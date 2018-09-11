@@ -1318,10 +1318,10 @@ MonoBehaviour:
   active: 0
   capsule: {fileID: 199732700}
   maxHealth: 0
-  currentHealth: 0
   player: {fileID: 777578832}
   projectile: {fileID: 0}
   wandEnd: {fileID: 0}
+  currentHealth: 0
   navAgent: {fileID: 199732703}
 --- !u!195 &199732703
 NavMeshAgent:
@@ -2386,16 +2386,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 349967784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d36c044748431144bafbed4a35301c27, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f67f521d060d3d4d8ded2252052d4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerups:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &349967786
 Transform:
   m_ObjectHideFlags: 0
@@ -2420,11 +2413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f662b403eb6e3f48af8e7ddc328e5e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 1057102123}
+  finalBoss: {fileID: 199732702}
   bars:
   - {fileID: 1432460114}
   - {fileID: 1600286374}
-  anim: {fileID: 1057102123}
-  finalBoss: {fileID: 199732702}
   skeletons:
   - {fileID: 1041272520}
   - {fileID: 1817669343}

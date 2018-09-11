@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
-	private bool count, deadTrigger;
+	private bool count, animated;
 	private float destroyTimer;
 	protected Animator animator;
 	protected bool playerInRange;
@@ -14,27 +12,26 @@ public class Enemy : MonoBehaviour {
 	protected LevelTwo levelTwo;
 	public bool active;
 	public CapsuleCollider capsule;
-	public float maxHealth;
-	public int currentHealth;
-	public GameObject player, projectile, wandEnd;
+	public int maxHealth;
+    public GameObject player, projectile, wandEnd;
+    public int currentHealth;
 	public NavMeshAgent navAgent;
 
 	protected bool Death()
 	{
-		//If the enemy is dead, run through a number of tasks
 		if (currentHealth <= 0) {
 
-			//Disable collider and stop movement (if using a navmeshagent)
+			//Disable collider and stop movement (if using a NavMeshAgent)
 			if (capsule.enabled) {
 				capsule.enabled = false;
-				if(navAgent != null)
+				if(navAgent != null && !navAgent.isStopped)
 					navAgent.isStopped = true;
 			}
 
 			//If the death animation hasn't happened yet, do so now.
-			if (!deadTrigger) {
+			if (!animated) {
 				animator.SetTrigger ("Die");
-				deadTrigger = true;
+				animated = true;
 			}
 
 			if (!count) {
@@ -62,14 +59,14 @@ public class Enemy : MonoBehaviour {
 			if (destroyTimer >= 2f)
 				Destroy (gameObject);
 
-			//Return true if enemy is dead, false if still alive
+			//Return true if enemy is dead, false if still alive.
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	//Used by wizards for ranged shots
+	//Used by wizards for ranged shots.
 	protected void Shoot()
 	{
 		Instantiate (projectile, wandEnd.transform.position, transform.rotation);

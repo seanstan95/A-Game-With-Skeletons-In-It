@@ -2,20 +2,18 @@
 
 public class PlayerMove : MonoBehaviour {
 
-	private Animator animator;
-	private bool collision, overItem;
-	private float damageTimer, mouseX, moveH, moveV, speed = 5f;
-	private GameObject otherPowerup;
+	private bool collision;
+	private float damageTimer, mouseX, moveH, moveV;
     private LevelOne levelOne;
     private LevelTwo levelTwo;
 	private LevelThree levelThree;
 	private Vector3 movement;
-	public static string room;
+    public Animator animator;
+    public static string room;
 
 	private void Start()
 	{
         Cursor.lockState = CursorLockMode.Locked;
-		animator = GetComponent<Animator> ();
 
         if (GameManager.GetLevel() == "LevelOne")
             levelOne = GameObject.Find("Managers").GetComponent<LevelOne>();
@@ -34,15 +32,6 @@ public class PlayerMove : MonoBehaviour {
 		} else if (damageTimer < 1) {
 			damageTimer += Time.deltaTime;
 		}
-
-		if (overItem && Input.GetKeyDown (KeyCode.Tab)) {
-			//Update the current powerup to be the one on the ground, and destroy it.
-			PowerupManager.heldPowerup = otherPowerup.tag;
-			//UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
-			Destroy (otherPowerup);
-			overItem = false;
-			//UIManager.onGroundText.gameObject.SetActive (false);
-		}
 	}
 
 	private void FixedUpdate()
@@ -54,7 +43,7 @@ public class PlayerMove : MonoBehaviour {
 
 		//Move and rotate the player, then animate accordingly.
 		movement.Set(moveH, 0f, moveV);
-		movement = Camera.main.transform.TransformDirection (movement.normalized * speed * Time.deltaTime);
+		movement = Camera.main.transform.TransformDirection (movement.normalized * 5f * Time.deltaTime);
         movement.y = 0f;
         transform.position += movement;
 		Vector3 rotate = new Vector3 (0, mouseX, 0);
@@ -71,7 +60,7 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other)
 	{
-		//Manages enemy activations via triggers in levels. Returns out to avoid attempting to get a powerupmanager index since these aren't powerups.
+		//Manages enemy activations via triggers in levels.
 		switch (other.name) {
 			case "Trigger1":
 			case "Trigger2":
@@ -79,12 +68,13 @@ public class PlayerMove : MonoBehaviour {
 			case "Trigger4":
 			case "Trigger5":
 			case "BossTrigger":
-			case "FinalBossTrigger":
+            case "WizBossTrigger":
+            case "FinalBossTrigger":
 				switch (GameManager.GetLevel ()) {
 					case "LevelOne":
 						levelOne.EnemyTrigger (other.name);
 						break;
-					case "LevelTwo":
+					case "LevelTwo": //only trigger activation in level 2 is the boss
 						levelTwo.boss.active = true;
 						break;
 					case "LevelThree":
@@ -110,54 +100,37 @@ public class PlayerMove : MonoBehaviour {
 					else
 						PlayerHealth.ChangeHealth (-5);
 				}
+
 				Destroy (other.gameObject);
 				break;
 		}
 
-		//Manages boss spawn point room system in level two. Returns out to avoid attemtping to get a powerupmanager index since these aren't powerups.
+		//Manages Wizard boss spawn positions.
 		switch (other.name) {
 			case "TopLeft":
 				room = "TopLeft";
-				return;
+                break;
 			case "TopMiddle":
 				room = "TopMiddle";
-				return;
+                break;
 			case "TopRight":
 				room = "TopRight";
-				return;
+                break;
 			case "BottomLeft":
 				room = "BottomLeft";
-				return;
+                break;
 			case "BottomMiddle":
 				room = "BottomMiddle";
-				return;
+                break;
 			case "BottomRight":
 				room = "BottomRight";
-				return;
-		}
-
-		//If the result of index above is 6 (default case from GetIndex), then we know the item we collided with is not a powerup, so skip all of this.
-		if (PowerupManager.GetIndex(other.tag) != 6) {
-			//If there is no held powerup, pick up the item and set the currently held powerup to be the tag of the item.
-			if (PowerupManager.heldPowerup == "None") {
-				PowerupManager.heldPowerup = other.gameObject.tag;
-				//UIManager.heldText.text = "Held Powerup: " + PowerupManager.heldPowerup;
-				Destroy (other.gameObject);
-			}else{
-				//If here, we currently hold a valid powerup, and have collided with another powerup. Set overItem to true.
-				//UIManager.onGroundText.gameObject.SetActive(true);
-				//UIManager.onGroundText.text = "On Ground: " + other.tag;
-				otherPowerup = other.gameObject;
-				overItem = true;
-			}
+                break;
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
-		overItem = false;
 		collision = false;
-		//UIManager.onGroundText.gameObject.SetActive (false);
 	}
 
 	private void OnCollisionEnter(Collision other)
