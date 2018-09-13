@@ -1,7 +1,7 @@
 # A Game With Skeletons In It
 This was a game I made for a Game Design elective course in Fall 2017. It is a functional (slightly buggy due to rushed development) 
 game with 3 levels, containing 2 enemy types, 2 boss versions of those enemy types, and a unique final boss.
-## Enemies & Hazards
+## Enemies
 **Skeletons** - Simple melee enemies that are taken from a free asset Skeleton model. Animated to chase after the player and attack 
 when in range.
 
@@ -19,9 +19,4 @@ with placeholder square projectiles due to time constraints of getting fully wor
  
  ## Scripts
  I spent a lot of time making sure the keep the scripts as condensed/simplified as possible throughout the game's development. 
- There are currently references to removed gameplay elements that did not get added in the end, that I will eventually remove entirely.
- 
- ## Removed Powerups
- Originally there was planned to be powerups that dropped from enemies a random; These powerups could be additional damage, faster fire 
- rate, health restoration, to list a few. This idea was scrapped in the end due to the game not being long enough to make such a variety 
- of powerups viable without making the game's difficulty significantly easier as a result. 
+ In the early stage of planning, there was meant to be a Powerup system where enemies would drop powerups that would change the player's fire rate, damage, etc. When implementing this, it became clear that powerups made the game too easy (on top of already being an easy game). The powerup system was functioning before removal. The associated scripts have been moved to Scripts/Unused, and references to them that existed in other scripts have been removed.
