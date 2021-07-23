@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour {
     public GameObject player, projectile, wandEnd;
     public int currentHealth;
 	public NavMeshAgent navAgent;
+	public int enemyNum;
 
 	protected bool Death()
 	{
@@ -39,13 +40,12 @@ public class Enemy : MonoBehaviour {
 				switch (GameManager.GetLevel ()) {
 					case "LevelOne":
 						LevelOne.enemyCount++;
+						LevelOne.EnemyDied();
 						break;
 					case "LevelTwo":
-						if (name == "Skeleton(Clone)") {
-							levelTwo.enemyCount++;
-							if ((10 - levelTwo.enemyCount) > 0)
-								UIManager.levelText.text = "Defeat " + (10 - levelTwo.enemyCount) + " Skeletons to advance.";
-						}
+						levelTwo.enemyCount++;
+						if ((10 - levelTwo.enemyCount) > 0)
+							UIManager.levelText.text = "Defeat " + (10 - levelTwo.enemyCount) + " Skeletons to advance.";
 						break;
 					case "LevelThree":
 						LevelThree.enemyCount++;

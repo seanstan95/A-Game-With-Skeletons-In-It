@@ -53,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
 						UIManager.levelText.text = "Shoot a target to disable boss's shield.";
 					}
 				} else {
-					enemyHit.currentHealth -= 20;
+					enemyHit.currentHealth -= 40;
 					UIManager.UpdateEnemy (enemyHit);
 				}
 			}
