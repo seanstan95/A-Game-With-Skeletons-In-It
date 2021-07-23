@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class LevelOne : MonoBehaviour {
 	public static GameObject ironBars;
+	public static int enemyCount = 0;
 	public static SortedList<int, Skeleton> skeletons = new SortedList<int, Skeleton>();
-    public static int enemyCount = 0;
 
 	private void Start()
     {

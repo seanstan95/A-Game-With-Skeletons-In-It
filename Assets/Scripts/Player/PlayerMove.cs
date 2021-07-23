@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour {
 	{
 		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
 		if (collision && damageTimer >= 1) {
-			PlayerHealth.ChangeHealth (-10);
+			PlayerHealth.ChangeHealth (10);
 			damageTimer = 0f;
 		} else if (damageTimer < 1) {
 			damageTimer += Time.deltaTime;
@@ -88,19 +88,7 @@ public class PlayerMove : MonoBehaviour {
 				break;
 			case "WizardShoot(Clone)":
 			case "WizardShoot2(Clone)":
-				//If wizard boss is active, then we're definitely facing level 2 boss, so do 10 damage instead of 5
-				if (GameManager.GetLevel () == "LevelTwo") {
-					if (levelTwo.boss.active)
-						PlayerHealth.ChangeHealth (-10);
-					else
-						PlayerHealth.ChangeHealth (-5);
-				} else if (GameManager.GetLevel () == "LevelThree") {
-					if (levelThree.wizBoss.active)
-						PlayerHealth.ChangeHealth (-10);
-					else
-						PlayerHealth.ChangeHealth (-5);
-				}
-
+				PlayerHealth.ChangeHealth (5);
 				Destroy (other.gameObject);
 				break;
 		}

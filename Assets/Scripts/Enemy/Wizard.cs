@@ -4,29 +4,26 @@ public class Wizard : Enemy {
 
 	private void Start()
 	{
-		levelTwo = GameObject.Find("Managers").GetComponent<LevelTwo>();
-		animator = GetComponent<Animator> ();
-		capsule = GetComponent<CapsuleCollider> ();
-		maxHealth = 150;
-		currentHealth = maxHealth;
+		Setup(160, 2.5f);
 	}
 
 	private void Update()
 	{
-		//Death() handles timing of destroying the wizard when dead. If it returns false, the wizard is still alive, so continue.
-		if (!Death () && active) {
-			attackTimer += Time.deltaTime;
-			if (Vector3.Distance (transform.position, player.transform.position) <= 15) {
+		//Active is set to false on death, which prevents this all from happening.
+		if (active) {
+			transform.LookAt(playerTrans);
+			if (Vector3.Distance (transform.position, playerTrans.position) <= 15) {
 				if (!playerInRange) {
 					playerInRange = true;
 					animator.SetBool ("Idle", false);
 					animator.SetBool ("Attacking", true);
 				}
-				if (attackTimer >= 2.5f) {
+
+				attackTimer += Time.deltaTime;
+				if (attackTimer >= coolDown) {
 					attackTimer = 0;
 					Invoke ("Shoot", 0f);
 					Invoke ("Shoot", .1f);
-					Invoke ("Shoot", .2f);
 				}
 			} else {
 				if (playerInRange) {

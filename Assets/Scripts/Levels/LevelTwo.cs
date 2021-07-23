@@ -5,10 +5,10 @@ public class LevelTwo : MonoBehaviour {
 	private bool end;
     private float endTimer;
     private int spawnNum;
+	public int enemyCount;
     public Animator anim;
     public GameObject skeleSpawn;
     public GameObject[] bars, spawnPoints;
-    public int enemyCount;
     public Wizard[] wizards;
 	public WizardBoss boss;
 
@@ -18,28 +18,38 @@ public class LevelTwo : MonoBehaviour {
 		UIManager.levelText.text = "Defeat 10 Skeletons to advance!";
 	}
 
-	private void Update()
-	{
-        //Once 10 skeletons are defeated: kill remaining ones, unblock exit, and activate next enemies.
-		if (enemyCount == 10 && bars[0].activeSelf) {
-			CancelInvoke ("Spawn");
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("NormalEnemy")) {
-                if(enemy.name == "Skeleton(Clone)")
-			        enemy.GetComponent<Skeleton> ().currentHealth -= 120;
+	public void EnemyDied()
+    {
+		//Once 10 skeletons are defeated: kill remaining ones, unblock exit, and activate next enemies.
+		if (enemyCount == 10)
+		{
+			CancelInvoke("Spawn");
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("NormalEnemy"))
+			{
+				if (enemy.name == "Skeleton(Clone)")
+					enemy.GetComponent<Skeleton>().currentHealth -= 120;
 			}
-			bars [0].SetActive (false);
-			bars [1].SetActive (false);
-			bars [2].SetActive (false);
-			wizards [0].active = true;
-			wizards [1].active = true;
+			bars[0].SetActive(false);
+			bars[1].SetActive(false);
+			bars[2].SetActive(false);
+			wizards[0].active = true;
+			wizards[1].active = true;
 			UIManager.levelText.text = "";
 		}
 
-		if (enemyCount >= 12 && !wizards[2].active) {
-			wizards [2].active = true;
-			wizards [3].active = true;
-			wizards [4].active = true;
+		if (enemyCount == 12)
+		{
+			wizards[2].active = true;
+			wizards[3].active = true;
+			wizards[4].active = true;
 		}
+	}
+
+	private void Update()
+	{
+        
+
+		
 
 		if (boss.currentHealth <= 0) {
 			if (endTimer < 1) {

@@ -15,21 +15,15 @@ public class PlayerHealth : MonoBehaviour {
             damageImage.color = new Color(250, 0, 0);
             damaged = false;
         }
-		damageImage.color = Color.Lerp (damageImage.color, Color.clear, 2f * Time.deltaTime);
+
+		if(damageImage.color != Color.clear)
+			damageImage.color = Color.Lerp (damageImage.color, Color.clear, 2f * Time.deltaTime);
 	}
 
 	public static void ChangeHealth(int amount)
 	{
-		//Because this function handles taking damage and adding health, taking damage is when amount is negative, and adding health is when amount is positive.
-		if (amount < 0)
-			damaged = true;
-			
-		//Either way, adding amount to currentHealth will update it correctly (adding a negative is the same as subtracting).
-		//Also, ensure that currentHealth doesn't go above 100. Then, adjust the health slider accordingly.
-		currentHealth += amount;
-		if (currentHealth > 100)
-			currentHealth = 100;
-		
+		damaged = true;
+		currentHealth -= amount;
 		UIManager.playerSlider.value = currentHealth;
 	}
 }

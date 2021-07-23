@@ -21,6 +21,6 @@ public class WizardShoot : MonoBehaviour {
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.tag == "StopShoot")
-			Destroy (this);
+			Destroy (gameObject);
 	}
 }

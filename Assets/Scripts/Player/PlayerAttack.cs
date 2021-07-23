@@ -4,7 +4,7 @@ public class PlayerAttack : MonoBehaviour
 {
 	private Enemy enemyHit;
 	private float timer;
-	private int shootableMask;
+	private int shootableMask, damagePerHit = 40;
 	private Ray ray = new Ray();
 	private RaycastHit hitInfo;
     public LineRenderer line;
@@ -47,14 +47,16 @@ public class PlayerAttack : MonoBehaviour
 			if (enemyHit != null) {
 				if (enemyHit.name == "FinalBoss") {
 					if (!FinalBoss.shield) {
-						enemyHit.currentHealth -= 20;
+						enemyHit.currentHealth -= damagePerHit;
 						UIManager.UpdateEnemy (enemyHit);
+						enemyHit.Death();
 					} else {
 						UIManager.levelText.text = "Shoot a target to disable boss's shield.";
 					}
 				} else {
-					enemyHit.currentHealth -= 40;
-					UIManager.UpdateEnemy (enemyHit);
+					enemyHit.currentHealth -= damagePerHit;
+					UIManager.UpdateEnemy(enemyHit);
+					enemyHit.Death();
 				}
 			}
 			if (hitInfo.collider.name == "Target") {

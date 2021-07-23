@@ -3,47 +3,37 @@
 public class WizardBoss : Enemy {
 
 	private bool invoke;
-	private int changeTimer, seconds, threeRoom, twoRoom;
-	private float aliveTimer;
+	private int changeInterval, seconds, threeRoom, twoRoom;
+	private float roomTimer;
 	private Vector3 afterPosition, beforePosition;
 	public Transform[] spawns;
 
 	private void Start()
 	{
-		animator = GetComponent<Animator> ();
-		capsule = GetComponent<CapsuleCollider> ();
-		if (GameManager.GetLevel () == "LevelTwo") {
-			coolDown = 2f;
-			changeTimer = 5;
-			maxHealth = 500;
-		} else {
-			coolDown = 1.5f;
-			changeTimer = 6;
-			maxHealth = 850;
-		}
-		seconds = changeTimer;
-		currentHealth = maxHealth;
+		Setup(1000, 2f);
+		changeInterval = 5;
+		seconds = changeInterval;
 	}
 
 	private void Update()
 	{
-		transform.LookAt (player.transform);
-        if (!Death () && active) {
-            if (!invoke) {
+		//Active is set to false on death, which prevents this all from happening.
+		if (active) {
+			transform.LookAt(playerTrans);
+			if (!invoke) {
                 InvokeRepeating ("UpdateText", 0f, 1f);
                 invoke = true;
             }
 
-            if (aliveTimer < changeTimer)
+            if (roomTimer < changeInterval)
             {
-                //Loop through this (attacking when attackTimer reaches 2/1.5) until aliveTimer reaches 5 to move location.
-                aliveTimer += Time.deltaTime;
+                //Loop through this (attacking when attackTimer reaches 2) until aliveTimer reaches 5 to move location.
+                roomTimer += Time.deltaTime;
                 attackTimer += Time.deltaTime;
 
-                if (Vector3.Distance(transform.position, player.transform.position) < 15 && attackTimer > coolDown) {
+                if (Vector3.Distance(transform.position, playerTrans.position) < 15 && attackTimer > coolDown) {
                     Invoke("Shoot", 0f);
                     Invoke("Shoot", .1f);
-                    Invoke("Shoot", .2f);
                     attackTimer = 0;
                 }
             }
@@ -53,11 +43,11 @@ public class WizardBoss : Enemy {
                 beforePosition = transform.position;
                 afterPosition = ChangePosition();
 
-                if (Vector3.Distance(beforePosition, afterPosition) > 1)
+				if(beforePosition != afterPosition)
                 {
                     transform.position = afterPosition;
                     attackTimer = 0;
-                    aliveTimer = 0;
+                    roomTimer = 0;
                 }
             }
         }
@@ -120,13 +110,13 @@ public class WizardBoss : Enemy {
 
 	private void UpdateText()
 	{
-		if (seconds < 3)
+		if (seconds <= 3)
 			UIManager.levelText.text = "Boss Moving in " + seconds + " seconds.";
 		else
 			UIManager.levelText.text = "";
 		
 		seconds--;
 		if (seconds == 0)
-			seconds = changeTimer;
+			seconds = changeInterval;
 	}
 }

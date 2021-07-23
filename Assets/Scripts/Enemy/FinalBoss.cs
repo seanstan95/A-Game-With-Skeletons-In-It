@@ -2,23 +2,20 @@
 
 public class FinalBoss : Enemy {
 
-	public static bool shield = true;
 	private bool size;
-	private int nextTrigger = 800;
-	private float newX, newY, newZ;
+	private int nextTrigger = 1600;
+	float newX, newY, newZ;
+	public static bool shield = true;
 
 	private void Start()
 	{
-		animator = GetComponent<Animator> ();
-		capsule = GetComponent<CapsuleCollider> ();
-		maxHealth = 1000;
-		currentHealth = maxHealth;
+		Setup(2000, 2.76f);
 		playerInRange = true;
 	}
 
 	private void Update()
 	{
-		if (!Death () && active) {
+		if (active) {
 			if (!shield) {
 				if (!size) {
 					//Each iteration increases size by one lerp and returns out to avoid code progression, until at (10, 1.5, 10)
@@ -39,9 +36,9 @@ public class FinalBoss : Enemy {
 				}
 
 				//Regardless of player distance, continue to update the path to the player. Boss will only move when navAgent.isStopped is false.
-				navAgent.SetDestination (player.transform.position);
+				navAgent.SetDestination (playerTrans.position);
 
-				if (Vector3.Distance (transform.position, player.transform.position) > 2.5f) {
+				if (Vector3.Distance (transform.position, playerTrans.position) > 2.5f) {
 					//If here, boss is charging at the player
 					if (playerInRange) {
 						playerInRange = false;
@@ -64,16 +61,16 @@ public class FinalBoss : Enemy {
 
 				if (playerInRange) {
 					attackTimer += Time.deltaTime;
-                    if (attackTimer >= 2.76f) {
+                    if (attackTimer >= coolDown) {
                         attackTimer = 0;
-                        PlayerHealth.ChangeHealth(-20);
+                        PlayerHealth.ChangeHealth(20);
                     }
 				}
 
 				if (currentHealth == nextTrigger) {
-					//if health is down by 200, return to center until another target is destroyed
+					//if health is down by 400, return to center until another target is destroyed
 					if (!shield) {
-                        nextTrigger -= 200;
+                        nextTrigger -= 400;
 						navAgent.isStopped = true;
 						playerInRange = true;
 						transform.localPosition = new Vector3 (-0.3f, -13, 0);
