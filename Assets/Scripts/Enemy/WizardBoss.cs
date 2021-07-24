@@ -11,7 +11,7 @@ public class WizardBoss : Enemy {
 	private void Start()
 	{
 		Setup(1000, 2f);
-		changeInterval = 5;
+		changeInterval = 5.5;
 		seconds = changeInterval;
 	}
 

@@ -12,7 +12,7 @@ public class Wizard : Enemy {
 		//Active is set to false on death, which prevents this all from happening.
 		if (active) {
 			transform.LookAt(playerTrans);
-			if (Vector3.Distance (transform.position, playerTrans.position) <= 15) {
+			if (Vector3.Distance (transform.position, playerTrans.position) <= 20) {
 				if (!playerInRange) {
 					playerInRange = true;
 					animator.SetBool ("Idle", false);

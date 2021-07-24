@@ -63,7 +63,7 @@ public class FinalBoss : Enemy {
 					attackTimer += Time.deltaTime;
                     if (attackTimer >= coolDown) {
                         attackTimer = 0;
-                        PlayerHealth.ChangeHealth(20);
+                        GameManager.playerHealth.ChangeHealth(20);
                     }
 				}
 

@@ -20,7 +20,7 @@ public class EnemyManager : MonoBehaviour {
 	private void Spawn()
 	{
 		//First, add a catch so that enemies stop spawning when the player is dead.
-		if (PlayerHealth.currentHealth <= 0f)
+		if (GameManager.playerHealth.currentHealth <= 0f)
 			return;
 
 		//Choose a random number from 0 to the amount of spawn points, and Instantiate an enemy at that spawn point.

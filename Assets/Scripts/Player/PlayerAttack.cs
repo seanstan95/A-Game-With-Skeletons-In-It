@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerAttack : MonoBehaviour
 {
 	private Enemy enemyHit;
 	private float timer;
-	private int shootableMask, damagePerHit = 40;
+	private int shootableMask;
+	private readonly int damagePerHit = 40;
 	private Ray ray = new Ray();
 	private RaycastHit hitInfo;
     public LineRenderer line;
@@ -20,7 +22,7 @@ public class PlayerAttack : MonoBehaviour
 		timer += Time.deltaTime;
 
 		//Checks for the mouse button to be held down, cooldown has been reached, and that the game isn't paused.
-		if (Input.GetButton ("Fire1") && timer >= .5f && Time.timeScale == 1 && GameManager.GetLevel() != "MainMenu") {
+		if (Input.GetButton ("Fire1") && timer >= .5f && Time.timeScale == 1 && SceneManager.GetActiveScene().name != "MainMenu") {
 			timer = 0f;
 
 			line.enabled = true;

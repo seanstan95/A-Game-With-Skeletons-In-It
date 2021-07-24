@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
@@ -8,40 +9,45 @@ public class UIManager : MonoBehaviour {
 	public static Text levelText;
 	public static Slider playerSlider;
 
-	private void Start () 
-	{
-		pauseMenu = GameObject.Find ("PauseMenu");
-		levelText = GameObject.Find ("LevelText").GetComponent<Text> ();
-		bossSlider = GameObject.Find ("BossHealth").GetComponent<Slider> ();
-		enemySlider = GameObject.Find ("EnemyHealth").GetComponent<Slider> ();
-		playerSlider = GameObject.Find ("PlayerHealth").GetComponent<Slider> ();
+	public void Setup()
+    {
+		pauseMenu = GameObject.Find("PauseMenu");
+		levelText = GameObject.Find("LevelText").GetComponent<Text>();
+		bossSlider = GameObject.Find("BossHealth").GetComponent<Slider>();
+		enemySlider = GameObject.Find("EnemyHealth").GetComponent<Slider>();
+		playerSlider = GameObject.Find("PlayerHealth").GetComponent<Slider>();
 
-		pauseMenu.SetActive (false);
-		enemySlider.gameObject.SetActive (false);
-		bossSlider.gameObject.SetActive (false);
+		pauseMenu.SetActive(false);
+		enemySlider.gameObject.SetActive(false);
+		bossSlider.gameObject.SetActive(false);
 	}
 
-	private void Update () 
+	private void Update()
 	{
 		//If escape is pressed, exit to the main menu.
-		if (Input.GetKeyDown (KeyCode.Escape)) {
-            GameObject.Find("Player").GetComponent<AudioSource>().Stop();
-			GameManager.SetState ("MENU");
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			GameObject.Find("Player").GetComponent<AudioSource>().Stop();
+			GameManager.SetState("MENU");
 		}
 
 		//If space is pressed, pause or resume the game.
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			if (Time.timeScale == 1) {
+		if (Input.GetKeyDown(KeyCode.Space) && SceneManager.GetActiveScene().name != "MainMenu")
+		{
+			if (Time.timeScale == 1)
+			{
 				Time.timeScale = 0;
 				pauseMenu.SetActive(true);
-				GameManager.audioSource.Pause ();
-                Cursor.lockState = CursorLockMode.None;
-            } else {
+				GameManager.musicSource.Pause();
+				Cursor.lockState = CursorLockMode.None;
+			}
+			else
+			{
 				pauseMenu.SetActive(false);
 				Time.timeScale = 1;
-				GameManager.audioSource.UnPause ();
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+				GameManager.musicSource.UnPause();
+				Cursor.lockState = CursorLockMode.Locked;
+			}
 		}
 	}
 

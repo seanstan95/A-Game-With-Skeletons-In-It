@@ -451,17 +451,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76347017813a01849acac3e0e047b62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 95920472429484030}
   active: 0
-  capsule: {fileID: 136551880596190130}
-  maxHealth: 0
   projectile: {fileID: 0}
   wandEnd: {fileID: 0}
-  playerTrans: {fileID: 0}
   currentHealth: 0
+  maxHealth: 0
   navAgent: {fileID: 195931195265485928}
-  enemyNum: 0
-  playerHealth: {fileID: 114377162783830064, guid: 36fe42fc6605f5f48bd5e374ad413cf0,
-    type: 3}
+  playerTrans: {fileID: 0}
 --- !u!1 &1230951822175320
 GameObject:
   m_ObjectHideFlags: 0

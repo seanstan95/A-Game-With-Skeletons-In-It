@@ -5,7 +5,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	private static bool damaged;
 	public Image damageImage;
-	public static int currentHealth = 100;
+	public int currentHealth = 100;
 
 	private void Update () 
 	{
@@ -20,10 +20,16 @@ public class PlayerHealth : MonoBehaviour {
 			damageImage.color = Color.Lerp (damageImage.color, Color.clear, 2f * Time.deltaTime);
 	}
 
-	public static void ChangeHealth(int amount)
+	public void ChangeHealth(int amount)
 	{
 		damaged = true;
 		currentHealth -= amount;
 		UIManager.playerSlider.value = currentHealth;
+
+		if (currentHealth <= 0)
+		{
+			GameManager.HUD.GetComponent<Animator>().SetTrigger("GameOver");
+			StartCoroutine(GameManager.PlayerDead());
+		}
 	}
 }

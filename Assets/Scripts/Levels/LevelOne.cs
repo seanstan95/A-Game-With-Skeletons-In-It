@@ -1,64 +1,43 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class LevelOne : MonoBehaviour {
-	public static GameObject ironBars;
-	public static int enemyCount = 0;
-	public static SortedList<int, Skeleton> skeletons = new SortedList<int, Skeleton>();
+	public GameObject ironBars;
+	public int enemyCount;
+	public Animator anim;
+	public Skeleton[] skeletons;
 
-	private void Start()
+    public void Start()
     {
-		//Manually grabbing game objects because static variables can't be set in the editor
-		ironBars = GameObject.Find("IronBars1");
-		foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("NormalEnemy"))
-        {
-			var skele = enemy.GetComponent<Skeleton>();
-			skeletons.Add(skele.enemyNum, skele);
-        }
-		skeletons.Add(17, GameObject.Find("SkeletonBoss").GetComponent<Skeleton>());
+		GameManager.player.GetComponent<PlayerMove>().UpdateLevel();
+		GameManager.player.SetActive(true);
     }
-
-	public static void EnemyDied()
+    public void EnemyDied()
     {
-		//This function is triggered on enemy death and checks if enemyCount is at certain thresholds for progression.
-		//This used to be done in Update() but was moved here (at the cost of working around things becoming static) to remove redundant checks
+		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
+		enemyCount++;
 		switch (enemyCount)
 		{
 			case 8:
-				if (!skeletons.Values[8].active)
-				{
-					skeletons.Values[8].active = true;
-					skeletons.Values[9].active = true;
-				}
+				skeletons[8].active = true; //last 2 in second room
+				skeletons[9].active = true;
 				break;
 			case 10:
-				if (ironBars.activeSelf)
-					ironBars.SetActive(false);
+				ironBars.SetActive(false);
 				break;
 			case 12:
-				if (!skeletons.Values[12].active)
-				{
-					skeletons.Values[12].active = true;
-					skeletons.Values[13].active = true;
-				}
+				skeletons[12].active = true; //3rd & 4th in final room
+				skeletons[13].active = true;
 				break;
 			case 14:
-				if (!skeletons.Values[14].active)
-				{
-					skeletons.Values[14].active = true;
-					skeletons.Values[15].active = true;
-				}
+				skeletons[14].active = true; //last 2 in final room
+				skeletons[15].active = true;
 				break;
 			case 16:
-				if (!skeletons.Values[16].active)
-					skeletons.Values[16].active = true;
+				skeletons[16].active = true; //boss
 				break;
 			case 17:
-				float endTimer = 0;
-				while (endTimer < 1)
-					endTimer += Time.deltaTime;
-				GameObject.Find("HUD").GetComponent<Animator>().SetTrigger("LevelComplete");
-				GameManager.SetState("LVLONED");
+				GameManager.HUD.GetComponent<Animator>().SetTrigger("LevelComplete");
+				StartCoroutine(GameManager.LevelDone(GameManager.StateType.LVLTWOT));
 				break;
 		}
 	}
@@ -66,26 +45,27 @@ public class LevelOne : MonoBehaviour {
 	public void EnemyTrigger(string trigger)
 	{
 		//This function is triggered when the player crosses a level trigger and handles enemy activations.
-		switch (trigger) {
+		switch (trigger)
+		{
 			case "Trigger1":
-                skeletons.Values[0].active = true;
+				skeletons[0].active = true; //first of 6 in first hallway
 				break;
 			case "Trigger2":
-                skeletons.Values[1].active = true;
-                skeletons.Values[2].active = true;
+				skeletons[1].active = true; //second & 3rd of 6 in first hallway
+				skeletons[2].active = true;
 				break;
 			case "Trigger3":
-                skeletons.Values[3].active = true;
-                skeletons.Values[4].active = true;
-                skeletons.Values[5].active = true;
-                break;
+				skeletons[3].active = true; //final 3 in first hallway
+				skeletons[4].active = true;
+				skeletons[5].active = true;
+				break;
 			case "Trigger4":
-                skeletons.Values[6].active = true;
-                skeletons.Values[7].active = true;
+				skeletons[6].active = true; //first 2 in second room
+				skeletons[7].active = true;
 				break;
 			case "Trigger5":
-                skeletons.Values[10].active = true;
-				skeletons.Values[11].active = true;
+				skeletons[10].active = true; //first 2 in final room
+				skeletons[11].active = true;
 				break;
 		}
 	}

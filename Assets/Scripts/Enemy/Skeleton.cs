@@ -3,7 +3,7 @@
 public class Skeleton : Enemy {
 
 	private float hitRange, lerpFinish, lerpTimer;
-	private int damagePerHit = 10;
+	private readonly int damagePerHit = 10;
 	private Vector3 newPos;
 
 	private void Start()
@@ -64,7 +64,7 @@ public class Skeleton : Enemy {
 			if (playerInRange) {
 				attackTimer += Time.deltaTime;
 				if (attackTimer >= coolDown) {
-					PlayerHealth.ChangeHealth (damagePerHit);
+					GameManager.playerHealth.ChangeHealth (damagePerHit);
 					attackTimer = 0f;
 				}
 			}
