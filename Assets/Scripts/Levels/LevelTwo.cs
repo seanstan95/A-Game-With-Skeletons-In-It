@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public class LevelTwo : MonoBehaviour {
+public class LevelTwo : MonoBehaviour
+{
+	private GameManager gameManager;
 	private int enemyCount;
-	public Animator anim;
+	private UIManager UI;
 	public GameObject bars, skeleSpawn;
 	public GameObject[] spawnPoints;
 	public Wizard[] wizards;
@@ -10,11 +12,16 @@ public class LevelTwo : MonoBehaviour {
 
 	private void Start()
 	{
-		InvokeRepeating ("Spawn", 4f, 2.5f);
-		UIManager.levelText.text = "Defeat 10 Skeletons to advance!";
-		GameManager.player.SetActive(true);
-		GameManager.SetPlayerPosition(68f, 1.04f, 0f, 0f, -90f, 0f);
-		GameManager.player.GetComponent<PlayerMove>().UpdateLevel();
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gameManager.player.SetActive(true);
+		gameManager.playerMove.UpdateLevel();
+		gameManager.playerTrans.position = new Vector3(68f, 1.04f, 0f);
+		gameManager.playerTrans.eulerAngles = new Vector3(0f, -90f, 0f);
+		UI = GameObject.Find("UIManager").GetComponent<UIManager>();
+		UI.HUDAnimator.SetTrigger("LevelComplete-End");
+		UI.levelText.text = "Defeat 10 Skeletons to advance!";
+		UI.ResetUI();
+		InvokeRepeating("Spawn", 4f, 2.5f);
 	}
 
 	public void EnemyDied()
@@ -22,10 +29,10 @@ public class LevelTwo : MonoBehaviour {
 		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
 		++enemyCount;
 		if (enemyCount < 10)
-			UIManager.levelText.text = "Defeat " + (10 - enemyCount) + " Skeletons to advance!";
+			UI.levelText.text = "Defeat " + (10 - enemyCount) + " Skeletons to advance!";
 
-		switch(enemyCount)
-        {
+		switch (enemyCount)
+		{
 			case 10:
 				//When at 10, stop spawning skeletons and kill all existing ones (directly adjusting health instead of calling Death() on them to avoid side effects)
 				CancelInvoke("Spawn");
@@ -40,7 +47,7 @@ public class LevelTwo : MonoBehaviour {
 				bars.SetActive(false); //bars in the first room
 				wizards[0].active = true; //the 2 wizards behind the bars
 				wizards[1].active = true;
-				UIManager.levelText.text = "";
+				UI.levelText.text = "";
 				break;
 			case 12:
 				wizards[2].active = true; //the 3 stationary wizards in the middle room that can't be killed
@@ -48,15 +55,22 @@ public class LevelTwo : MonoBehaviour {
 				wizards[4].active = true;
 				break;
 			case 14:
-				GameManager.HUD.GetComponent<Animator>().SetTrigger("LevelComplete");
-				StartCoroutine(GameManager.LevelDone(GameManager.StateType.LVLTHREET));
+				UI.HUDAnimator.SetTrigger("LevelComplete-Start");
+				StartCoroutine(gameManager.Done("LevelThree", gameManager.clips[2]));
 				break;
-        }
+		}
+	}
+
+	public void DisableWizard(Wizard wizard)
+	{
+		wizard.active = false;
+		wizard.animator.SetBool("Attacking", false);
+		wizard.animator.SetBool("Idle", true);
 	}
 
 	public void Spawn()
 	{
-		int spawnNum = Random.Range (0, spawnPoints.Length);
-        Instantiate(skeleSpawn, spawnPoints[spawnNum].transform.position, spawnPoints[spawnNum].transform.rotation).GetComponent<Skeleton>().active = true;
+		int spawnNum = Random.Range(0, spawnPoints.Length);
+		Instantiate(skeleSpawn, spawnPoints[spawnNum].transform.position, spawnPoints[spawnNum].transform.rotation).GetComponent<Skeleton>().active = true;
 	}
 }

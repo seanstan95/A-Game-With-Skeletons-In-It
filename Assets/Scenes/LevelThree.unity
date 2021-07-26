@@ -1130,7 +1130,6 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 0
   navAgent: {fileID: 199732703}
-  playerTrans: {fileID: 0}
 --- !u!195 &199732703
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2180,6 +2179,7 @@ MonoBehaviour:
   bars:
   - {fileID: 1432460114}
   - {fileID: 1600286374}
+  UI: {fileID: 0}
   skeletons:
   - {fileID: 1041272520}
   - {fileID: 1817669343}
@@ -2236,7 +2236,7 @@ GameObject:
   - component: {fileID: 354353624}
   - component: {fileID: 354353625}
   m_Layer: 9
-  m_Name: FinalBossTrigger
+  m_Name: EnemyTrigger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4765,7 +4765,7 @@ GameObject:
   - component: {fileID: 844362805}
   - component: {fileID: 844362806}
   m_Layer: 9
-  m_Name: WizBossTrigger
+  m_Name: EnemyTrigger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6312,7 +6312,7 @@ GameObject:
   - component: {fileID: 1062510944}
   - component: {fileID: 1062510945}
   m_Layer: 9
-  m_Name: Trigger1
+  m_Name: EnemyTrigger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

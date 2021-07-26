@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /*
-    * This class was originall used in a now unused scene for testing enemy spawning and powerup interaction with enemies.
+    * This class was originally used in a now unused scene for testing enemy spawning and powerup interaction with enemies.
     * After powerups were removed from the final version (and debugging was finished) the scene, and this script, were no longer needed.
 */
 public class EnemyManager : MonoBehaviour {
@@ -9,6 +9,7 @@ public class EnemyManager : MonoBehaviour {
 	private int spawnPointIndex;
 	public GameObject enemy;
 	public static float spawnTime;
+	public GameManager gameManager;
 	public Transform[] spawnPoints;
 
 	private void Start()
@@ -20,7 +21,7 @@ public class EnemyManager : MonoBehaviour {
 	private void Spawn()
 	{
 		//First, add a catch so that enemies stop spawning when the player is dead.
-		if (GameManager.playerHealth.currentHealth <= 0f)
+		if (gameManager.playerHealth.currentHealth <= 0f)
 			return;
 
 		//Choose a random number from 0 to the amount of spawn points, and Instantiate an enemy at that spawn point.

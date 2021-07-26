@@ -1,35 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour {
-
-	private static bool damaged;
+public class PlayerHealth : MonoBehaviour
+{
+	public bool dead;
+	public GameManager gameManager;
 	public Image damageImage;
 	public int currentHealth = 100;
+	public UIManager UI;
 
-	private void Update () 
+	private void Update()
 	{
-		//If the player has been damaged in the last frame, set the color of the damageImage to be red.
-		//Then, lerp from red to clear over flashSpeed * Time.deltaTime
-		if (damaged) {
-            damageImage.color = new Color(250, 0, 0);
-            damaged = false;
-        }
-
-		if(damageImage.color != Color.clear)
-			damageImage.color = Color.Lerp (damageImage.color, Color.clear, 2f * Time.deltaTime);
+		//Set damageImage to red then lerp back to clear to make a smooth transition
+		if (damageImage.color != Color.clear)
+			damageImage.color = Color.Lerp(damageImage.color, Color.clear, 2f * Time.deltaTime);
 	}
 
 	public void ChangeHealth(int amount)
 	{
-		damaged = true;
+		damageImage.color = new Color(250, 0, 0);
 		currentHealth -= amount;
-		UIManager.playerSlider.value = currentHealth;
+		UI.playerSlider.value = currentHealth;
 
-		if (currentHealth <= 0)
+		if (currentHealth <= 0 && !dead)
 		{
-			GameManager.HUD.GetComponent<Animator>().SetTrigger("GameOver");
-			StartCoroutine(GameManager.PlayerDead());
+			dead = true;
+			UI.HUDAnimator.SetTrigger("GameOver");
+			StartCoroutine(gameManager.Done());
 		}
 	}
 }

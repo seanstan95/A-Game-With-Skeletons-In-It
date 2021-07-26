@@ -2,84 +2,115 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
+	public Animator HUDAnimator;
+	public GameManager gameManager;
+	public GameObject canvas, HUD, mainMenu, optionsMenu, pauseMenu;
+	public Slider bossSlider, enemySlider, playerSlider;
+	public Text levelText;
 
-    private static Slider bossSlider, enemySlider;
-    public static GameObject pauseMenu;
-	public static Text levelText;
-	public static Slider playerSlider;
-
-	public void Setup()
-    {
-		pauseMenu = GameObject.Find("PauseMenu");
-		levelText = GameObject.Find("LevelText").GetComponent<Text>();
-		bossSlider = GameObject.Find("BossHealth").GetComponent<Slider>();
-		enemySlider = GameObject.Find("EnemyHealth").GetComponent<Slider>();
-		playerSlider = GameObject.Find("PlayerHealth").GetComponent<Slider>();
-
-		pauseMenu.SetActive(false);
-		enemySlider.gameObject.SetActive(false);
-		bossSlider.gameObject.SetActive(false);
+	public void Start()
+	{
+		DontDestroyOnLoad(canvas);
+		DontDestroyOnLoad(HUD);
 	}
 
 	private void Update()
 	{
-		//If escape is pressed, exit to the main menu.
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			GameObject.Find("Player").GetComponent<AudioSource>().Stop();
-			GameManager.SetState("MENU");
-		}
+		if (gameManager.loading)
+			return;
 
-		//If space is pressed, pause or resume the game.
+		//Exiting game (back to main menu)
+		if (Input.GetKeyDown(KeyCode.Escape))
+			ReturnToMenu(false);
+
+		//Pausing/unpausing the game
 		if (Input.GetKeyDown(KeyCode.Space) && SceneManager.GetActiveScene().name != "MainMenu")
 		{
 			if (Time.timeScale == 1)
 			{
 				Time.timeScale = 0;
 				pauseMenu.SetActive(true);
-				GameManager.musicSource.Pause();
+				gameManager.musicSource.Pause();
 				Cursor.lockState = CursorLockMode.None;
 			}
 			else
-			{
-				pauseMenu.SetActive(false);
-				Time.timeScale = 1;
-				GameManager.musicSource.UnPause();
-				Cursor.lockState = CursorLockMode.Locked;
-			}
+				Unpause();
 		}
 	}
 
-	public static void UpdateEnemy(Enemy enemy)
+	public void UpdateEnemy(Enemy enemy)
 	{
-		if (enemy.tag == "BossEnemy") {
-			if (enemySlider.gameObject.activeSelf) {
-				enemySlider.gameObject.SetActive (false);
-			}
-
-			if (!bossSlider.gameObject.activeSelf) {
-				bossSlider.gameObject.SetActive (true);
-			}
-
-			if (enemy.name == "FinalBoss" && !FinalBoss.shield) {
-				bossSlider.maxValue = (float)enemy.maxHealth;
-				bossSlider.value = enemy.currentHealth;
-			} else {
-				bossSlider.maxValue = (float)enemy.maxHealth;
-				bossSlider.value = enemy.currentHealth;
-			}
-		} else if(enemy.tag == "NormalEnemy") {
-			if (!enemySlider.gameObject.activeSelf) {
-				enemySlider.gameObject.SetActive (true);
-			}
-
-			if (bossSlider.gameObject.activeSelf) {
-				bossSlider.gameObject.SetActive (false);
-			}
-
-			enemySlider.maxValue = (float)enemy.maxHealth;
+		if (enemy.tag == "BossEnemy")
+		{
+			enemySlider.gameObject.SetActive(false);
+			bossSlider.gameObject.SetActive(true);
+			bossSlider.maxValue = enemy.maxHealth;
+			bossSlider.value = enemy.currentHealth;
+		}
+		else if (enemy.tag == "NormalEnemy")
+		{
+			bossSlider.gameObject.SetActive(false);
+			enemySlider.gameObject.SetActive(true);
+			enemySlider.maxValue = enemy.maxHealth;
 			enemySlider.value = enemy.currentHealth;
 		}
+	}
+
+	public void ResetUI()
+    {
+		playerSlider.value = gameManager.playerHealth.currentHealth;
+		bossSlider.gameObject.SetActive(false);
+		enemySlider.gameObject.SetActive(false);
+		levelText.text = "";
+		canvas.SetActive(false);
+		pauseMenu.SetActive(false);
+		HUD.SetActive(true);
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+	public void ReturnToMenu(bool fromOptions)
+	{
+		optionsMenu.SetActive(false);
+		mainMenu.SetActive(true);
+		if (!fromOptions)
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Time.timeScale = 0;
+			canvas.SetActive(true);
+			gameManager.musicSource.Stop();
+		}
+	}
+
+	public void OnClick(string buttonClicked)
+	{
+		if (buttonClicked == "Quit")
+			Application.Quit();
+		else if (buttonClicked == "NewGame")
+			gameManager.LevelLoad("LevelOne", gameManager.clips[0]);
+		else if (buttonClicked == "Back")
+			ReturnToMenu(true);
+		else if (buttonClicked == "Options")
+		{
+			mainMenu.SetActive(false);
+			optionsMenu.SetActive(true);
+		}
+	}
+
+	public void Unpause()
+	{
+		Time.timeScale = 1;
+		pauseMenu.SetActive(false);
+		gameManager.musicSource.UnPause();
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+	public void Volume(string slider)
+	{
+		if (slider == "MusicSlider")
+			gameManager.musicSource.volume = GameObject.Find(slider).GetComponent<Slider>().value / 100;
+		else if (slider == "SfxSlider")
+			gameManager.sfxSource.volume = GameObject.Find(slider).GetComponent<Slider>().value / 100;
 	}
 }
