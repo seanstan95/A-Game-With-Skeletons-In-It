@@ -49,6 +49,9 @@ public class WizardBoss : Enemy
 				beforePosition = transform.position;
 				afterPosition = ChangePosition();
 
+				while (beforePosition != afterPosition)
+					afterPosition = ChangePosition();
+
 				if (beforePosition != afterPosition)
 				{
 					transform.position = afterPosition;

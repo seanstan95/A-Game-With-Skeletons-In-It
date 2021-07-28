@@ -19,8 +19,8 @@ public class LevelTwo : MonoBehaviour
 		gameManager.playerTrans.eulerAngles = new Vector3(0f, -90f, 0f);
 		UI = GameObject.Find("UIManager").GetComponent<UIManager>();
 		UI.HUDAnimator.SetTrigger("LevelComplete-End");
-		UI.levelText.text = "Defeat 10 Skeletons to advance!";
 		UI.ResetUI();
+		UI.levelText.text = "Defeat 10 Skeletons to advance!";
 		InvokeRepeating("Spawn", 4f, 2.5f);
 	}
 
