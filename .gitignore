@@ -6,6 +6,6 @@
 /ProjectSettings/
 /Temp/
 /UnityPackageManager/
-.vsconfig
-A Game With Skeletons In It.sln
-Assembly-CSharp.csproj
+/.vsconfig
+/A Game With Skeletons In It.sln
+/Assembly-CSharp.csproj
