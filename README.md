@@ -3,7 +3,7 @@ This is a game I made for a Game Design elective course in Fall 2017. It was mea
 It is a functional simple 3D Doom Clone-esque game with 3 levels and 5 enemy types in the form of 3 bosses and 2 enemies.
 
 The project has been updated as of July 2021 to work with the most recent version of Unity (2020.3.14f1) and I've enjoyed scrubbing over the scripts over time to find various tiny optimizations and logic simplifications.
-Cloning the project should be all you need to open and edit the project in Unity, and you can play the most recent buit version by looking at the Releases section on the right.
+Cloning the project should be all you need to open and edit the project in Unity, and you can play the most recent built version by looking at the Releases section on the right.
 
 ## Enemies
 **Skeletons** - Simple melee enemies that are taken from a free asset Skeleton model. Animated to chase after the player and attack when in range.
