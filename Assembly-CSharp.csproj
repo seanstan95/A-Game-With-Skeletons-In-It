@@ -54,25 +54,6 @@
     <UnityVersion>2020.3.14f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Enemy\Enemy.cs" />
-    <Compile Include="Enemy\FinalBoss.cs" />
-    <Compile Include="Enemy\Skeleton.cs" />
-    <Compile Include="Enemy\Wizard.cs" />
-    <Compile Include="Enemy\WizardBoss.cs" />
-    <Compile Include="Enemy\WizardShoot.cs" />
-    <Compile Include="Levels\LevelOne.cs" />
-    <Compile Include="Levels\LevelThree.cs" />
-    <Compile Include="Levels\LevelTwo.cs" />
-    <Compile Include="Managers\GameManager.cs" />
-    <Compile Include="Managers\UIManager.cs" />
-    <Compile Include="Player\PlayerAttack.cs" />
-    <Compile Include="Player\PlayerHealth.cs" />
-    <Compile Include="Player\PlayerMove.cs" />
-    <Compile Include="Unused\EnemyManager.cs" />
-    <Compile Include="Unused\EventManager.cs" />
-    <Compile Include="Unused\PowerupManager.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.14f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -736,6 +717,25 @@
     <Reference Include="UnityEngine.Advertisements.Editor">
       <HintPath>Library\ScriptAssemblies\UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemy\FinalBoss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Skeleton.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Wizard.cs" />
+    <Compile Include="Assets\Scripts\Enemy\WizardBoss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\WizardShoot.cs" />
+    <Compile Include="Assets\Scripts\Levels\LevelOne.cs" />
+    <Compile Include="Assets\Scripts\Levels\LevelThree.cs" />
+    <Compile Include="Assets\Scripts\Levels\LevelTwo.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerAttack.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\Unused\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\Unused\EventManager.cs" />
+    <Compile Include="Assets\Scripts\Unused\PowerupManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
