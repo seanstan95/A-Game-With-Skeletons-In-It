@@ -1447,10 +1447,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2bf494cd1bf0ab44b47f4ccbf95ec80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  bars: {fileID: 1897932917}
+  bars1: {fileID: 1675896542}
+  bars2: {fileID: 1624617879}
+  bars3: {fileID: 1024056599}
   skeleSpawn: {fileID: 1218836381872624, guid: 57efacf908ad3004f8851766089100eb, type: 3}
-  UI: {fileID: 0}
   spawnPoints:
   - {fileID: 576200884}
   - {fileID: 1364338146}
@@ -2114,7 +2114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_RootOrder
@@ -2126,7 +2126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1000001
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.z
@@ -2134,7 +2134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 39.909836
+      value: 39.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6303,7 +6303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_RootOrder
@@ -6311,11 +6311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.099999994
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.099999994
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.z
@@ -6323,7 +6323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 39.909836
+      value: 39.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9838,7 +9838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_RootOrder
@@ -9846,11 +9846,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.099999994
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.099999994
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalScale.z
@@ -9858,7 +9858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 39.909836
+      value: 39.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cb5fa9c6ac211e646bd1355ba7cc8f8d, type: 3}
       propertyPath: m_LocalPosition.y

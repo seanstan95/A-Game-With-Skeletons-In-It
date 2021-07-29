@@ -2,10 +2,12 @@
 
 public class LevelTwo : MonoBehaviour
 {
+	private bool lerpBars;
 	private GameManager gameManager;
 	private int enemyCount;
+	private Vector3 bar1LerpPos, bar2LerpPos, bar3LerpPos;
 	private UIManager UI;
-	public GameObject bars, skeleSpawn;
+	public GameObject bars1, bars2, bars3, skeleSpawn;
 	public GameObject[] spawnPoints;
 	public Wizard[] wizards;
 	public WizardBoss boss;
@@ -22,9 +24,24 @@ public class LevelTwo : MonoBehaviour
 		UI.ResetUI();
 		UI.levelText.text = "Defeat 10 Skeletons to advance!";
 		InvokeRepeating("Spawn", 4f, 2.5f);
+		bar1LerpPos = new Vector3(bars1.transform.localPosition.x, -3f, bars1.transform.localPosition.z);
+		bar2LerpPos = new Vector3(bars2.transform.localPosition.x, -3f, bars2.transform.localPosition.z);
+		bar3LerpPos = new Vector3(bars3.transform.localPosition.x, -3f, bars3.transform.localPosition.z);
 	}
 
-	public void EnemyDied()
+    private void Update()
+    {
+		if (lerpBars && Time.timeScale == 1)
+		{
+			bars1.transform.localPosition = Vector3.Lerp(bars1.transform.localPosition, bar1LerpPos, .01f);
+			bars2.transform.localPosition = Vector3.Lerp(bars2.transform.localPosition, bar2LerpPos, .01f);
+			bars3.transform.localPosition = Vector3.Lerp(bars3.transform.localPosition, bar3LerpPos, .01f);
+		}
+		if (bars1.transform.localPosition.y < -2.9f)
+			lerpBars = false;
+	}
+
+    public void EnemyDied()
 	{
 		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
 		++enemyCount;
@@ -44,7 +61,7 @@ public class LevelTwo : MonoBehaviour
 						enemy.GetComponent<Skeleton>().Death(false);
 					}
 				}
-				bars.SetActive(false); //bars in the first room
+				lerpBars = true;
 				wizards[0].active = true; //the 2 wizards behind the bars
 				wizards[1].active = true;
 				UI.levelText.text = "";

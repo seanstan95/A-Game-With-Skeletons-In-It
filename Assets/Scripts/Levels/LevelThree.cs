@@ -2,10 +2,12 @@
 
 public class LevelThree : MonoBehaviour
 {
+	private bool lerpBars1, lerpBars2;
 	private GameManager gameManager;
 	private UIManager UI;
+	private Vector3 bar1LerpPos, bar2LerpPos;
 	public FinalBoss finalBoss;
-	public GameObject[] bars;
+	public GameObject bars1, bars2;
 	public int enemyCount;
 	public Skeleton[] skeletons;
 	public Wizard[] wizards;
@@ -21,9 +23,24 @@ public class LevelThree : MonoBehaviour
 		UI = GameObject.Find("UIManager").GetComponent<UIManager>();
 		UI.HUDAnimator.SetTrigger("LevelComplete-End");
 		UI.ResetUI();
+		bar1LerpPos = new Vector3(bars1.transform.localPosition.x, bars1.transform.localPosition.y, -25f);
+		bar2LerpPos = new Vector3(bars2.transform.localPosition.x, bars2.transform.localPosition.y, -25f);
 	}
 
-	public void EnemyActivation(bool increment)
+    public void Update()
+    {
+		if (lerpBars1 && Time.timeScale == 1)
+			bars1.transform.localPosition = Vector3.Lerp(bars1.transform.localPosition, bar1LerpPos, .01f);
+		if (lerpBars2 && Time.timeScale == 1)
+			bars2.transform.localPosition = Vector3.Lerp(bars2.transform.localPosition, bar2LerpPos, .01f);
+
+		if (bars1.transform.localPosition.z < -24.5f)
+			lerpBars1 = false;
+		if (bars2.transform.localPosition.z < -24.5f)
+			lerpBars2 = false;
+	}
+
+    public void EnemyActivation(bool increment)
 	{
 		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
 		if (increment)
@@ -50,7 +67,7 @@ public class LevelThree : MonoBehaviour
 				if (!increment)
 					wizBoss.active = true;
 				else
-					bars[0].SetActive(false); //bars at the back of the first room
+					lerpBars1 = true; //bars at the back of the first room
 				break;
 			case 10:
 				if (!increment)
@@ -60,7 +77,7 @@ public class LevelThree : MonoBehaviour
 				}
 				else
 				{
-					bars[1].SetActive(false); //bars behind wizard boss rematch
+					lerpBars2 = true; //bars behind wizard boss rematch
 					UI.levelText.text = "";
 				}
 				break;

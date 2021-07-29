@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
 		if (buttonClicked == "Quit")
 			Application.Quit();
 		else if (buttonClicked == "NewGame")
-			gameManager.LevelLoad("LevelOne", gameManager.clips[0]);
+			gameManager.LevelLoad("LevelThree", gameManager.clips[0]);
 		else if (buttonClicked == "Back")
 			ReturnToMenu(true);
 		else if (buttonClicked == "Options")

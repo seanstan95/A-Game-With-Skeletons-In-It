@@ -2,8 +2,10 @@
 
 public class LevelOne : MonoBehaviour
 {
+	private bool lerpBars;
 	private GameManager gameManager;
 	private UIManager UI;
+	private Vector3 barLerpPos;
 	public GameObject ironBars;
 	public int enemyCount;
 	public Skeleton[] skeletons = new Skeleton[16];
@@ -16,9 +18,18 @@ public class LevelOne : MonoBehaviour
 		gameManager.playerTrans.position = new Vector3(-29, 0, -33);
 		gameManager.playerTrans.eulerAngles = new Vector3(0f, 90f, 0f);
 		UI = GameObject.Find("UIManager").GetComponent<UIManager>();
+		barLerpPos = new Vector3(ironBars.transform.localPosition.x, ironBars.transform.localPosition.y, -25f);
 	}
 
-	public void EnemyActivation(bool increment)
+    public void Update()
+    {
+		if (lerpBars && Time.timeScale == 1)
+			ironBars.transform.localPosition = Vector3.Lerp(ironBars.transform.localPosition, barLerpPos, .015f);
+		if (ironBars.transform.localPosition.z < -24.5f)
+			lerpBars = false;
+    }
+
+    public void EnemyActivation(bool increment)
 	{
 		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
 		if (increment) {
@@ -50,7 +61,7 @@ public class LevelOne : MonoBehaviour
 				skeletons[9].active = true;
 				break;
 			case 10:
-				ironBars.SetActive(false); //bars at the back of second room
+				lerpBars = true;
 				skeletons[10].active = true;
 				break;
 			case 11:
