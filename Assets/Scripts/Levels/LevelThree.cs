@@ -1,17 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class LevelThree : MonoBehaviour
 {
-	private bool lerpBars1, lerpBars2;
-	private GameManager gameManager;
-	private UIManager UI;
-	private Vector3 bar1LerpPos, bar2LerpPos;
+	// Public Fields
 	public FinalBoss finalBoss;
 	public GameObject bars1, bars2;
-	public int enemyCount;
 	public Skeleton[] skeletons;
 	public Wizard[] wizards;
 	public WizardBoss wizBoss;
+	public int enemyCount;
+	
+	// Private Fields
+	private bool lerpBars1;
+	private bool lerpBars2;
+	private GameManager gameManager;
+	private UIManager UI;
+	private Vector3 bar1LerpPos;
+	private Vector3 bar2LerpPos;
+	
+	// Cached Animator Properties
+	private static readonly int Property = Animator.StringToHash("LevelComplete-End");
+	private static readonly int GameComplete = Animator.StringToHash("GameComplete");
 
 	public void Start()
 	{
@@ -21,17 +31,22 @@ public class LevelThree : MonoBehaviour
 		gameManager.playerTrans.position = new Vector3(-2f, 1.1f, 0.1f);
 		gameManager.playerTrans.eulerAngles = new Vector3(0f, -90f, 0f);
 		UI = GameObject.Find("UIManager").GetComponent<UIManager>();
-		UI.HUDAnimator.SetTrigger("LevelComplete-End");
+		UI.HUDAnimator.SetTrigger(Property);
 		UI.ResetUI();
-		bar1LerpPos = new Vector3(bars1.transform.localPosition.x, bars1.transform.localPosition.y, -25f);
-		bar2LerpPos = new Vector3(bars2.transform.localPosition.x, bars2.transform.localPosition.y, -25f);
+		
+		Vector3 barPosition = bars1.transform.localPosition;
+		bar1LerpPos = new Vector3(barPosition.x, barPosition.y, -25f);
+		barPosition = bars2.transform.localPosition;
+		bar2LerpPos = new Vector3(barPosition.x, barPosition.y, -25f);
 	}
 
     public void Update()
     {
-		if (lerpBars1 && Time.timeScale == 1)
+	    bool isPaused = Math.Abs(Time.timeScale - 1) < float.Epsilon;
+	    
+	    if (lerpBars1 && isPaused)
 			bars1.transform.localPosition = Vector3.Lerp(bars1.transform.localPosition, bar1LerpPos, .01f);
-		if (lerpBars2 && Time.timeScale == 1)
+		if (lerpBars2 && isPaused)
 			bars2.transform.localPosition = Vector3.Lerp(bars2.transform.localPosition, bar2LerpPos, .01f);
 
 		if (bars1.transform.localPosition.z < -24.5f)
@@ -42,7 +57,7 @@ public class LevelThree : MonoBehaviour
 
     public void EnemyActivation(bool increment)
 	{
-		//This function is triggered on enemy death and checks if eemyCount is at certain thresholds for progression.
+		//This function is triggered on enemy death and checks if enemyCount is at certain thresholds for progression.
 		if (increment)
 			enemyCount++;
 
@@ -82,10 +97,8 @@ public class LevelThree : MonoBehaviour
 				}
 				break;
 			case 11:
-				UI.HUDAnimator.SetTrigger("GameComplete");
+				UI.HUDAnimator.SetTrigger(GameComplete);
 				StartCoroutine(gameManager.Done(gameDone: true));
-				break;
-			default:
 				break;
 		}
 	}

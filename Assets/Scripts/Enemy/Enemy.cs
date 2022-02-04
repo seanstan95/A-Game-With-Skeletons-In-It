@@ -4,17 +4,27 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+	// Public Fields
+	public NavMeshAgent navAgent;
+	public GameObject projectile;
+	public GameObject wandEnd;
+	public Animator animator;
+	public int currentHealth;
+	public int maxHealth;
+	public bool active;
+	
 	protected GameManager gameManager;
 	protected bool playerInRange;
-	protected float attackTimer, coolDown;
-	protected LevelOne levelOne;
-	protected LevelTwo levelTwo;
-	protected LevelThree levelThree;
-	public Animator animator;
-	public bool active;
-	public GameObject projectile, wandEnd;
-	public int currentHealth, maxHealth;
-	public NavMeshAgent navAgent;
+	protected float attackTimer;
+	protected float coolDown;
+
+	// Private Fields
+	private LevelOne levelOne;
+	private LevelTwo levelTwo;
+	private LevelThree levelThree;
+	
+	// Cached Animator Hashes
+	private static readonly int Die = Animator.StringToHash("Die");
 
 	protected void Setup(int health, float cool)
 	{
@@ -34,36 +44,29 @@ public class Enemy : MonoBehaviour
 
 	public void Death(bool increaseCount = true)
 	{
-		if (currentHealth <= 0)
-		{
-			//Setting active to false prevents movement, attacking, etc.
-			active = false;
+		if (currentHealth > 0) return;
+		
+		//Setting active to false prevents movement, attacking, etc.
+		active = false;
 
-			//Disable collider and stop movement (if using a NavMeshAgent)
-			GetComponent<CapsuleCollider>().enabled = false;
-			if (navAgent != null && navAgent.isOnNavMesh)
-				navAgent.isStopped = true;
-
-			//Set death animation to start
-			animator.SetTrigger("Die");
-
-			//After 2 seconds, destroy the object
-			Destroy(gameObject, 2f);
-
-			if (this.GetType() == typeof(WizardBoss))
-				CancelInvoke();
-
-			if (!increaseCount)
-				return;
-
-			//Level-specific checks
-			if (levelOne != null)
-				levelOne.EnemyActivation(true);
-			else if (levelTwo != null)
-				levelTwo.EnemyDied();
-			else if (levelThree != null)
-				levelThree.EnemyActivation(true);
-		}
+		//Disable collider and stop movement (if using a NavMeshAgent)
+		GetComponent<CapsuleCollider>().enabled = false;
+		if (navAgent != null && navAgent.isOnNavMesh)
+			navAgent.isStopped = true;
+		
+		//Set death animation to start
+		animator.SetTrigger(Die);
+		
+		//After 2 seconds, destroy the object
+		Destroy(gameObject, 2f);
+		
+		if (GetType() == typeof(WizardBoss)) CancelInvoke();
+		if (!increaseCount) return;
+		
+		//Level-specific checks
+		if (levelOne != null) levelOne.EnemyActivation(true);
+		else if (levelTwo != null) levelTwo.EnemyDied();
+		else if (levelThree != null) levelThree.EnemyActivation(true);
 	}
 
 	protected void Shoot()
