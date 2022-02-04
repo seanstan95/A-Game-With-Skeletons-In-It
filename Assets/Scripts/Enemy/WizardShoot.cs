@@ -2,7 +2,7 @@
 
 public class WizardShoot : MonoBehaviour
 {
-	Rigidbody rigidBody;
+	private Rigidbody rigidBody;
 
 	private void Start()
 	{
@@ -11,14 +11,11 @@ public class WizardShoot : MonoBehaviour
 		Destroy(gameObject, 2f);
 	}
 
-	private void Update()
-	{
-		rigidBody.AddForce(transform.forward * 20);
-	}
+	private void Update() => rigidBody.AddForce(transform.forward * 20);
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag == "StopShoot")
+		if (other.gameObject.CompareTag("StopShoot"))
 			Destroy(gameObject);
 	}
 }

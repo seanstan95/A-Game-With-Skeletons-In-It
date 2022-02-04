@@ -2,13 +2,19 @@
 
 public class WizardBoss : Enemy
 {
-	private bool invoke;
-	private int threeRoom, twoRoom;
-	private double changeInterval, seconds;
-	private float roomTimer;
-	private UIManager UI;
-	private Vector3 afterPosition, beforePosition;
+	// Public Fields
 	public Transform[] spawns;
+	
+	// Private Fields
+	private Vector3 afterPosition;
+	private Vector3 beforePosition;
+	private UIManager UI;
+	private double changeInterval;
+	private double seconds;
+	private float roomTimer;
+	private int threeRoom;
+	private int twoRoom;
+	private bool invoke;
 
 	private void Start()
 	{
@@ -21,44 +27,42 @@ public class WizardBoss : Enemy
 	private void Update()
 	{
 		//Active is set to false on death, which prevents this all from happening.
-		if (active)
+		if (!active) return;
+		transform.LookAt(gameManager.playerTrans);
+		
+		if (!invoke)
 		{
-			transform.LookAt(gameManager.playerTrans);
-			if (!invoke)
-			{
-				InvokeRepeating("UpdateText", 0f, 0.5f);
-				invoke = true;
-			}
+			InvokeRepeating(nameof(UpdateText), 0f, 0.5f);
+			invoke = true;
+		}
 
-			if (roomTimer < changeInterval)
-			{
-				//Loop through this (attacking when attackTimer reaches 2) until aliveTimer reaches 5 to move location.
-				roomTimer += Time.deltaTime;
-				attackTimer += Time.deltaTime;
+		if (roomTimer < changeInterval)
+		{
+			//Loop through this (attacking when attackTimer reaches 2) until aliveTimer reaches 5 to move location.
+			roomTimer += Time.deltaTime;
+			attackTimer += Time.deltaTime;
 
-				if (Vector3.Distance(transform.position, gameManager.playerTrans.position) < 15 && attackTimer > coolDown)
-				{
-					Invoke("Shoot", 0f);
-					Invoke("Shoot", .1f);
-					attackTimer = 0;
-				}
-			}
-			else
-			{
-				//if here, it's time to change room.
-				beforePosition = transform.position;
+			if (!(Vector3.Distance(transform.position, gameManager.playerTrans.position) < 15) ||
+			    !(attackTimer > coolDown)) return;
+			
+			Invoke(nameof(Shoot), 0f);
+			Invoke(nameof(Shoot), .1f);
+			attackTimer = 0;
+		}
+		else
+		{
+			//if here, it's time to change room.
+			beforePosition = transform.position;
+			afterPosition = ChangePosition();
+
+			if (beforePosition != afterPosition)
 				afterPosition = ChangePosition();
 
-				if (beforePosition != afterPosition)
-					afterPosition = ChangePosition();
-
-				if (beforePosition != afterPosition)
-				{
-					transform.position = afterPosition;
-					attackTimer = 0;
-					roomTimer = 0;
-				}
-			}
+			if (beforePosition == afterPosition) return;
+			
+			transform.position = afterPosition;
+			attackTimer = 0;
+			roomTimer = 0;
 		}
 	}
 
@@ -84,36 +88,29 @@ public class WizardBoss : Enemy
 			case "BottomMiddle":
 				return ThreeRoom(threeRoom, spawns[1], spawns[3], spawns[5]);
 		}
-
+		
+		// God, this is one of the funniest comments/Logs that I've seen
 		//should never reach here
 		Debug.Log("ruh roh");
 		return transform.position;
 	}
 
 	private Vector3 TwoRoom(int random, Transform roomOne, Transform roomTwo)
-    {
-		if (random == 0)
-			return roomOne.position;
-		else
-			return roomTwo.position;
+	{
+		return random == 0 ? roomOne.position : roomTwo.position;
 	}
 
 	private Vector3 ThreeRoom(int random, Transform roomOne, Transform roomTwo, Transform roomThree)
     {
 		if (random == 0)
 			return roomOne.position;
-		else if (random == 1)
-			return roomTwo.position;
-		else
-			return roomThree.position;
+	    
+		return random == 1 ? roomTwo.position : roomThree.position;
     }
 
 	private void UpdateText()
 	{
-		if (seconds <= 3)
-			UI.levelText.text = "Boss Moving in " + seconds + " seconds.";
-		else
-			UI.levelText.text = "";
+		UI.levelText.text = seconds <= 3 ? $"Boss Moving in {seconds} seconds." : "";
 
 		seconds -= 0.5;
 		if (seconds <= 0)

@@ -1,17 +1,24 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using System;
+using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
-{
-	public FinalBoss finalBoss;
+{ 
+	// Serialized Fields
+	[SerializeField] private LineRenderer lineRender;
+	[SerializeField] private Transform gunEnd;
+	[SerializeField] private GameManager gameManager;
+	[SerializeField] private UIManager UI;
+	
+	// Private Fields
+	private readonly int shootableMask = 256;
+	private readonly int damagePerHit = 40;
 	private float timer;
-	private Ray ray = new Ray();
 	private RaycastHit hitInfo;
-	private readonly int shootableMask = 256, damagePerHit = 40;
-	public GameManager gameManager;
-	public LineRenderer lineRender;
-	public Transform gunEnd;
-	public UIManager UI;
+	private Ray ray = new Ray();
+	private FinalBoss finalBoss;
+
+	// Cached Animator Hashes 
+	private static readonly int Shoot1 = Animator.StringToHash("Shoot");
 
 	public void UpdateLevel()
     {
@@ -23,16 +30,17 @@ public class PlayerAttack : MonoBehaviour
 		timer += Time.deltaTime;
 
 		//Checks for the mouse button to be held down, cooldown has been reached, and that the game isn't paused.
-		if (Input.GetButton("Fire1") && timer >= .5f && Time.timeScale == 1)
+		if (Input.GetButton("Fire1") && timer >= .5f && Math.Abs(Time.timeScale - 1) < float.Epsilon)
 		{
 			timer = 0f;
 
+			Vector3 gunEndPosition = gunEnd.position;
 			lineRender.enabled = true;
-			lineRender.SetPosition(0, gunEnd.position);
-			ray.origin = gunEnd.position;
+			lineRender.SetPosition(0, gunEndPosition);
+			ray.origin = gunEndPosition;
 			ray.direction = transform.forward;
 
-			gameManager.playerAnimation.SetTrigger("Shoot");
+			gameManager.playerAnimation.SetTrigger(Shoot1);
 			gameManager.sfxSource.Play();
 			Shoot(ray, lineRender);
 		}
@@ -42,10 +50,10 @@ public class PlayerAttack : MonoBehaviour
 			lineRender.enabled = false;
 	}
 
-	private void Shoot(Ray ray, LineRenderer line)
+	private void Shoot(Ray rayShot, LineRenderer line)
 	{
 		//Physics.Raycast returns true if the ray hits a collider. Check if it hit an enemy (and deal damage if so), then draw the line accordingly.
-		if (Physics.Raycast(ray, out hitInfo, 15f, shootableMask))
+		if (Physics.Raycast(rayShot, out hitInfo, 15f, shootableMask))
 		{
 			Enemy enemyHit = hitInfo.collider.GetComponent<Enemy>();
 			if (enemyHit != null)
@@ -68,6 +76,6 @@ public class PlayerAttack : MonoBehaviour
 			line.SetPosition(1, hitInfo.point);
 		}
 		else
-			line.SetPosition(1, ray.origin + ray.direction * 15f);
+			line.SetPosition(1, rayShot.origin + rayShot.direction * 15f);
 	}
 }

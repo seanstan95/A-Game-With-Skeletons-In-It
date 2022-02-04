@@ -4,16 +4,37 @@ using System.Linq;
 
 public class PlayerMove : MonoBehaviour
 {
-	private bool collision;
-	private float damageTimer, mouseX, moveH, moveV;
-	private readonly string[] damageObjects = { "GreatAxe", "Needle", "Cutter", "Spear", "SawBlade" };
-	private readonly string[] wizRooms = { "TopLeft", "TopMiddle", "TopRight", "BottomLeft", "BottomMiddle", "BottomRight" };
-	private Vector3 movement;
-	public GameManager gameManager;
+	// Public Fields
 	public LevelOne levelOne;
 	public LevelTwo levelTwo;
 	public LevelThree levelThree;
 	public string room;
+
+	// Serialized Fields
+	[SerializeField] private GameManager gameManager;
+	[SerializeField] private Camera mainCamera;
+
+
+	// Private Fields
+	private bool collision;
+	private float timeSinceLastHit;
+	private float mouseX;
+	private float moveH;
+	private float moveV;
+	private readonly string[] damageObjects = { "GreatAxe", "Needle", "Cutter", "Spear", "SawBlade" };
+	private readonly string[] wizRooms = { "TopLeft", "TopMiddle", "TopRight", "BottomLeft", "BottomMiddle", "BottomRight" };
+	private Vector3 movement;
+	
+	// Cached Animator Hash Values
+	private static readonly int Idle = Animator.StringToHash("Idle");
+	private static readonly int Walking = Animator.StringToHash("Walking");
+
+	
+	private void Awake()
+	{
+		// Cache Camera.main as it is an expensive lookup
+		mainCamera ??= Camera.main;
+	}
 
 	private void Start()
 	{
@@ -23,14 +44,14 @@ public class PlayerMove : MonoBehaviour
 	private void Update()
 	{
 		//damageTimer is used to ensure the player can't be hurt by level colliders too quickly.
-		if (collision && damageTimer >= 1)
+		if (collision && timeSinceLastHit >= 1)
 		{
 			collision = false;
 			gameManager.playerHealth.ChangeHealth(10);
-			damageTimer = 0f;
+			timeSinceLastHit = 0f;
 		}
-		else if (damageTimer < 1)
-			damageTimer += Time.deltaTime;
+		else if (timeSinceLastHit < 1)
+			timeSinceLastHit += Time.deltaTime;
 	}
 
 	private void FixedUpdate()
@@ -42,21 +63,20 @@ public class PlayerMove : MonoBehaviour
 
 		//Move and rotate the player, then animate accordingly.
 		movement.Set(moveH, 0f, moveV);
-		movement = Camera.main.transform.TransformDirection(movement.normalized * 5f * Time.deltaTime);
+		movement = mainCamera.transform.TransformDirection(movement.normalized * (5f * Time.deltaTime));
 		movement.y = 0f;
 		transform.position += movement;
-		Vector3 rotate = new Vector3(0, mouseX, 0);
-		transform.Rotate(rotate * 4f);
+		transform.Rotate(new Vector3(0, mouseX, 0) * 4f);
 
 		if (moveH != 0f || moveV != 0f)
 		{
-			gameManager.playerAnimation.SetBool("Idle", false);
-			gameManager.playerAnimation.SetBool("Walking", true);
+			gameManager.playerAnimation.SetBool(Idle, false);
+			gameManager.playerAnimation.SetBool(Walking, true);
 		}
 		else
 		{
-			gameManager.playerAnimation.SetBool("Walking", false);
-			gameManager.playerAnimation.SetBool("Idle", true);
+			gameManager.playerAnimation.SetBool(Walking, false);
+			gameManager.playerAnimation.SetBool(Idle, true);
 		}
 	}
 
@@ -68,8 +88,8 @@ public class PlayerMove : MonoBehaviour
 			room = other.name;
 			return;
 		}
-
-		if(other.name.Substring(0, other.name.Length - 1) == "EnemyTrigger")
+		
+		if(other.name.StartsWith("EnemyTrigger"))
         {
 			switch (SceneManager.GetActiveScene().name)
 			{
@@ -107,22 +127,29 @@ public class PlayerMove : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		//Environemnt objects that deal damage have non-trigger colliders to separate them from enemy activation triggers.
-        if (damageObjects.Contains(other.gameObject.name))
-        {
-			collision = true;
-			if (other.gameObject.name == "Spear")
-				other.gameObject.GetComponentInParent<Animation>().Rewind();
-        }
+		// Environment objects that deal damage have non-trigger colliders to separate them from enemy activation triggers.
+		
+		// Return early if collision is not included in damage objects
+		if (!damageObjects.Contains(other.gameObject.name)) return;
+		
+		collision = true;
+        if (other.gameObject.name == "Spear")
+	        other.gameObject.GetComponentInParent<Animation>().Rewind();
 	}
 
 	public void UpdateLevel()
 	{
-		if (SceneManager.GetActiveScene().name == "LevelOne")	
-			levelOne = GameObject.Find("LevelOneScript").GetComponent<LevelOne>();
-		else if (SceneManager.GetActiveScene().name == "LevelTwo")
-			levelTwo = GameObject.Find("LevelTwoScript").GetComponent<LevelTwo>();
-		else if (SceneManager.GetActiveScene().name == "LevelThree")
-			levelThree = GameObject.Find("LevelThreeScript").GetComponent<LevelThree>();
+		switch (SceneManager.GetActiveScene().name)
+		{
+			case "LevelOne":
+				levelOne = GameObject.Find("LevelOneScript").GetComponent<LevelOne>();
+				break;
+			case "LevelTwo":
+				levelTwo = GameObject.Find("LevelTwoScript").GetComponent<LevelTwo>();
+				break;
+			case "LevelThree":
+				levelThree = GameObject.Find("LevelThreeScript").GetComponent<LevelThree>();
+				break;
+		}
 	}
 }
