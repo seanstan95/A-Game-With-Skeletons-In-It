@@ -4,16 +4,29 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
+	public Transform playerTrans;
 	public Animator playerAnimation;
 	public AudioClip[] clips;
 	public AudioSource musicSource, sfxSource;
-	public bool loading;
 	public GameObject player;
+	
 	public PlayerAttack playerAttack;
 	public PlayerHealth playerHealth;
 	public PlayerMove playerMove;
-	public Transform playerTrans;
 	public UIManager UI;
+	public bool loading;
+	
+	// Private Fields
+	private WaitForSeconds threeSeconds;
+
+	// Cached Animator Hashes
+	private static readonly int Reset = Animator.StringToHash("Reset");
+	private static readonly int Property = Animator.StringToHash("LevelComplete-End");
+
+	private void Awake()
+	{
+		threeSeconds = new WaitForSeconds(3);
+	}
 
 	private void Start()
 	{
@@ -25,11 +38,9 @@ public class GameManager : MonoBehaviour
 	public void LevelLoad(string scene, AudioClip clip)
 	{
 		SceneManager.LoadScene(scene);
-		playerHealth.currentHealth = 100;
-		playerHealth.damageImage.color = Color.clear;
-		playerHealth.dead = false;
-		UI.HUDAnimator.SetTrigger("Reset");
-		UI.HUDAnimator.ResetTrigger("Reset");
+		playerHealth.HealthReset();
+		UI.HUDAnimator.SetTrigger(Reset);
+		UI.HUDAnimator.ResetTrigger(Reset);
 		UI.ResetUI();
 		Time.timeScale = 1;
 		musicSource.clip = clip;
@@ -40,9 +51,9 @@ public class GameManager : MonoBehaviour
 	public IEnumerator Done(string level = null, AudioClip clip = null, bool gameDone = false)
     {
 		loading = true;
-		yield return new WaitForSeconds(3);
+		yield return threeSeconds;
 		if (gameDone)
-			UI.HUDAnimator.SetTrigger("LevelComplete-End");
+			UI.HUDAnimator.SetTrigger(Property);
 		if (level != null)
 			LevelLoad(level, clip);
 		else

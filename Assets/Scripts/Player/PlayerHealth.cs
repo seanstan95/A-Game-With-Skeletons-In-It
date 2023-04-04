@@ -3,12 +3,20 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-	public bool dead;
-	public GameManager gameManager;
-	public Image damageImage;
-	public int currentHealth = 100;
-	public UIManager UI;
+	
+	// Serialized Fields
+	[SerializeField] private Image damageImage;
+	[SerializeField] private GameManager gameManager;
+	[SerializeField] private UIManager UI;
 
+	// Private Fields
+	private int _currentHealth = 100;
+	private bool dead;
+
+	// Cached Animator Hash Values
+	private static readonly int GameOver = Animator.StringToHash("GameOver");
+	
+	
 	private void Update()
 	{
 		//Set damageImage to red then lerp back to clear to make a smooth transition
@@ -19,14 +27,24 @@ public class PlayerHealth : MonoBehaviour
 	public void ChangeHealth(int amount)
 	{
 		damageImage.color = new Color(250, 0, 0);
-		currentHealth -= amount;
-		UI.playerSlider.value = currentHealth;
+		_currentHealth -= amount;
+		UI.playerSlider.value = _currentHealth;
 
-		if (currentHealth <= 0 && !dead)
+		if (_currentHealth <= 0 && !dead)
 		{
 			dead = true;
-			UI.HUDAnimator.SetTrigger("GameOver");
+			UI.HUDAnimator.SetTrigger(GameOver);
 			StartCoroutine(gameManager.Done());
 		}
+	}
+
+	public int GetCurrentHealth() => _currentHealth;
+
+	// Reset health status. Used in LevelLoad() in GameManager.cs
+	public void HealthReset()
+	{
+		_currentHealth = 100;
+		damageImage.color = Color.clear;
+		dead = false;
 	}
 }

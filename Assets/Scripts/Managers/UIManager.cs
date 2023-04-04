@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -21,35 +22,34 @@ public class UIManager : MonoBehaviour
 		if (gameManager.loading)
 			return;
 
-		//Exiting game (back to main menu)
+		// Exiting game (back to main menu)
 		if (Input.GetKeyDown(KeyCode.Escape))
 			ReturnToMenu(false);
 
-		//Pausing/unpausing the game
-		if (Input.GetKeyDown(KeyCode.Space) && SceneManager.GetActiveScene().name != "MainMenu")
+		// Pausing/unpausing the game
+		if (!Input.GetKeyDown(KeyCode.Space) || SceneManager.GetActiveScene().name == "MainMenu") return;
+
+		if (Math.Abs(Time.timeScale - 1) < float.Epsilon)
 		{
-			if (Time.timeScale == 1)
-			{
-				Time.timeScale = 0;
-				pauseMenu.SetActive(true);
-				gameManager.musicSource.Pause();
-				Cursor.lockState = CursorLockMode.None;
-			}
-			else
-				Unpause();
+			Time.timeScale = 0;
+			pauseMenu.SetActive(true);
+			gameManager.musicSource.Pause();
+			Cursor.lockState = CursorLockMode.None;
 		}
+		else
+			Unpause();
 	}
 
 	public void UpdateEnemy(Enemy enemy)
 	{
-		if (enemy.tag == "BossEnemy")
+		if (enemy.CompareTag("BossEnemy"))
 		{
 			enemySlider.gameObject.SetActive(false);
 			bossSlider.gameObject.SetActive(true);
 			bossSlider.maxValue = enemy.maxHealth;
 			bossSlider.value = enemy.currentHealth;
 		}
-		else if (enemy.tag == "NormalEnemy")
+		else if (enemy.CompareTag("NormalEnemy"))
 		{
 			bossSlider.gameObject.SetActive(false);
 			enemySlider.gameObject.SetActive(true);
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
 
 	public void ResetUI()
     {
-		playerSlider.value = gameManager.playerHealth.currentHealth;
+		playerSlider.value = gameManager.playerHealth.GetCurrentHealth();
 		bossSlider.gameObject.SetActive(false);
 		enemySlider.gameObject.SetActive(false);
 		levelText.text = "";
@@ -74,17 +74,22 @@ public class UIManager : MonoBehaviour
 	{
 		optionsMenu.SetActive(false);
 		mainMenu.SetActive(true);
-		if (!fromOptions)
-		{
-			Cursor.lockState = CursorLockMode.None;
-			Time.timeScale = 0;
-			canvas.SetActive(true);
-			gameManager.musicSource.Stop();
-		}
+
+		// If Coming from options, quickly return
+		if (fromOptions) return;
+		
+		
+		Cursor.lockState = CursorLockMode.None;
+		Time.timeScale = 0;
+		canvas.SetActive(true);
+		gameManager.musicSource.Stop();
 	}
 
 	public void OnClick(string buttonClicked)
 	{
+<<<<<<< HEAD
+		switch (buttonClicked)
+=======
 		if (buttonClicked == "Quit")
 			Application.Quit();
 		else if (buttonClicked == "NewGame")
@@ -92,9 +97,21 @@ public class UIManager : MonoBehaviour
 		else if (buttonClicked == "Back")
 			ReturnToMenu(true);
 		else if (buttonClicked == "Options")
+>>>>>>> seanstan95-master
 		{
-			mainMenu.SetActive(false);
-			optionsMenu.SetActive(true);
+			case "Quit":
+				Application.Quit();
+				break;
+			case "NewGame":
+				gameManager.LevelLoad("LevelThree", gameManager.clips[0]);
+				break;
+			case "Back":
+				ReturnToMenu(true);
+				break;
+			case "Options":
+				mainMenu.SetActive(false);
+				optionsMenu.SetActive(true);
+				break;
 		}
 	}
 
